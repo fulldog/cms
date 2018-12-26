@@ -122,7 +122,11 @@ if (!function_exists('dd')) {
 
     function hasLogin()
     {
-        $uid = \Yii::$app->session->get("user_info")["uid"];
+        $uid = \Yii::$app->getUser()->getId();
         return empty($uid) ? 0 : $uid;
+    }
+
+    function getUsername(){
+        return Yii::$app->getUser()->getIdentity()->username;
     }
 }
