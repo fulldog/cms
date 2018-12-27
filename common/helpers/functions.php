@@ -127,6 +127,6 @@ if (!function_exists('dd')) {
     }
 
     function getUsername(){
-        return Yii::$app->getUser()->getIdentity()->username;
+        return Yii::$app->user->isGuest;
     }
 }

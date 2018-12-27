@@ -7,60 +7,72 @@
  */
 
 namespace frontend\controllers;
+use common\models\LoginForm;
+use frontend\models\User;
 use Yii;
-use backend\tests\unit\models\LoginForm;
 use frontend\models\form\SignupForm;
 
 class IndexController extends BaseController
 {
 
     function actionIndex(){
-        return [
-            'data'=>[
-                'uid'=>Yii::$app->getUser()->getIdentity()->getId(),
-                'username'=>Yii::$app->getUser()->getIdentity()->username
-            ],
-            'code'=>1,
-            'msg'=>'登陆成功'
-        ];
+
     }
 
+    /**
+     * password username
+     * @return array
+     * @throws \Throwable
+     */
     function actionLogin(){
         if (!hasLogin()){
             $model = new LoginForm();
-            if ($model->load(Yii::$app->getRequest()->post()) && $model->login()) {
+            $model->username = Yii::$app->request->post('username');
+            $model->password = Yii::$app->request->post('password');
+            if (!$model->login()) {
                 return [
-                    'data'=>[
-                        'uid'=>Yii::$app->getUser()->getIdentity()->getId(),
-                        'username'=>Yii::$app->getUser()->getIdentity()->username
-                    ],
-                    'code'=>1,
-                    'msg'=>'登陆成功'
+                    'code'=>0,
+                    'msg'=>'账号或密码错误'
                 ];
             }
         }
         return [
-            [],
+            'data'=>Yii::$app->user->identity,
             'code'=>0,
-            'msg'=>'请勿重复登陆'
+            'msg'=>''
         ];
     }
 
     function actionRegister(){
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->getRequest()->post())) {
-            if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return [
-                            'data'=>[
-                                'uid'=>Yii::$app->getUser()->getIdentity()->getId(),
-                                'username'=>Yii::$app->getUser()->getIdentity()->username
-                            ],
-                            'code'=>1,
-                            'msg'=>'注册成功'
-                            ];
-                }
+        $username = Yii::$app->request->post('username');
+        $password = Yii::$app->request->post('password');
+
+        if (User::findOne(['username'=>$username])){
+            return [
+                'code'=>0,
+                'msg'=>'改账号已被注册'
+            ];
+        }else{
+            $user = new SignupForm();
+            $user->username = $username;
+            $user->password = $password;
+            $user->status = 0;
+            if ($user = $user->signup()){
+                return [
+                    'data'=>$user,
+                    'code'=>1,
+                    'msg'=>'注册成功'
+                ];
+            }else{
+                return [
+                    'code'=>0,
+                    'msg'=>'注册失败，请检查参数'
+                ];
             }
         }
+    }
+
+    function actionLogout(){
+        Yii::$app->user->logout(true);
     }
 }

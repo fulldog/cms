@@ -20,7 +20,7 @@ class SignupForm extends Model
 
     public $username;
 
-    public $email;
+    public $email = '';
 
     public $password;
 
