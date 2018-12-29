@@ -13,9 +13,9 @@ use frontend\models\form\SignupForm;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use common\models\LoginForm;
-use frontend\models\DoctorHospitals;
-use frontend\models\DoctorInfos;
-use frontend\models\DoctorPatients;
+use common\models\doctors\DoctorHospitals;
+use common\models\doctors\DoctorInfos;
+use common\models\doctors\DoctorPatients;
 use frontend\models\User;
 
 class IndexController extends BaseController

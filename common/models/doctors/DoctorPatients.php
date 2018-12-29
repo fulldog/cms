@@ -1,0 +1,83 @@
+<?php
+
+namespace common\models\doctors;
+
+use Yii;
+
+/**
+ * This is the model class for table "{{%doctor_patients}}".
+ *
+ * @property int $id
+ * @property int $hospital_id 所属医院
+ * @property int $doctor_id 所属医生
+ * @property int $is_transfer 转诊
+ * @property string $name 姓名
+ * @property string $tel 手机
+ * @property string $sex 性别
+ * @property int $id_number 身份证
+ * @property string $desc 描述
+ * @property int $create_at 创建时间
+ * @property int $update_at 更新时间
+ * @property int $age 年龄
+ */
+class DoctorPatients extends My
+{
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return '{{%doctor_patients}}';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['hospital_id', 'doctor_id', 'is_transfer', 'id_number', 'create_at', 'update_at', 'age'], 'integer'],
+            [['doctor_id'], 'required'],
+            [['desc'], 'string'],
+            [['name', 'tel', 'sex'], 'string', 'max' => 255],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'hospital_id' => '所属医院',
+            'doctor_id' => '所属医生',
+            'is_transfer' => '转诊',
+            'name' => '姓名',
+            'tel' => '手机',
+            'sex' => '性别',
+            'id_number' => '身份证',
+            'desc' => '描述',
+            'create_at' => '创建时间',
+            'update_at' => '更新时间',
+            'age' => '年龄',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return DoctorPatientsQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new DoctorPatientsQuery(get_called_class());
+    }
+
+    static function getPatientsByDoctorId($DoctorId,$is_transfer = false)
+    {
+        if ($is_transfer){
+            return self::findAll(['doctor_id' => $DoctorId,'is_transfer'=>1]);
+        }
+        return self::findAll(['doctor_id' => $DoctorId]);
+    }
+}
