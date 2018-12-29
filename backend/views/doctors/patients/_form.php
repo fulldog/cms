@@ -3,7 +3,7 @@
 use backend\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model frontend\models\DoctorInfos */
+/* @var $model common\models\doctors\DoctorPatients */
 /* @var $form backend\widgets\ActiveForm */
 ?>
 <div class="row">
@@ -17,37 +17,37 @@ use backend\widgets\ActiveForm;
                     ]
                 ]); ?>
                 <div class="hr-line-dashed"></div>
-                    <?= $form->field($model, 'id')->textInput() ?>
+                    <?= $form->field($model, 'hospital_id')->textInput() ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'uid')->textInput() ?>
+                        <?= $form->field($model, 'doctor_id')->textInput() ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'hospital_id')->textInput() ?>
+                        <?= $form->field($model, 'is_transfer')->textInput() ?>
                         <div class="hr-line-dashed"></div>
 
                         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'doctor_type')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'role')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'sex')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'hospital_location')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'id_number')->textInput() ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'hospital_name')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'desc')->textarea(['rows' => 6]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'certificate')->textarea(['rows' => 6]) ?>
+                        <?= $form->field($model, 'created_at')->textInput() ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'create_at')->textInput() ?>
+                        <?= $form->field($model, 'updated_at')->textInput() ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'update_at')->textInput() ?>
+                        <?= $form->field($model, 'age')->textInput() ?>
                         <div class="hr-line-dashed"></div>
 
                         <?= $form->defaultButtons() ?>

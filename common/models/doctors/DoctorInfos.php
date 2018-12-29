@@ -35,7 +35,7 @@ class DoctorInfos extends My
     public function rules()
     {
         return [
-            [['uid', 'hospital_id', 'create_at', 'update_at'], 'integer'],
+            [['uid', 'hospital_id', 'created_at', 'updated_at'], 'integer'],
             [['name', 'doctor_type'], 'required'],
             [['certificate'], 'string'],
             [['name', 'role', 'hospital_location', 'hospital_name'], 'string', 'max' => 255],
@@ -58,8 +58,8 @@ class DoctorInfos extends My
             'hospital_location' => '医院地址',
             'hospital_name' => '医院名称',
             'certificate' => '证书',
-            'create_at' => 'Create At',
-            'update_at' => 'Update At',
+            'created_at' => 'Create At',
+            'updated_at' => 'Update At',
         ];
     }
 

@@ -1,20 +1,20 @@
 <?php
 
-namespace backend\controllers;
+namespace backend\controllers\doctors;
 
 use Yii;
-use common\models\DoctorInfos;
+use common\models\doctors\DoctorPatientsSearch;
+use common\models\doctors\DoctorPatients;
 use backend\actions\CreateAction;
 use backend\actions\UpdateAction;
 use backend\actions\IndexAction;
 use backend\actions\DeleteAction;
 use backend\actions\SortAction;
 use backend\actions\ViewAction;
-use yii\data\ActiveDataProvider;
 /**
- * DoctorController implements the CRUD actions for DoctorInfos model.
+ * PatientsController implements the CRUD actions for DoctorPatients model.
  */
-class DoctorController extends \yii\web\Controller
+class PatientsController extends \yii\web\Controller
 {
     public function actions()
     {
@@ -23,35 +23,34 @@ class DoctorController extends \yii\web\Controller
                 'class' => IndexAction::className(),
                 'data' => function(){
                     
-                        $dataProvider = new ActiveDataProvider([
-                            'query' => DoctorInfos::find(),
-                        ]);
-
+                        $searchModel = new DoctorPatientsSearch();
+                        $dataProvider = $searchModel->search(yii::$app->getRequest()->getQueryParams());
                         return [
                             'dataProvider' => $dataProvider,
+                            'searchModel' => $searchModel,
                         ];
                     
                 }
             ],
             'create' => [
                 'class' => CreateAction::className(),
-                'modelClass' => DoctorInfos::className(),
+                'modelClass' => DoctorPatients::className(),
             ],
             'update' => [
                 'class' => UpdateAction::className(),
-                'modelClass' => DoctorInfos::className(),
+                'modelClass' => DoctorPatients::className(),
             ],
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => DoctorInfos::className(),
+                'modelClass' => DoctorPatients::className(),
             ],
             'sort' => [
                 'class' => SortAction::className(),
-                'modelClass' => DoctorInfos::className(),
+                'modelClass' => DoctorPatients::className(),
             ],
             'view-layer' => [
                 'class' => ViewAction::className(),
-                'modelClass' => DoctorInfos::className(),
+                'modelClass' => DoctorPatients::className(),
             ],
         ];
     }

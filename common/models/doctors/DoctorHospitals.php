@@ -32,7 +32,7 @@ class DoctorHospitals extends My
     public function rules()
     {
         return [
-            [['create_at', 'update_at'], 'integer'],
+            [['created_at', 'updated_at'], 'integer'],
             [['imgs'], 'string'],
             [['name', 'city', 'address', 'levels'], 'string', 'max' => 255],
         ];
@@ -49,8 +49,8 @@ class DoctorHospitals extends My
             'city' => '城市',
             'address' => '地址',
             'levels' => '等级',
-            'create_at' => '创建时间',
-            'update_at' => '更新时间',
+            'created_at' => '创建时间',
+            'updated_at' => '更新时间',
             'imgs' => '图片',
         ];
     }

@@ -2,16 +2,14 @@
 
 use yii\helpers\Url;
 
-
 /* @var $this yii\web\View */
-/* @var $model frontend\models\DoctorInfos */
+/* @var $model common\models\doctors\DoctorInfos */
 
 $this->params['breadcrumbs'] = [
     ['label' => yii::t('app', 'Doctor Infos'), 'url' => Url::to(['index'])],
-    ['label' => yii::t('app', 'Create') . yii::t('app', 'Doctor Infos')],
+    ['label' => yii::t('app', 'Update') . yii::t('app', 'Doctor Infos')],
 ];
 ?>
 <?= $this->render('_form', [
     'model' => $model,
 ]) ?>
-

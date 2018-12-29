@@ -4,12 +4,13 @@ use backend\widgets\Bar;
 use backend\grid\CheckboxColumn;
 use backend\grid\ActionColumn;
 use backend\grid\GridView;
-use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
+/* @var $searchModel common\models\doctors\DoctorPatientsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Doctor Infos';
-$this->params['breadcrumbs'][] = yii::t('app', 'Doctor Infos');
+$this->title = 'Doctor Patients';
+$this->params['breadcrumbs'][] = yii::t('app', 'Doctor Patients');
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -17,27 +18,30 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Doctor Infos');
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <?= Bar::widget() ?>
-                    <?php Pjax::begin(); ?>            <?= GridView::widget([
+                <?php //$this->render('_search', ['model' => $searchModel]); ?>
+                <?= GridView::widget([
                     'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
                     'columns' => [
                         ['class' => CheckboxColumn::className()],
 
-//                        'id',
-                        'uid',
+                        'id',
                         'hospital_id',
+                        'doctor_id',
+                        'is_transfer',
                         'name',
-                        'doctor_type',
-                        // 'role',
-                        // 'hospital_location',
-                        // 'hospital_name',
-                        // 'certificate:ntext',
-                        // 'create_at',
-                        // 'update_at',
+                        // 'tel',
+                        // 'sex',
+                        // 'id_number',
+                        // 'desc:ntext',
+                        // 'created_at',
+                        // 'updated_at',
+                        // 'age',
 
                         ['class' => ActionColumn::className(),],
                     ],
                 ]); ?>
-<?php Pjax::end(); ?>            </div>
+            </div>
         </div>
     </div>
 </div>

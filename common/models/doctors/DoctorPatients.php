@@ -36,7 +36,7 @@ class DoctorPatients extends My
     public function rules()
     {
         return [
-            [['hospital_id', 'doctor_id', 'is_transfer', 'id_number', 'create_at', 'update_at', 'age'], 'integer'],
+            [['hospital_id', 'doctor_id', 'is_transfer', 'id_number', 'created_at', 'updated_at', 'age'], 'integer'],
             [['doctor_id'], 'required'],
             [['desc'], 'string'],
             [['name', 'tel', 'sex'], 'string', 'max' => 255],
@@ -58,8 +58,8 @@ class DoctorPatients extends My
             'sex' => '性别',
             'id_number' => '身份证',
             'desc' => '描述',
-            'create_at' => '创建时间',
-            'update_at' => '更新时间',
+            'created_at' => '创建时间',
+            'updated_at' => '更新时间',
             'age' => '年龄',
         ];
     }

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model frontend\models\DoctorInfos */
+/* @var $model common\models\doctors\DoctorInfos */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Doctor Infos', 'url' => ['index']];
@@ -26,8 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'hospital_location',
             'hospital_name',
             'certificate:ntext',
-            'create_at',
-            'update_at',
+            'created_at',
+            'updated_at',
         ],
     ]) ?>
 
