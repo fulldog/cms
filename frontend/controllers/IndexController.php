@@ -28,7 +28,11 @@ class IndexController extends BaseController
 
     function actionIndex()
     {
-        return DoctorInfos::findAll();
+        return [
+            'code'=>1,
+            'msg'=>'',
+            'data'=>DoctorInfos::findAll()
+        ];
     }
 
     function behaviors()
