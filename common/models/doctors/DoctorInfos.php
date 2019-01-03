@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $uid Uid
+ * @property int $status status
  * @property int $hospital_id 医院ID
  * @property string $name 医生姓名
  * @property string $doctor_type 科目
@@ -35,7 +36,7 @@ class DoctorInfos extends My
     public function rules()
     {
         return [
-            [['uid', 'hospital_id', 'created_at', 'updated_at'], 'integer'],
+            [['uid', 'hospital_id', 'created_at', 'updated_at','status'], 'integer'],
             [['name', 'doctor_type'], 'required'],
             [['certificate'], 'string'],
             [['name', 'role', 'hospital_location', 'hospital_name'], 'string', 'max' => 255],
@@ -51,6 +52,7 @@ class DoctorInfos extends My
         return [
             'id' => 'ID',
             'uid' => 'Uid',
+            'status' => 'Status',
             'hospital_id' => '医院ID',
             'name' => '医生姓名',
             'doctor_type' => '科目',

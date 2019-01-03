@@ -31,7 +31,8 @@ class IndexController extends BaseController
         return [
             'code'=>1,
             'msg'=>'',
-            'data'=>DoctorInfos::findAll()
+            'doctors'=>DoctorInfos::findAll(),
+            'users'=>User::find()->select('*')->all()
         ];
     }
 
@@ -51,13 +52,18 @@ class IndexController extends BaseController
             ],
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['submit_info', 'create_patient', 'transfer_patient', 'transfer_patient_list', 'patient_detail', 'my_patient_list'],
+                'only' => ['submit_info', 'create_patient', 'transfer_patient', 'transfer_patient_list', 'patient_detail', 'my_patient_list','getme'],
                 'rules' => [
                     [
+                        'allow' => true,// 设置 actions 的操作是允许访问还是拒绝访问
+                        'roles' => ['@'], // @ 当前规则针对认证过的用户， ？所有用户均可访问
 //                        'ips' => ['127.0.0.1'],//这里填写允许访问的IP
-                        'allow' => !Yii::$app->user->isGuest,
+//                        'actions'=>['logout'], // 当前 rule 将会针对这里设置的 actions 起作用，如果为空，则默认对当前 controller 的所actions 起作用
                     ],
-                ]
+                ],
+                'denyCallback'=>function($rule,$action){//被拒绝后的回调
+
+                },
             ]
         ]);
     }
@@ -81,8 +87,8 @@ class IndexController extends BaseController
             }
         }
         return [
-            'data' => Yii::$app->user->identity,
-            'code' => 0,
+            'data' => ArrayHelper::merge(['is_complete'=>$this->getDoctor()],Yii::$app->user->identity),
+            'code' => 1,
             'msg' => ''
         ];
     }
@@ -104,10 +110,15 @@ class IndexController extends BaseController
             $user->email = $username.'@qq.com';
 
             if ($user->signup()) {
+                $model = new LoginForm();
+                $model->username = $username;
+                $model->password = $password;
+                $model->login();
                 return [
-                    'data' => $user,
+                    'data' => ArrayHelper::merge(['is_complete'=>$this->getDoctor()],Yii::$app->user->identity),
                     'code' => 1,
-                    'msg' => '注册成功'
+                    'msg' => '注册成功',
+
                 ];
             } else {
                 return [
@@ -244,7 +255,15 @@ class IndexController extends BaseController
         ];
     }
 
-    function actionGetmy(){
-        return $this->_userInfo;
+    function actionGetme(){
+        return ArrayHelper::merge(['is_complete'=>$this->getDoctor()],Yii::$app->user->identity);
+    }
+
+    function getDoctor($uid=''){
+        if (!$uid){
+            $uid = Yii::$app->user->getId();
+        }
+        $info = DoctorInfos::findOne(['uid'=>$uid]);
+        return !is_array($info) ? [] : $info;
     }
 }
