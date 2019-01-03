@@ -244,4 +244,7 @@ class IndexController extends BaseController
         ];
     }
 
+    function actionGetmy(){
+        return $this->_userInfo;
+    }
 }
