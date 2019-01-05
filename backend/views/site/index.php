@@ -55,8 +55,8 @@ $identity = Yii::$app->getUser()->getIdentity();
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a class="J_menuItem" href="<?= Url::to(['admin-user/update-self']) ?>"><?= Yii::t('app', 'Profile') ?></a></li>
-                            <li><a class="J_menuItem" href="<?= Url::to(['article/index']) ?>"><?= Yii::t('app', 'Articles') ?></a></li>
-                            <li><a target="_blank" href="<?= Yii::$app->params['site']['url'] ?>"><?= Yii::t('app', 'Frontend') ?></a></li>
+<!--                            <li><a class="J_menuItem" href="--><?//= Url::to(['article/index']) ?><!--">--><?//= Yii::t('app', 'Articles') ?><!--</a></li>-->
+<!--                            <li><a target="_blank" href="--><?//= Yii::$app->params['site']['url'] ?><!--">--><?//= Yii::t('app', 'Frontend') ?><!--</a></li>-->
                             <li class="divider"></li>
                             <li><a data-method="post" href="<?= Url::toRoute('site/logout') ?>"><?= Yii::t('app', 'Logout') ?></a></li>
                         </ul>
@@ -102,26 +102,26 @@ $identity = Yii::$app->getUser()->getIdentity();
                     <li class="hidden-xs">
                         <a href="javascript:void(0)" onclick="reloadIframe()"><i class="fa fa-refresh"></i> <?= Yii::t('app', 'Refresh') ?></a>
                     </li>
-                    <li class="hidden-xs">
-                        <a href="http://cms.feehi.com/help" class="J_menuItem" data-index="0"><i class="fa fa-cart-arrow-down"></i> <?= Yii::t('app', 'Support') ?></a>
-                    </li>
-                    <li class="dropdown hidden-xs">
-                        <a class="right-sidebar-toggle" aria-expanded="false"><i class="fa fa-tasks"></i> <?= Yii::t('app', 'Theme') ?></a>
-                    </li>
-                    <li class="hidden-xs">
-                        <select onchange="location.href=this.options[this.selectedIndex].value;">
-                            <option
-                                <?php if (Yii::$app->language == 'zh-CN') {
-                                echo 'selected';
-                                } ?> value="<?= Url::to(['site/language', 'lang' => 'zh-CN']) ?>">简体中文
-                            </option>
-                            <option
-                                <?php if (Yii::$app->language == 'en-US') {
-                                    echo "selected";
-                                } ?> value="<?= Url::to(['site/language', 'lang' => 'en-US']) ?>">English
-                            </option>
-                        </select>
-                    </li>
+<!--                    <li class="hidden-xs">-->
+<!--                        <a href="http://cms.feehi.com/help" class="J_menuItem" data-index="0"><i class="fa fa-cart-arrow-down"></i> --><?//= Yii::t('app', 'Support') ?><!--</a>-->
+<!--                    </li>-->
+<!--                    <li class="dropdown hidden-xs">-->
+<!--                        <a class="right-sidebar-toggle" aria-expanded="false"><i class="fa fa-tasks"></i> --><?//= Yii::t('app', 'Theme') ?><!--</a>-->
+<!--                    </li>-->
+<!--                    <li class="hidden-xs">-->
+<!--                        <select onchange="location.href=this.options[this.selectedIndex].value;">-->
+<!--                            <option-->
+<!--                                --><?php //if (Yii::$app->language == 'zh-CN') {
+//                                echo 'selected';
+//                                } ?><!-- value="--><?//= Url::to(['site/language', 'lang' => 'zh-CN']) ?><!--">简体中文-->
+<!--                            </option>-->
+<!--                            <option-->
+<!--                                --><?php //if (Yii::$app->language == 'en-US') {
+//                                    echo "selected";
+//                                } ?><!-- value="--><?//= Url::to(['site/language', 'lang' => 'en-US']) ?><!--">English-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </li>-->
                 </ul>
             </nav>
         </div>
@@ -149,7 +149,7 @@ $identity = Yii::$app->getUser()->getIdentity();
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<?= Url::to(['site/main']) ?>" frameborder="0" data-id="<?= Url::to(['site/main']) ?>" seamless></iframe>
         </div>
         <div class="footer">
-            <div class="pull-right">&copy; 2015-<?=date('Y')?> <a href="http://blog.feehi.com/" target="_blank">feehi</a></div>
+<!--            <div class="pull-right">&copy; 2015---><?//=date('Y')?><!-- <a href="http://blog.feehi.com/" target="_blank">feehi</a></div>-->
         </div>
     </div>
     <!--右侧部分结束-->

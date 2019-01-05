@@ -19,8 +19,13 @@ $this->registerCss("
      ul#notify .list-group-item{line-height:15px}
 ")
 ?>
+<style>
+  .hidden{
+    display: none;
+  }
+</style>
 <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-3 hidden">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <span class="label label-success pull-right"><?= Yii::t('app', 'Month') ?></span>
@@ -33,7 +38,7 @@ $this->registerCss("
             </div>
         </div>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-3 hidden">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <span class="label label-info pull-right"><?= Yii::t('app', 'Today') ?></span>
@@ -59,7 +64,7 @@ $this->registerCss("
             </div>
         </div>
     </div>
-    <div class="col-sm-3">
+    <div class="col-sm-3 hidden">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <span class="label label-success pull-right"><?= Yii::t('app', 'Month') ?></span>
@@ -75,7 +80,7 @@ $this->registerCss("
 </div>
 <div class="row">
     <div class="col-sm-6">
-        <div>
+        <div style="display: none">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5><?= Yii::t('app', 'Notify') ?></h5>
@@ -118,9 +123,7 @@ $this->registerCss("
                 </div>
                 <div class="ibox-content no-padding">
                     <ul class="list-group">
-                        <li class="list-group-item">
-                            <span class="badge badge-primary">&nbsp;&nbsp;</span><strong>Feehi CMS</strong>: <?= Yii::$app->getVersion() ?>
-                        </li>
+
                         <li class="list-group-item ">
                             <span class="badge badge-info">&nbsp;&nbsp;</span> <strong>Web Server</strong>: <?= $info['OPERATING_ENVIRONMENT'] ?>
                         </li>
@@ -209,7 +212,8 @@ $this->registerCss("
         </div>
     </div>
 
-    <div class="col-sm-6">
+
+    <div class="col-sm-6 hidden">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5><?= Yii::t('app', 'Latest Comments') ?></h5>
