@@ -166,7 +166,7 @@ class IndexController extends BaseController
         $_post = Yii::$app->request->post();
         $_post['doctor_id'] = $this->_getUid();
         $_post['hospital_id'] = DoctorInfos::getHospitalIdByUid($_post['doctor_id']);
-        if ($res = $this->_setValForObj(new DoctorPatients(), $_post, true)) {
+        if ($_post['hospital_id'] && ($res = $this->_setValForObj(new DoctorPatients(), $_post, true))) {
             return [
                 'data' => $res->toArray(),
                 'code' => 1,
@@ -175,7 +175,7 @@ class IndexController extends BaseController
         }
         return [
             'code' => 0,
-            'msg' => 'error'
+            'msg' => '参数错误'
         ];
     }
 
@@ -211,7 +211,7 @@ class IndexController extends BaseController
 
     function actionMy_patient_list(){
         return [
-            'data' => DoctorPatients::getPatientsByDoctorId($this->_getUid())->toArray(),
+            'data' => DoctorPatients::getPatientsByDoctorId($this->_getUid()),
             'code' => 1,
             'msg' => ''
         ];
@@ -223,7 +223,7 @@ class IndexController extends BaseController
     function actionTransfer_patient_list()
     {
         return [
-            'data' => DoctorPatients::getPatientsByDoctorId($this->_getUid(),true)->toArray(),
+            'data' => DoctorPatients::getPatientsByDoctorId($this->_getUid(),true),
             'code' => 1,
             'msg' => ''
         ];
@@ -237,7 +237,7 @@ class IndexController extends BaseController
     {
         $Patient_id = Yii::$app->request->get('patient_id');
         return [
-            'data' => DoctorPatients::findOne(['id' => $Patient_id])->toArray(),
+            'data' => DoctorPatients::findOne(['id' => $Patient_id]),
             'code' => 1,
             'msg' => ''
         ];

@@ -76,7 +76,11 @@ class DoctorInfos extends My
 
     static function getHospitalIdByUid($uid)
     {
-        return self::findOne(['id' => $uid])->toArray()['hospital_id'];
+        $doctor =  self::findOne(['id' => $uid]);
+        if ($doctor){
+            return $doctor['hospital_id'];
+        }
+        return null;
     }
 
     static function findAll($condition = null)
