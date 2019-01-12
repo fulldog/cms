@@ -67,8 +67,9 @@ class DoctorHospitalsSearch extends DoctorHospitals
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'recommend' => $this->recommend,
+//            'created_at' => $this->created_at,
+//            'updated_at' => $this->updated_at,
         ]);
 
         if ($params['DoctorHospitalsSearch']['created_at']){

@@ -30,7 +30,13 @@ ADD COLUMN `hospital_id`  int(10) NOT NULL DEFAULT 0 AFTER `updated_at`;',
             'ALTER TABLE `admin_user`
 MODIFY COLUMN `email`  varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT \'管理员邮箱\' AFTER `password_reset_token`;',
             'ALTER TABLE `doctor_infos`
-ADD COLUMN `ills`  text NULL COMMENT \'擅长疾病\' AFTER `updated_at`;'
+ADD COLUMN `ills`  text NULL COMMENT \'擅长疾病\' AFTER `updated_at`;',
+            'ALTER TABLE `doctor_infos`
+ADD COLUMN `recommend`  int(1) NULL DEFAULT 0 COMMENT \'推荐\' AFTER `ills`;',
+            'ALTER TABLE `doctor_hospitals`
+ADD COLUMN `recommend`  int(1) NULL DEFAULT 0 COMMENT \'推荐\';',
+            'ALTER TABLE `doctor_hospitals`
+ADD COLUMN `status`  int(1) NULL AFTER `recommend`;'
 
         ];
 

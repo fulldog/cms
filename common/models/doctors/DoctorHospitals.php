@@ -18,6 +18,7 @@ use Yii;
  * @property int $created_at 创建时间
  * @property int $updated_at 更新时间
  * @property string $imgs 图片
+ * @property int $recommend
  */
 class DoctorHospitals extends My
 {
@@ -58,6 +59,7 @@ class DoctorHospitals extends My
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
             'imgs' => '图片',
+            'recommend'=> '是否推荐',
         ];
     }
 

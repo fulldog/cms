@@ -19,11 +19,12 @@ use Yii;
  * @property string $certificate 证书
  * @property int $create_at
  * @property int $update_at
- *  @property int $address
- *  @property int $area
- *  @property int $city
- *  @property int $province
- *  @property int $ills
+ * @property int $address
+ * @property int $area
+ * @property int $city
+ * @property int $province
+ * @property int $ills
+ * @property int $recommend
  */
 class DoctorInfos extends My
 {
@@ -42,7 +43,7 @@ class DoctorInfos extends My
     {
         return [
             [['uid', 'hospital_id', 'created_at', 'updated_at','status'], 'integer'],
-            [['name', 'doctor_type'], 'required'],
+            [['name', 'doctor_type','hospital_id'], 'required'],
             [['certificate'], 'string'],
             [['name', 'role', 'hospital_location', 'hospital_name'], 'string', 'max' => 255],
             [['doctor_type'], 'string', 'max' => 10],
@@ -57,7 +58,7 @@ class DoctorInfos extends My
         return [
             'id' => 'ID',
             'uid' => 'Uid',
-            'status' => '状态',
+            'status' => '审核状态',//0 待审核  1通过  2拒绝
             'hospital_id' => '医院ID',
             'name' => '医生姓名',
             'doctor_type' => '科目',
@@ -71,7 +72,8 @@ class DoctorInfos extends My
             'certificate' => '证书',
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
-            'ills'=>'擅长疾病'
+            'ills'=> '擅长疾病',
+            'recommend'=> '是否推荐',
         ];
     }
 
@@ -105,4 +107,5 @@ class DoctorInfos extends My
             }
         }
     }
+
 }

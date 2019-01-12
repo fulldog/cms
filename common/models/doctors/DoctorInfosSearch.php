@@ -62,14 +62,24 @@ class DoctorInfosSearch extends DoctorInfos
             'id' => $this->id,
             'uid' => $this->uid,
             'hospital_id' => $this->hospital_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'recommend' => $this->recommend,
+//            'created_at' => $this->created_at,
+//            'updated_at' => $this->updated_at,
         ]);
+
+        if ($params['DoctorInfosSearch']['created_at']){
+            $created_at = explode('~',$params['DoctorInfosSearch']['created_at']);
+            $query->andFilterWhere(['between','created_at',strtotime($created_at[0]),strtotime($created_at[1])]);
+        }
+        if ($params['DoctorInfosSearch']['updated_at']){
+            $updated_at = explode('~',$params['DoctorInfosSearch']['updated_at']);
+            $query->andFilterWhere(['between','created_at',strtotime($updated_at[0]),strtotime($updated_at[1])]);
+        }
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'doctor_type', $this->doctor_type])
             ->andFilterWhere(['like', 'role', $this->role])
-            ->andFilterWhere(['like', 'hospital_location', $this->hospital_location])
+//            ->andFilterWhere(['like', 'hospital_location', $this->hospital_location])
             ->andFilterWhere(['like', 'hospital_name', $this->hospital_name]);
 //            ->andFilterWhere(['like', 'certificate', $this->certificate]);
 

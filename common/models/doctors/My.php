@@ -15,6 +15,10 @@ use yii\db\Exception;
 
 class My extends ActiveRecord
 {
+    public  $_status = [
+        '待审核', '通过', '拒绝' ,
+    ];
+
     public function behaviors()
     {
         return [
@@ -32,5 +36,15 @@ class My extends ActiveRecord
         }catch (Exception $e){
             exit($e->getMessage());
         }
+    }
+
+    function getStatus($status=false,$returnArr=false){
+        if ($status){
+            if ($returnArr){
+                return [$status=>$this->_status[$status]];
+            }
+            return $this->_status[$status];
+        }
+        return $this->_status[$this->status];
     }
 }
