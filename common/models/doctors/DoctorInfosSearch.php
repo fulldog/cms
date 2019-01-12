@@ -67,11 +67,11 @@ class DoctorInfosSearch extends DoctorInfos
 //            'updated_at' => $this->updated_at,
         ]);
 
-        if ($params['DoctorInfosSearch']['created_at']){
+        if (isset($params['DoctorInfosSearch']['created_at']) && $params['DoctorInfosSearch']['created_at']){
             $created_at = explode('~',$params['DoctorInfosSearch']['created_at']);
             $query->andFilterWhere(['between','created_at',strtotime($created_at[0]),strtotime($created_at[1])]);
         }
-        if ($params['DoctorInfosSearch']['updated_at']){
+        if (isset($params['DoctorInfosSearch']['updated_at']) && $params['DoctorInfosSearch']['updated_at']){
             $updated_at = explode('~',$params['DoctorInfosSearch']['updated_at']);
             $query->andFilterWhere(['between','created_at',strtotime($updated_at[0]),strtotime($updated_at[1])]);
         }

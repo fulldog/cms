@@ -10,6 +10,7 @@ namespace common\helpers;
 
 
 use Overtrue\EasySms\EasySms;
+use Qcloud\Sms\SmsSingleSender;
 
 class SendSms
 {
@@ -65,5 +66,37 @@ class SendSms
         }
 
         return $result;
+    }
+
+    /**
+     *   'appid' => '1400144048',
+        'appkey' => '2be1a87e8c089a38c0c13421cab78d09',
+        'templateId' => '202184',
+        //短信签名
+        'smsSign' => '洗e族',
+     */
+    static function TenSend($phone, $code){
+        $appid = 1400144048;
+        $appkey = "2be1a87e8c089a38c0c13421cab78d09";
+        $templateId = 202184;
+        $smsSign = "洗e族";
+        try {
+            $ssender = new SmsSingleSender($appid, $appkey);
+            $params = [
+                $code,
+                10,//注册 模板场景$scene
+                rand(10, 99),
+                5//有效期 分钟
+            ];
+            $result = $ssender->sendWithParam("86", $phone, $templateId, $params, $smsSign);  // 签名参数未提供或者为空时，会使用默认签名发送短信
+            $info = json_decode($result,true);
+            if (!empty($info) && $info['result']==0 && $info['errmsg']=='OK'){
+                return true;
+            }
+            throw new \Exception('出错啦');
+        } catch(\Exception $e) {
+//            echo var_dump($e);
+            return false;
+        }
     }
 }

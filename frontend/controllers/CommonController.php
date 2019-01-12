@@ -38,9 +38,6 @@ class CommonController extends BaseController
     }
 
     function actionSend_sms($phone){
-
-       return SendSms::Send(17621962204,1111);
-
         $time = time();
         if ($info = SmsLog::find()->where(['phone'=>$phone])->andFilterWhere('>=','created_at',strtotime(date('Y-m-d',$time)))->orderBy(['id'=>SORT_DESC])->asArray()->all()){
             if (count($info)>=5 || ($time-$info[0]['created_at']<=5*60*1000)){
@@ -53,9 +50,7 @@ class CommonController extends BaseController
         $model = new SmsLog();
         $model->code = random_int(1000,999999);
         $model->phone = $phone;
-        if ($model->save()){
-            //todo 短信接口
-            $res = SendSms::Send($model->phone,$model->code);
+        if (SendSms::TenSend($model->phone,$model->code) && $model->save()){
             return [
                 'code'=>1,
                 'msg'=>'短信发送成功',

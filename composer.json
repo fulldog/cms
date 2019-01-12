@@ -19,7 +19,8 @@
         "yiisoft/yii2-swiftmailer": "*",
         "feehi/yii2-cdn" : "*",
         "yiisoft/yii2-imagine": "^2.1",
-        "overtrue/easy-sms": "^1.0"
+        "overtrue/easy-sms": "^1.0",
+        "qcloudsms/qcloudsms_php": "^0.1.4"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
