@@ -8,6 +8,9 @@
 
 namespace frontend\controllers;
 
+use backend\models\form\BannerForm;
+use backend\models\form\BannerTypeForm;
+use common\models\Options;
 use Yii;
 use frontend\models\form\SignupForm;
 use yii\filters\VerbFilter;
@@ -265,5 +268,28 @@ class IndexController extends BaseController
         }
         $info = DoctorInfos::findOne(['uid'=>$uid]);
         return !is_array($info) ? [] : $info;
+    }
+
+    /**
+     * 首页信息
+        描述：首页含有banner、推荐医院、推荐医生。
+        这三个在后台可以分别设置。是否可以放在一个接口里，还是分三个接口
+        index_info
+        param: {}
+        result: {banners: [‘xxx.jpg’], recommend_hospitals: [],recommend_doctors: [] }
+        recommend_hospitals 信息按照新增医院的信息返回
+     */
+    function actionIndex_info(){
+        //banners
+        $banner = BannerTypeForm::find()->where(['type' => Options::TYPE_BANNER,'name'=>'index'])->asArray()->one();
+        $imgs = [];
+        if (!empty($banner)){
+            $imgs = \Qiniu\json_decode($banner['value']);
+        }
+        return [
+            'banners'=>$imgs,
+            'recommend_hospitals'=>'',
+            'recommend_doctors'=>''
+        ];
     }
 }

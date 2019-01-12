@@ -28,10 +28,18 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Doctor Hospitals');
                         [
                             'attribute' => 'id',
                         ],
-                        'name',
-                        'city',
-                        'address',
-                        'levels',
+                        'hospital_name',
+//                        'province',
+//                        'city',
+//                        'area',
+                        [
+                            'attribute' => 'address',
+                            'value'=>function($model){
+                                return $model->province.'-'.$model->city.'-'.$model->area.'-'.$model->address;
+                            }
+                        ],
+//                        'address',
+                        'grade',
                         [
                             'class' => DateColumn::className(),
                             'attribute' => 'created_at',

@@ -8,12 +8,15 @@ use Yii;
  * This is the model class for table "{{%doctor_hospitals}}".
  *
  * @property int $id
- * @property string $name 医院名称
+ * @property string $hospital_name 医院名称
  * @property string $city 城市
+ * @property string $province
+ * @property string $area
  * @property string $address 地址
  * @property string $levels 等级
- * @property int $create_at 创建时间
- * @property int $update_at 更新时间
+ * @property string $grade 等级
+ * @property int $created_at 创建时间
+ * @property int $updated_at 更新时间
  * @property string $imgs 图片
  */
 class DoctorHospitals extends My
@@ -34,7 +37,7 @@ class DoctorHospitals extends My
         return [
             [['created_at', 'updated_at'], 'integer'],
             [['imgs'], 'string'],
-            [['name', 'city', 'address', 'levels'], 'string', 'max' => 255],
+            [['hospital_name', 'city', 'address', 'levels'], 'string', 'max' => 255],
         ];
     }
 
@@ -45,8 +48,11 @@ class DoctorHospitals extends My
     {
         return [
             'id' => 'ID',
-            'name' => '医院名称',
+            'hospital_name' => '医院名称',
             'city' => '城市',
+            'area' => '区域',
+            'province' => '省份',
+            'grade' => '等级',
             'address' => '地址',
             'levels' => '等级',
             'created_at' => '创建时间',

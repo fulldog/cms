@@ -57,7 +57,7 @@ class BaseController extends Controller
         }
     }
 
-    function _save(object $object){
+    function _save($object){
         if ($object instanceof ActiveRecord){
             return $object->save();
         }

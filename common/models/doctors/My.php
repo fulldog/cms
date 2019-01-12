@@ -11,6 +11,7 @@ namespace common\models\doctors;
 
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Exception;
 
 class My extends ActiveRecord
 {
@@ -19,5 +20,17 @@ class My extends ActiveRecord
         return [
             TimestampBehavior::className(),
         ];
+    }
+
+    function _load($data)
+    {
+        try{
+            foreach ($data as $k=>$v){
+                $this->$k = $v;
+            }
+            return true;
+        }catch (Exception $e){
+            exit($e->getMessage());
+        }
     }
 }

@@ -25,8 +25,8 @@ class DoctorHospitalsSearch extends DoctorHospitals
     public function rules()
     {
         return [
-            [['id', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'city', 'address', 'levels', 'imgs'], 'safe'],
+//            [['id', ], 'integer'],
+            [['hospital_name', 'city', 'address', 'levels','grade'], 'safe'],
         ];
     }
 
@@ -71,10 +71,19 @@ class DoctorHospitalsSearch extends DoctorHospitals
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
+        if ($params['DoctorHospitalsSearch']['created_at']){
+            $created_at = explode('~',$params['DoctorHospitalsSearch']['created_at']);
+            $query->andFilterWhere(['between','created_at',strtotime($created_at[0]),strtotime($created_at[1])]);
+        }
+        if ($params['DoctorHospitalsSearch']['updated_at']){
+            $updated_at = explode('~',$params['DoctorHospitalsSearch']['updated_at']);
+            $query->andFilterWhere(['between','created_at',strtotime($updated_at[0]),strtotime($updated_at[1])]);
+        }
+        $query->andFilterWhere(['like', 'hospital_name', $this->hospital_name])
             ->andFilterWhere(['like', 'city', $this->city])
             ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'levels', $this->levels]);
+//            ->andFilterWhere(['like', 'levels', $this->levels])
+            ->andFilterWhere(['like', 'grade', $this->grade]);
 //            ->andFilterWhere(['like', 'imgs', $this->imgs]);
 
         return $dataProvider;

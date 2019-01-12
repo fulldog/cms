@@ -8,6 +8,7 @@
 
 namespace backend\models;
 
+use common\models\doctors\DoctorHospitals;
 use Yii;
 use backend\components\CustomLog;
 use common\helpers\Util;
@@ -27,6 +28,7 @@ use yii\web\ForbiddenHttpException;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property string $hospital_id
  */
 class User extends \common\models\User
 {
@@ -85,6 +87,7 @@ class User extends \common\models\User
     {
         return [
             'username' => Yii::t('app', 'Username'),
+            'hospital_id' => '所属医院ID',
             'email' => Yii::t('app', 'Email'),
             'old_password' => Yii::t('app', 'Old Password'),
             'password' => Yii::t('app', 'Password'),
@@ -238,5 +241,8 @@ class User extends \common\models\User
         return rtrim($str, $glue);
     }
 
+    function getHospital(){
+        return $this->hasOne(DoctorHospitals::className(),['id'=>'hospital_id']);
+    }
 }
 

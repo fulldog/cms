@@ -19,6 +19,11 @@ use Yii;
  * @property string $certificate 证书
  * @property int $create_at
  * @property int $update_at
+ *  @property int $address
+ *  @property int $area
+ *  @property int $city
+ *  @property int $province
+ *  @property int $ills
  */
 class DoctorInfos extends My
 {
@@ -52,16 +57,21 @@ class DoctorInfos extends My
         return [
             'id' => 'ID',
             'uid' => 'Uid',
-            'status' => 'Status',
+            'status' => '状态',
             'hospital_id' => '医院ID',
             'name' => '医生姓名',
             'doctor_type' => '科目',
             'role' => '等级',
             'hospital_location' => '医院地址',
             'hospital_name' => '医院名称',
+            'address' => '详细地址',
+            'city' => '城市',
+            'province' => '省份',
+            'area' => '区域',
             'certificate' => '证书',
-            'created_at' => 'Create At',
-            'updated_at' => 'Update At',
+            'created_at' => '创建时间',
+            'updated_at' => '更新时间',
+            'ills'=>'擅长疾病'
         ];
     }
 
