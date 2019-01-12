@@ -29,4 +29,7 @@ class MyController extends BaseController
         ]);
     }
 
+    function actionWallet(){
+
+    }
 }
