@@ -18,23 +18,7 @@ class CommonController extends BaseController
 
     function behaviors()
     {
-        return ArrayHelper::merge(parent::behaviors(), [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-//                    'send_sms'=>[self::POST]
-                ],
-            ],
-            'access' => [
-                'class' => \yii\filters\AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,// 设置 actions 的操作是允许访问还是拒绝访问
-                        'roles' => ['?'], // @ 当前规则针对认证过的用户， ？所有用户均可访问
-                    ],
-                ],
-            ]
-        ]);
+        return [];
     }
 
     function actionSend_sms($phone){
@@ -50,7 +34,7 @@ class CommonController extends BaseController
         $model = new SmsLog();
         $model->code = random_int(1000,999999);
         $model->phone = $phone;
-        if (SendSms::TenSend($model->phone,$model->code) && $model->save()){
+        if ($model->save() && SendSms::TenSend($model->phone,$model->code)){
             return [
                 'code'=>1,
                 'msg'=>'短信发送成功',
@@ -59,7 +43,7 @@ class CommonController extends BaseController
         }
         return [
             'code'=>0,
-            'msg'=>'响应超时',
+            'msg'=>$model->getErrors(),
         ];
     }
 }

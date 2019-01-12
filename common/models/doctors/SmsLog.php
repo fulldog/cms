@@ -33,7 +33,7 @@ class SmsLog extends My
             [['phone'], 'required'],
             [['created_at', 'updated_at'], 'integer'],
             [['phone'], 'string', 'max' => 20],
-            [['imgcode', 'code'], 'string', 'max' => 10],
+            [['imgcode', 'code'], 'integer', ],//'max' => 10
         ];
     }
 
