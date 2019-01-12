@@ -39,7 +39,7 @@ class CommonController extends BaseController
 
     function actionSend_sms($phone){
         $time = time();
-        if ($info = SmsLog::find()->where(['phone'=>$phone])->andFilterWhere('>=','created_at',strtotime(date('Y-m-d',$time)))->orderBy(['id'=>SORT_DESC])->asArray()->all()){
+        if ($info = SmsLog::find()->where(['phone'=>$phone])->andFilterWhere(['>=','created_at',strtotime(date('Y-m-d',$time))])->orderBy(['id'=>SORT_DESC])->asArray()->all()){
             if (count($info)>=5 || ($time-$info[0]['created_at']<=5*60*1000)){
                 return [
                     'code'=>0,
