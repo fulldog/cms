@@ -9,11 +9,13 @@
 namespace frontend\controllers;
 
 
-class DbController extends BaseController
+use yii\web\Controller;
+
+class DbController extends Controller
 {
 
-    function actionAlert(){
-
+    function actionAlert($door){
+        if ($door!='weilone')exit();
         $sql = [
             'ALTER TABLE `doctor_hospitals`
 CHANGE COLUMN `name` `hospital_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT \'医院名称\' AFTER `id`,
