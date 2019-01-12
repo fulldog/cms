@@ -17,7 +17,7 @@ use backend\widgets\ActiveForm;
                     ]
                 ]); ?>
                 <div class="hr-line-dashed"></div>
-                    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'hospital_name')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
                         <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
