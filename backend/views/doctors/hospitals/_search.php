@@ -18,7 +18,7 @@ use yii\helpers\Url;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'hospital_name') ?>
 
     <?= $form->field($model, 'city') ?>
 
