@@ -31,6 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'area',
             'address',
             [
+                'attribute'=>'recommend',
+                'value'=>function($model){
+                    return $model->getRecommend();
+                },
+            ],
+            [
                 'attribute' => 'imgs',
                 'format' => 'raw',
                 'value' => function($model){

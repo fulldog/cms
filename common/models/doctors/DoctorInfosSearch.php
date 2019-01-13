@@ -59,8 +59,8 @@ class DoctorInfosSearch extends DoctorInfos
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'uid' => $this->uid,
+//            'id' => $this->id,
+//            'uid' => $this->uid,
             'hospital_id' => $this->hospital_id,
             'recommend' => $this->recommend,
 //            'created_at' => $this->created_at,

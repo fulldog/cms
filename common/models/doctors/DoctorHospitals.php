@@ -24,6 +24,8 @@ use Yii;
 class DoctorHospitals extends My
 {
 
+    protected $recommend_text;
+
     /**
      * {@inheritdoc}
      */

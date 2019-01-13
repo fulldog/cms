@@ -20,6 +20,7 @@ use backend\widgets\ActiveForm;
                         <?= $form->field($model, 'hospital_name')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'status')->dropDownList(\common\models\doctors\My::_getStatusAll()) ?>
+                        <?= $form->field($model, 'recommend')->dropDownList(\common\models\doctors\My::_getStatusAll('recommend')) ?>
                         <?= $form->field($model, 'province')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'area')->textInput(['maxlength' => true]) ?>

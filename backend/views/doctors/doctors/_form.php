@@ -17,35 +17,18 @@ use backend\widgets\ActiveForm;
                     ]
                 ]); ?>
                 <div class="hr-line-dashed"></div>
-                    <?= $form->field($model, 'uid')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
+                        <?= $form->field($model, 'uid')->dropDownList()->label('关联用户') ?>
 
                         <?= $form->field($model, 'hospital_id')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
 
                         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
 
                         <?= $form->field($model, 'doctor_type')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
 
                         <?= $form->field($model, 'role')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'hospital_location')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'hospital_name')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'certificate')->textarea(['rows' => 6]) ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'created_at')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'updated_at')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
+                        <?= $form->field($model, 'certificate')->widget(\backend\widgets\webuploader\Webuploader::className()); ?>
 
                         <?= $form->defaultButtons() ?>
                     <?php ActiveForm::end(); ?>

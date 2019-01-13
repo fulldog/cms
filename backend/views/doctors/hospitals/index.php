@@ -49,6 +49,14 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Hospitals');
                         'address',
                         'grade',
                         [
+                            'attribute'=>'recommend',
+                            'value'=>function($model){
+                                return $model->getRecommend();
+                            },
+                            'format'=>'raw',
+                            'filter'=>\common\models\doctors\My::_getStatusAll('recommend')
+                        ],
+                        [
                             'class' => DateColumn::className(),
                             'attribute' => 'created_at',
                         ],
