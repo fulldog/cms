@@ -17,15 +17,20 @@ use backend\widgets\ActiveForm;
                     ]
                 ]); ?>
                 <div class="hr-line-dashed"></div>
-                        <?= $form->field($model, 'uid')->dropDownList()->label('关联用户') ?>
+<!--                        --><?//= $form->field($model, 'uid')->dropDownList()->label('关联用户') ?>
 
-                        <?= $form->field($model, 'hospital_id')->textInput() ?>
+<!--                        --><?//= $form->field($model, 'hospital_id')->textInput() ?>
 
                         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
                         <?= $form->field($model, 'doctor_type')->textInput(['maxlength' => true]) ?>
 
                         <?= $form->field($model, 'role')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'ills')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'province')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'area')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
 
                         <?= $form->field($model, 'certificate')->widget(\backend\widgets\webuploader\Webuploader::className()); ?>

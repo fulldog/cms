@@ -18,7 +18,7 @@ class DoctorPatientsSearch extends DoctorPatients
     public function rules()
     {
         return [
-            [['id', 'hospital_id', 'doctor_id', 'is_transfer', 'created_at', 'updated_at', 'age'], 'integer'],
+            [['id', 'hospital_id', 'doctor_id', 'is_transfer', 'age'], 'integer'],
             [['name', 'phone', 'sex', 'desc','id_number'], 'safe'],
         ];
     }
@@ -64,14 +64,23 @@ class DoctorPatientsSearch extends DoctorPatients
             'doctor_id' => $this->doctor_id,
             'is_transfer' => $this->is_transfer,
             'id_number' => $this->id_number,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+//            'created_at' => $this->created_at,
+//            'updated_at' => $this->updated_at,
             'age' => $this->age,
+            'sex' => $this->sex,
+            'phone' => $this->phone,
         ]);
-
+        if (isset($params['DoctorPatientsSearch']['created_at']) && $params['DoctorPatientsSearch']['created_at']){
+            $created_at = explode('~',$params['DoctorPatientsSearch']['created_at']);
+            $query->andFilterWhere(['between','created_at',strtotime($created_at[0]),strtotime($created_at[1])]);
+        }
+        if (isset($params['DoctorPatientsSearch']['updated_at']) && $params['DoctorPatientsSearch']['updated_at']){
+            $updated_at = explode('~',$params['DoctorPatientsSearch']['updated_at']);
+            $query->andFilterWhere(['between','created_at',strtotime($updated_at[0]),strtotime($updated_at[1])]);
+        }
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'sex', $this->sex])
+//            ->andFilterWhere(['like', 'phone', $this->phone])
+//            ->andFilterWhere(['like', 'sex', $this->sex])
             ->andFilterWhere(['like', 'desc', $this->desc]);
 
         return $dataProvider;

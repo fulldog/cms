@@ -44,7 +44,7 @@ class DoctorInfos extends My
     public function rules()
     {
         return [
-            [['uid', 'hospital_id', 'created_at', 'updated_at','status'], 'integer'],
+            [['uid', 'hospital_id', 'created_at', 'updated_at','status','recommend','status'], 'integer'],
             [['name', 'doctor_type','hospital_id','uid'], 'required'],
             [['certificate'], 'safe'],
             [['name', 'role', 'hospital_location', 'hospital_name'], 'string', 'max' => 255],
@@ -64,7 +64,7 @@ class DoctorInfos extends My
             'hospital_id' => '医院ID',
             'name' => '医生姓名',
             'doctor_type' => '科目',
-            'role' => '等级',
+            'role' => '职称',
             'hospital_location' => '医院地址',
             'hospital_name' => '医院名称',
             'address' => '详细地址',
@@ -128,5 +128,9 @@ class DoctorInfos extends My
 
     function getRelatedUser(){
         return $this->hasOne(User::className(),['id'=>'uid']);
+    }
+
+    function getRelatedHospital(){
+        return $this->hasOne(DoctorHospitals::className(),['id'=>'hospital_id']);
     }
 }

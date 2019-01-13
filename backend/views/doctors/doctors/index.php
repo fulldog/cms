@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Infos');
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-                <?= Bar::widget() ?>
+                <?= Bar::widget(['template' => "{refresh} {delete}"]) ?>
                 <?php //$this->render('_search', ['model' => $searchModel]); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -25,17 +25,50 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Infos');
                     'columns' => [
                         ['class' => CheckboxColumn::className()],
 
-                        'id',
-                        'uid',
-                        'hospital_id',
+//                        'id',
+//                        'uid',
                         'name',
+//                        [
+//                            'label'=>'手机号',
+//                            'value'=>'relatedUser.username',
+//                            'filter'=>false
+//                        ],
+//                        [
+//                            'label'=>'所属医院',
+//                            'value'=>'relatedHospital.hospital_name',
+//                            'filter'=>false
+//                        ],
+                        [
+                            'attribute'=>'status',
+                            'value'=>function($model){
+                                return $model->getStatus();
+                            },
+                            'format'=>'raw',
+                            'filter'=>\common\models\doctors\My::_getStatusAll()
+                        ],
+                        [
+                            'attribute'=>'recommend',
+                            'value'=>function($model){
+                                return $model->getRecommend();
+                            },
+                            'format'=>'raw',
+                            'filter'=>\common\models\doctors\My::_getStatusAll('recommend')
+                        ],
                         'doctor_type',
-                        // 'role',
-                        // 'hospital_location',
-                        // 'hospital_name',
-                        // 'certificate:ntext',
-                        // 'created_at',
-                        // 'updated_at',
+                        'role',
+                        'ills',
+                        'province',
+                        'city',
+                        'area',
+                        'address',
+                        [
+                            'class' => \backend\grid\DateColumn::className(),
+                            'attribute' => 'created_at',
+                        ],
+                        [
+                            'class' => \backend\grid\DateColumn::className(),
+                            'attribute' => 'updated_at',
+                        ],
 
                         ['class' => ActionColumn::className(),],
                     ],

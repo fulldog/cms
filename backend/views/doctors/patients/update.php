@@ -7,7 +7,7 @@ use yii\helpers\Url;
 
 $this->params['breadcrumbs'] = [
     ['label' => yii::t('app_doctor', 'Doctor Patients'), 'url' => Url::to(['index'])],
-    ['label' => yii::t('app_doctor', 'Update') . yii::t('app', 'Doctor Patients')],
+    ['label' => yii::t('app', 'Update') ],
 ];
 ?>
 <?= $this->render('_form', [

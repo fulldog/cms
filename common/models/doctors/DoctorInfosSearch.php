@@ -18,8 +18,8 @@ class DoctorInfosSearch extends DoctorInfos
     public function rules()
     {
         return [
-            [['id', 'uid', 'hospital_id', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'doctor_type', 'role', 'hospital_location', 'hospital_name', 'certificate'], 'safe'],
+            [['id', 'uid', 'hospital_id', 'created_at', 'updated_at','recommend','status'], 'integer'],
+            [['name', 'doctor_type', 'role', 'hospital_location', 'hospital_name', 'certificate','ills'], 'safe'],
         ];
     }
 
@@ -60,8 +60,8 @@ class DoctorInfosSearch extends DoctorInfos
         // grid filtering conditions
         $query->andFilterWhere([
 //            'id' => $this->id,
-//            'uid' => $this->uid,
-            'hospital_id' => $this->hospital_id,
+            'status' => $this->status,
+//            'hospital_id' => $this->hospital_id,
             'recommend' => $this->recommend,
 //            'created_at' => $this->created_at,
 //            'updated_at' => $this->updated_at,
@@ -80,7 +80,7 @@ class DoctorInfosSearch extends DoctorInfos
             ->andFilterWhere(['like', 'doctor_type', $this->doctor_type])
             ->andFilterWhere(['like', 'role', $this->role])
 //            ->andFilterWhere(['like', 'hospital_location', $this->hospital_location])
-            ->andFilterWhere(['like', 'hospital_name', $this->hospital_name]);
+            ->andFilterWhere(['like', 'ills', $this->ills]);
 //            ->andFilterWhere(['like', 'certificate', $this->certificate]);
 
         return $dataProvider;

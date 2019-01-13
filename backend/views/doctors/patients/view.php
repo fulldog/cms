@@ -18,17 +18,39 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'hospital_id',
-            'doctor_id',
-            'is_transfer',
             'name',
             'phone',
             'sex',
+            'age',
             'id_number',
             'desc:ntext',
-            'created_at',
-            'updated_at',
-            'age',
+            [
+                'label'=>'所属医院',
+                'value'=>function($model){
+                    $info = \common\models\doctors\DoctorHospitals::findOne(['id'=>$model->hospital_id]);
+                    if ($info){
+                        return $info->hospital_name;
+                    }
+                },
+            ],
+            [
+                'label'=>'所属医生',
+                'value'=>function($model){
+                    $info = \common\models\doctors\DoctorInfos::findOne(['id'=>$model->doctor_id]);
+                    if ($info){
+                        return $info->name;
+                    }
+                },
+            ],
+            [
+                'attribute'=>'is_transfer',
+                'value'=>function($model){
+                    $map = ['否','是'];
+                    return $map[$model->is_transfer];
+                }
+            ],
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

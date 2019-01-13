@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Patients');
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-                <?= Bar::widget() ?>
+                <?= Bar::widget(['template'=>"{refresh} {delete}"]) ?>
                 <?php //$this->render('_search', ['model' => $searchModel]); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -25,18 +25,32 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Patients');
                     'columns' => [
                         ['class' => CheckboxColumn::className()],
 
-                        'id',
-                        'hospital_id',
-                        'doctor_id',
-                        'is_transfer',
+//                        'id',
+//                        'hospital_id',
+//                        'doctor_id',
                         'name',
-                        // 'phone',
-                        // 'sex',
-                        // 'id_number',
-                        // 'desc:ntext',
-                        // 'created_at',
-                        // 'updated_at',
-                        // 'age',
+                        [
+                            'attribute'=>'is_transfer',
+                            'value'=>function($model){
+                                $map = ['否','是'];
+                                return $map[$model->is_transfer];
+                            },
+                            'filter'=>['否','是']
+                        ],
+                         'age',
+                         'phone',
+//                         'sex',
+//                         'id_number',
+//                         'desc:ntext',
+                        [
+                            'class' => \backend\grid\DateColumn::className(),
+                            'attribute' => 'created_at',
+                        ],
+                        [
+                            'class' => \backend\grid\DateColumn::className(),
+                            'attribute' => 'updated_at',
+                        ],
+
 
                         ['class' => ActionColumn::className(),],
                     ],

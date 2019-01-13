@@ -19,15 +19,58 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'uid',
-            'hospital_id',
+            [
+                'label'=>'手机号',
+                'value'=>function($model){
+                    $info = \common\models\doctors\DoctorUser::findOne(['id'=>$model->uid]);
+                    if ($info){
+                        return $info->username;
+                    }
+                },
+            ],
+            [
+                'label'=>'所属医院',
+                'value'=>function($model){
+                    $info = \common\models\doctors\DoctorHospitals::findOne(['id'=>$model->hospital_id]);
+                    if ($info){
+                        return $info->hospital_name;
+                    }
+                },
+            ],
             'name',
             'doctor_type',
             'role',
-            'hospital_location',
-            'hospital_name',
-            'certificate:ntext',
-            'created_at',
-            'updated_at',
+            [
+                'attribute'=>'status',
+                'value'=>function($model){
+                    return $model->getStatus();
+                },
+            ],
+            [
+                'attribute'=>'recommend',
+                'value'=>function($model){
+                    return $model->getRecommend();
+                },
+            ],
+            'province',
+            'city',
+            'area',
+            'address',
+            [
+                'attribute' => 'certificate',
+                'format' => 'raw',
+                'value' => function($model){
+                    $imgs = '';
+                    if ($model->certificate){
+                        foreach ($model->certificate as $v){
+                            $imgs .="<img style='max-width:200px;max-height:200px' src='" . $v . "' >";
+                        }
+                    }
+                    return $imgs;
+                }
+            ],
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

@@ -27,6 +27,7 @@ $config = [
             'thousandSeparator' => ' ',
             'currencyCode' => 'CHY',
             'nullDisplay' => '-',
+            'datetimeFormat'=>'Y-m-d H:i:s'
         ],
         'mailer' => [//邮箱发件人配置，会被main-local.php以及后台管理页面中的smtp配置覆盖
             'class' => yii\swiftmailer\Mailer::className(),
