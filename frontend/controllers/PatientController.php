@@ -88,14 +88,14 @@ class PatientController extends BaseController
     /**
      *我的病人/转给wode
      */
-    function actionTransfer_list()
+    function actionTransfer_list($page=1)
     {
         $is_ransfer = false;
         if (Yii::$app->request->get('is_ransfer')=='is_ransfer'){
             $is_ransfer = true;
         }
         return [
-            'data' => DoctorPatients::getPatientsByDoctorId($this->_getUid(),$is_ransfer),
+            'data' => DoctorPatients::getPatientsByDoctorId($this->_getUid(),$page,$is_ransfer),
             'code' => 1,
             'msg' => ''
         ];

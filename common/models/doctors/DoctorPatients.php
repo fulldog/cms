@@ -73,11 +73,12 @@ class DoctorPatients extends My
         return new DoctorPatientsQuery(get_called_class());
     }
 
-    static function getPatientsByDoctorId($DoctorId,$is_transfer = false)
+    static function getPatientsByDoctorId($DoctorId,$page,$is_transfer = false)
     {
+        $query = self::find()->limit(20)->offset(20*$page);
         if ($is_transfer){
-            return self::findAll(['doctor_id' => $DoctorId,'is_transfer'=>1]);
+            return $query->where(['doctor_id' => $DoctorId,'is_transfer'=>1]);
         }
-        return self::findAll(['doctor_id' => $DoctorId]);
+        return $query->where(['doctor_id' => $DoctorId]);
     }
 }
