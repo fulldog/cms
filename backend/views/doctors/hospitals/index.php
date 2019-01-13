@@ -25,20 +25,28 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Hospitals');
                     'columns' => [
                         ['class' => CheckboxColumn::className()],
 
-                        [
-                            'attribute' => 'id',
-                        ],
+//                        [
+//                            'attribute' => 'id',
+//                        ],
                         'hospital_name',
-//                        'province',
-//                        'city',
-//                        'area',
+                        'province',
                         [
-                            'attribute' => 'address',
+                            'attribute'=>'status',
                             'value'=>function($model){
-                                return $model->province.'-'.$model->city.'-'.$model->area.'-'.$model->address;
-                            }
+                                return $model->getStatus();
+                            },
+                            'format'=>'raw',
+                            'filter'=>\common\models\doctors\My::_getStatusAll()
                         ],
-//                        'address',
+                        'city',
+                        'area',
+//                        [
+//                            'attribute' => 'address',
+//                            'value'=>function($model){
+//                                return $model->province.'-'.$model->city.'-'.$model->area.'-'.$model->address;
+//                            }
+//                        ],
+                        'address',
                         'grade',
                         [
                             'class' => DateColumn::className(),

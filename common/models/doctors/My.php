@@ -26,25 +26,16 @@ class My extends ActiveRecord
         ];
     }
 
-    function _load($data)
-    {
-        try{
-            foreach ($data as $k=>$v){
-                $this->$k = $v;
-            }
-            return true;
-        }catch (Exception $e){
-            exit($e->getMessage());
-        }
-    }
-
-    function getStatus($status=false,$returnArr=false){
-        if ($status){
-            if ($returnArr){
-                return [$status=>$this->_status[$status]];
-            }
-            return $this->_status[$status];
+    function getStatus($returnArr=false){
+        if ($returnArr){
+            return [$this->status=>$this->_status[$this->status]];
         }
         return $this->_status[$this->status];
+    }
+
+    static function _getStatusAll(){
+       return [
+           '待审核', '通过', '拒绝' ,
+       ];
     }
 }

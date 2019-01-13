@@ -19,6 +19,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'hospital_name',
+            [
+                'attribute'=>'status',
+                'value'=>function($model){
+                    return $model->getStatus();
+                },
+            ],
             'grade',
             'province',
             'city',

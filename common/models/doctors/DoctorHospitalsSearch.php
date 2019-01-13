@@ -25,8 +25,8 @@ class DoctorHospitalsSearch extends DoctorHospitals
     public function rules()
     {
         return [
-//            [['id', ], 'integer'],
-            [['hospital_name', 'city', 'address', 'levels','grade'], 'safe'],
+            [['status', ], 'integer'],
+            [['hospital_name', 'city', 'address','grade','province','area'], 'safe'],
         ];
     }
 
@@ -68,6 +68,7 @@ class DoctorHospitalsSearch extends DoctorHospitals
         $query->andFilterWhere([
             'id' => $this->id,
             'recommend' => $this->recommend,
+            'status' => $this->status,
 //            'created_at' => $this->created_at,
 //            'updated_at' => $this->updated_at,
         ]);
@@ -83,9 +84,9 @@ class DoctorHospitalsSearch extends DoctorHospitals
         $query->andFilterWhere(['like', 'hospital_name', $this->hospital_name])
             ->andFilterWhere(['like', 'city', $this->city])
             ->andFilterWhere(['like', 'address', $this->address])
-//            ->andFilterWhere(['like', 'levels', $this->levels])
+            ->andFilterWhere(['like', 'province', $this->province])
+            ->andFilterWhere(['like', 'area', $this->area])
             ->andFilterWhere(['like', 'grade', $this->grade]);
-//            ->andFilterWhere(['like', 'imgs', $this->imgs]);
 
         return $dataProvider;
     }

@@ -43,11 +43,4 @@ class MyController extends BaseController
         return ArrayHelper::merge(['is_complete'=>$this->getDoctor()],Yii::$app->user->identity);
     }
 
-    function getDoctor($uid=''){
-        if (!$uid){
-            $uid = Yii::$app->user->getId();
-        }
-        $info = DoctorInfos::findOne(['uid'=>$uid]);
-        return empty($info) ? null : $info;
-    }
 }

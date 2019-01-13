@@ -10,6 +10,7 @@ namespace frontend\controllers;
 
 
 use common\helpers\CommonHelpers;
+use common\models\doctors\DoctorInfos;
 use frontend\assets\AppAsset;
 use yii\db\ActiveRecord;
 use yii\filters\VerbFilter;
@@ -75,5 +76,13 @@ class BaseController extends Controller
     function actionLogout()
     {
         \Yii::$app->user->logout(true);
+    }
+
+    function getDoctor($uid=''){
+        if (!$uid){
+            $uid = \Yii::$app->user->getId();
+        }
+        $info = DoctorInfos::findOne(['uid'=>$uid]);
+        return empty($info) ? null : $info;
     }
 }

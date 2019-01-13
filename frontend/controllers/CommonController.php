@@ -38,7 +38,7 @@ class CommonController extends BaseController
             return [
                 'code'=>1,
                 'msg'=>'短信发送成功',
-                'phoneCode'=>$model->code
+                'phoneCode'=>YII_DEBUG ? $model->code : ''
             ];
         }
         return [
