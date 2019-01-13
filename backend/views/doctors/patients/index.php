@@ -9,8 +9,8 @@ use backend\grid\GridView;
 /* @var $searchModel common\models\doctors\DoctorPatientsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Doctor Patients';
-$this->params['breadcrumbs'][] = yii::t('app', 'Doctor Patients');
+$this->title = yii::t('app_doctor', 'Doctor Patients');
+$this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Patients');
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = yii::t('app', 'Doctor Patients');
                         'doctor_id',
                         'is_transfer',
                         'name',
-                        // 'tel',
+                        // 'phone',
                         // 'sex',
                         // 'id_number',
                         // 'desc:ntext',

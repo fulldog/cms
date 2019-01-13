@@ -12,7 +12,7 @@ use Yii;
  * @property int $doctor_id 所属医生
  * @property int $is_transfer 转诊
  * @property string $name 姓名
- * @property string $tel 手机
+ * @property string $phone 手机
  * @property string $sex 性别
  * @property int $id_number 身份证
  * @property string $desc 描述
@@ -36,10 +36,10 @@ class DoctorPatients extends My
     public function rules()
     {
         return [
-            [['hospital_id', 'doctor_id', 'is_transfer', 'id_number', 'created_at', 'updated_at', 'age'], 'integer'],
+            [['hospital_id', 'doctor_id', 'is_transfer','created_at', 'updated_at', 'age'], 'integer'],
             [['doctor_id','hospital_id','name'], 'required'],
-            [['desc'], 'string'],
-            [['name', 'tel', 'sex'], 'string', 'max' => 255],
+            [['desc','id_number'], 'string'],
+            [['name', 'phone', 'sex'], 'string', 'max' => 255],
         ];
     }
 
@@ -54,7 +54,7 @@ class DoctorPatients extends My
             'doctor_id' => '所属医生',
             'is_transfer' => '转诊',
             'name' => '姓名',
-            'tel' => '手机',
+            'phone' => '手机',
             'sex' => '性别',
             'id_number' => '身份证',
             'desc' => '描述',

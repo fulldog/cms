@@ -29,7 +29,7 @@ use backend\widgets\ActiveForm;
                         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
                         <?= $form->field($model, 'sex')->textInput(['maxlength' => true]) ?>

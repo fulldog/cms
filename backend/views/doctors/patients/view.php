@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'doctor_id',
             'is_transfer',
             'name',
-            'tel',
+            'phone',
             'sex',
             'id_number',
             'desc:ntext',

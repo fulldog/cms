@@ -26,7 +26,7 @@ use yii\helpers\Url;
 
     <?= $form->field($model, 'name') ?>
 
-    <?php // echo $form->field($model, 'tel') ?>
+    <?php // echo $form->field($model, 'phone') ?>
 
     <?php // echo $form->field($model, 'sex') ?>
 

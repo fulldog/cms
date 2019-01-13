@@ -38,7 +38,7 @@ class DoctorHospitals extends My
         return [
             [['hospital_name', 'province'], 'required'],
             [['created_at', 'updated_at'], 'integer'],
-            [['imgs'], 'safe'],
+            [['imgs','grade','area'], 'safe'],
             [['hospital_name', 'city', 'address', 'levels'], 'string', 'max' => 255],
         ];
     }

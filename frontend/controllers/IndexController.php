@@ -64,7 +64,7 @@ class IndexController extends BaseController
     {
         if (!hasLogin()) {
             $model = new LoginForm();
-            $model->username = Yii::$app->request->post('tel');
+            $model->username = Yii::$app->request->post('phone');
             $model->password = Yii::$app->request->post('password');
             if (!$model->login()) {
                 return [
@@ -82,7 +82,7 @@ class IndexController extends BaseController
 
     function actionRegister()
     {
-        $username = Yii::$app->request->post('tel');
+        $username = Yii::$app->request->post('phone');
         $password = Yii::$app->request->post('password');
 
         if (User::findOne(['username' => $username])) {

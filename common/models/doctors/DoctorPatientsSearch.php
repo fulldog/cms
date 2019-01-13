@@ -18,8 +18,8 @@ class DoctorPatientsSearch extends DoctorPatients
     public function rules()
     {
         return [
-            [['id', 'hospital_id', 'doctor_id', 'is_transfer', 'id_number', 'created_at', 'updated_at', 'age'], 'integer'],
-            [['name', 'tel', 'sex', 'desc'], 'safe'],
+            [['id', 'hospital_id', 'doctor_id', 'is_transfer', 'created_at', 'updated_at', 'age'], 'integer'],
+            [['name', 'phone', 'sex', 'desc','id_number'], 'safe'],
         ];
     }
 
@@ -70,7 +70,7 @@ class DoctorPatientsSearch extends DoctorPatients
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'tel', $this->tel])
+            ->andFilterWhere(['like', 'phone', $this->phone])
             ->andFilterWhere(['like', 'sex', $this->sex])
             ->andFilterWhere(['like', 'desc', $this->desc]);
 

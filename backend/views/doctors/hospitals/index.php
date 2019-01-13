@@ -9,8 +9,8 @@ use backend\grid\DateColumn;
 /* @var $searchModel common\models\doctors\DoctorHospitalsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Doctor Hospitals';
-$this->params['breadcrumbs'][] = yii::t('app', 'Doctor Hospitals');
+$this->title = yii::t('app_doctor', 'Doctor Hospitals');
+$this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Hospitals');
 ?>
 <div class="row">
     <div class="col-sm-12">

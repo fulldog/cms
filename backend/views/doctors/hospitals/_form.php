@@ -18,17 +18,12 @@ use backend\widgets\ActiveForm;
                 ]); ?>
                 <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'hospital_name')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
                           <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'province')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'area')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
-                        <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'imgs')->widget(\backend\widgets\webuploader\Webuploader::className()); ?>
-                        <div class="hr-line-dashed"></div>
-
                         <?= $form->defaultButtons() ?>
                     <?php ActiveForm::end(); ?>
             </div>
