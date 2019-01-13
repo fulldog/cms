@@ -35,30 +35,21 @@ class DoctorController extends BaseController
     function actionSubmit()
     {
         $_post = \Yii::$app->request->post();
-        if (!$_post['hospital_id']){
-            return [
-                'code' => 0,
-                'msg' => '缺少参数：hospital_id'
-            ];
-        }
         $uid = $this->_getUid();
         $model = DoctorInfos::findOne(['uid'=>$uid]);
-        $msg = '添加成功';
         if (!$model){
-            $msg = '修改成功';
             $model = new DoctorInfos();
         }
-        if ($res = $this->_setValForObj($model, $_post)) {
-            $this->_save($res);
+        if ($model->load($_post,'') && $model->save()) {
             return [
-                'data' => $res->toArray(),
+                'data' => $model->toArray(),
                 'code' => 1,
-                'msg' => $msg
+                'msg' => '修改成功'
             ];
         }
         return [
             'code' => 0,
-            'msg' => 'error'
+            'msg' => $model->getErrors()
         ];
     }
 }

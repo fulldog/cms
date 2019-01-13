@@ -41,16 +41,18 @@ class PatientController extends BaseController
         $_post = Yii::$app->request->post();
         $_post['doctor_id'] = $this->_getUid();
         $_post['hospital_id'] = DoctorInfos::getHospitalIdByUid($_post['doctor_id']);
-        if ($_post['hospital_id'] && ($res = $this->_setValForObj(new DoctorPatients(), $_post, true))) {
+
+        $model = new DoctorPatients();
+        if ($model->load($_post,'') && $model->save()){
             return [
-                'data' => $res->toArray(),
+                'data' => $model->toArray(),
                 'code' => 1,
                 'msg' => 'succ'
             ];
         }
         return [
             'code' => 0,
-            'msg' => '参数错误'
+            'msg' => $model->getErrors()
         ];
     }
 

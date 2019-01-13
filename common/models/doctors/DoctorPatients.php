@@ -37,7 +37,7 @@ class DoctorPatients extends My
     {
         return [
             [['hospital_id', 'doctor_id', 'is_transfer', 'id_number', 'created_at', 'updated_at', 'age'], 'integer'],
-            [['doctor_id'], 'required'],
+            [['doctor_id','hospital_id','name'], 'required'],
             [['desc'], 'string'],
             [['name', 'tel', 'sex'], 'string', 'max' => 255],
         ];

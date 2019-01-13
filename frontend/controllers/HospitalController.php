@@ -39,25 +39,15 @@ class HospitalController extends BaseController
     function actionAdd(){
         $model = new DoctorHospitals();
         $_post = \Yii::$app->request->post();
-        if ($model->_load($_post) && $model->save()){
+        if ($model->load($_post,'') && $model->save()){
             $data['code'] = 1;
             $data['msg'] = '新增医院成功';
-            $data['data']['hospital_info'] = $model->toArray();
-            //创建管理员  移到后台审核操作
-//            $admin = new User();
-//            $admin->hospital_id = $model->id;
-//            $admin->username = 'hospital'.$model->id;
-//            $admin->password = 123456;
-//            if (!$admin->save()){
-//                $data['msg'] = '新增医院成功，但创建医院管理员失败，请联系超管处理';
-//            }else{
-//                $data['data']['hospital_account'] = $admin->toArray();
-//            }
+            $data['data'] = $model->toArray();
             return $data;
         }
         return [
             'code' => 0,
-            'msg' => 'error'
+            'msg' => $model->getErrors()
         ];
     }
 

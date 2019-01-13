@@ -65,32 +65,6 @@ class BaseController extends Controller
        ];
    }
 
-    function _setValForObj($object,array $array,$save = false){
-        try{
-            foreach ($array as $k=>$v){
-                if ($k=='certificate'){
-                    $object->$k = CommonHelpers::base64ToImg($v);
-                }else{
-                    $object->$k = $v;
-                }
-            }
-            if ($save){
-                return $this->_save($object);
-            }
-            return $object;
-        }catch (\Exception $e){
-            echo $e->getMessage();
-            exit();
-        }
-    }
-
-    function _save($object){
-        if ($object instanceof ActiveRecord){
-            return $object->save();
-        }
-        return false;
-    }
-
     function _getUid(){
         if (!\Yii::$app->user->isGuest){
             return \Yii::$app->user->getId();

@@ -13,6 +13,11 @@ use Codeception\Module\Yii1;
 
 class CommonHelpers
 {
+    /**
+     * @param array $data
+     * @param string $path
+     * @return string json
+     */
     static function base64ToImg(array $data, $path=''){
         $_path = \Yii::getAlias('@uploads');
         if (!$path && !\Yii::$app->user->isGuest){

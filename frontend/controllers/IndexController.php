@@ -88,7 +88,7 @@ class IndexController extends BaseController
         if (User::findOne(['username' => $username])) {
             return [
                 'code' => 0,
-                'msg' => '改账号已被注册'
+                'msg' => '账号已被注册'
             ];
         } else {
             $user = new SignupForm();
@@ -110,7 +110,7 @@ class IndexController extends BaseController
             } else {
                 return [
                     'code' => 0,
-                    'msg' => '注册失败，请检查参数'
+                    'msg' => $user->getErrors()
                 ];
             }
         }
