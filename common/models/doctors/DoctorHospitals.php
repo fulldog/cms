@@ -72,7 +72,11 @@ class DoctorHospitals extends My
         return new DoctorHospitalsQuery(get_called_class());
     }
 
-    static function like($coloum,$value){
-        return self::find()->where($coloum.' like "%'.$value.'%"')->all();
+    static function like($coloum,$value,$page){
+        $query = self::find()->limit(20)->offset(20*$page);
+        if (!$value){
+            return $query->all();
+        }
+        return $query->where($coloum.' like "%'.$value.'%"')->all();
     }
 }

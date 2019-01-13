@@ -9,10 +9,10 @@
 namespace frontend\controllers;
 
 
-use backend\models\User;
-use common\models\doctors\DoctorHospitals;
+use common\models\doctors\DoctorInfos;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use Yii;
 
 class MyController extends BaseController
 {
@@ -26,10 +26,28 @@ class MyController extends BaseController
 
                 ],
             ],
+//            'access' => [
+//                'only' => [],
+//            ]
         ]);
     }
 
     function actionWallet(){
+        return [
+            'code'=>1,
+            'msg'=>''
+        ];
+    }
 
+    function actionGetme(){
+        return ArrayHelper::merge(['is_complete'=>$this->getDoctor()],Yii::$app->user->identity);
+    }
+
+    function getDoctor($uid=''){
+        if (!$uid){
+            $uid = Yii::$app->user->getId();
+        }
+        $info = DoctorInfos::findOne(['uid'=>$uid]);
+        return empty($info) ? null : $info;
     }
 }

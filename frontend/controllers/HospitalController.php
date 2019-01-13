@@ -11,6 +11,7 @@ namespace frontend\controllers;
 
 use common\models\doctors\DoctorHospitals;
 use yii\helpers\ArrayHelper;
+use Yii;
 
 class HospitalController extends BaseController
 {
@@ -23,6 +24,9 @@ class HospitalController extends BaseController
                     'add' => ['POST'],
                 ],
             ],
+            'access' => [
+                'only' => ['add'],
+            ]
         ]);
     }
 
@@ -54,6 +58,19 @@ class HospitalController extends BaseController
         return [
             'code' => 0,
             'msg' => 'error'
+        ];
+    }
+
+    /**
+     * 医院搜索
+     * @return array
+     */
+    function actionSearch()
+    {
+        $search_word = Yii::$app->request->get('search_word');
+        $page = Yii::$app->request->get('page',1);
+        return [
+            'data'=>DoctorHospitals::like('hospital_name',$search_word,$page)
         ];
     }
 }

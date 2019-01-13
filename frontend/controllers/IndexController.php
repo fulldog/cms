@@ -25,9 +25,24 @@ use frontend\models\User;
 class IndexController extends BaseController
 {
 
-    function init()
+    function behaviors()
     {
-        parent::init();
+        return ArrayHelper::merge(parent::behaviors(), [
+            'verbs' => [
+                'actions' => [
+                    'login' => ['POST'],
+                    'register' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'rules' => [
+                    [
+                        'allow' => true,// 设置 actions 的操作是允许访问还是拒绝访问
+                        'roles' => ['?'], // @ 当前规则针对认证过的用户， ？所有用户均可访问
+                    ],
+                ],
+            ]
+        ]);
     }
 
     function actionIndex()
@@ -38,24 +53,6 @@ class IndexController extends BaseController
             'doctors'=>DoctorInfos::findAll(),
             'users'=>User::find()->select('*')->all()
         ];
-    }
-
-    function behaviors()
-    {
-        return ArrayHelper::merge(parent::behaviors(), [
-            'verbs' => [
-                'actions' => [
-                    'login' => ['POST'],
-                    'register' => ['POST'],
-                    'submit_info' => ['POST'],
-                    'create_patient' => ['POST'],
-                    'transfer_patient' => ['POST'],
-                ],
-            ],
-            'access' => [
-                'only' => ['submit_info', 'create_patient', 'transfer_patient', 'transfer_patient_list', 'patient_detail', 'my_patient_list','getme'],
-            ]
-        ]);
     }
 
     /**
@@ -119,150 +116,6 @@ class IndexController extends BaseController
         }
     }
 
-
-    /**
-     * 完善信息表单
-     * Parma:{name,doctor_type,role,hospital_location,hospital_name,certificate(base64)}
-     */
-    function actionSubmit_info()
-    {
-        $_post = Yii::$app->request->post();
-        $uid = $this->_getUid();
-        $model = DoctorInfos::findOne(['uid'=>$uid]);
-        $msg = '添加成功';
-        if (!$model){
-            $msg = '修改成功';
-            $model = new DoctorInfos();
-        }
-        if ($res = $this->_setValForObj($model, $_post)) {
-//            $hospital = new DoctorHospitals();
-//            $hospital->name = $res->hospital_name;
-//            $hospital->address = $res->hospital_location;
-//            $hospital->save();
-//            $res->hospital_id = $hospital->id;
-            $this->_save($res);
-            return [
-                'data' => $res->toArray(),
-                'code' => 1,
-                'msg' => $msg
-            ];
-        }
-        return [
-            'code' => 0,
-            'msg' => 'error'
-        ];
-    }
-
-    /**
-     * 创建病人
-     * @return array
-     */
-    function actionCreate_patient()
-    {
-        $_post = Yii::$app->request->post();
-        $_post['doctor_id'] = $this->_getUid();
-        $_post['hospital_id'] = DoctorInfos::getHospitalIdByUid($_post['doctor_id']);
-        if ($_post['hospital_id'] && ($res = $this->_setValForObj(new DoctorPatients(), $_post, true))) {
-            return [
-                'data' => $res->toArray(),
-                'code' => 1,
-                'msg' => 'succ'
-            ];
-        }
-        return [
-            'code' => 0,
-            'msg' => '参数错误'
-        ];
-    }
-
-    /**
-     * 转移病人
-     * @return array
-     */
-    function actionTransfer_patient()
-    {
-        $_post = Yii::$app->request->post();
-        if (!$_post['patient_id'] || $_post['hospital_id']) {
-            return [
-                'code' => 0,
-                'msg' => '参数错误'
-            ];
-        }
-        $patient = DoctorPatients::findOne(['id' => $_post['patient_id']]);
-//        $patient->is_transfer = 0;
-        $patient->hospital_id = $_post['hospital_id'];
-        $patient->doctor_id = 0;
-        if ($patient->update()) {
-            return [
-                'data' => $patient->toArray(),
-                'code' => 1,
-                'msg' => 'succ'
-            ];
-        }
-        return [
-            'code' => 0,
-            'msg' => 'error'
-        ];
-    }
-
-    function actionMy_patient_list(){
-        return [
-            'data' => DoctorPatients::getPatientsByDoctorId($this->_getUid()),
-            'code' => 1,
-            'msg' => ''
-        ];
-    }
-
-    /**
-     *转给我的病人
-     */
-    function actionTransfer_patient_list()
-    {
-        return [
-            'data' => DoctorPatients::getPatientsByDoctorId($this->_getUid(),true),
-            'code' => 1,
-            'msg' => ''
-        ];
-    }
-
-    /**
-     * 病人明细
-     * @return array
-     */
-    function actionPatient_detail()
-    {
-        $Patient_id = Yii::$app->request->get('patient_id');
-        return [
-            'data' => DoctorPatients::findOne(['id' => $Patient_id]),
-            'code' => 1,
-            'msg' => ''
-        ];
-    }
-
-    /**
-     * 医院搜索
-     * @return array
-     */
-    function actionSearch_hospital()
-    {
-        $search_word = Yii::$app->request->get('search_word');
-        return [
-            'data'=>DoctorHospitals::like('hospital_name',$search_word)
-        ];
-    }
-
-    function actionGetme(){
-        return ArrayHelper::merge(['is_complete'=>$this->getDoctor()],Yii::$app->user->identity);
-    }
-
-    function getDoctor($uid=''){
-        if (!$uid){
-            $uid = Yii::$app->user->getId();
-        }
-        $info = DoctorInfos::findOne(['uid'=>$uid]);
-        return empty($info) ? null : $info;
-    }
-
     /**
      * 首页信息
         描述：首页含有banner、推荐医院、推荐医生。
@@ -272,7 +125,7 @@ class IndexController extends BaseController
         result: {banners: [‘xxx.jpg’], recommend_hospitals: [],recommend_doctors: [] }
         recommend_hospitals 信息按照新增医院的信息返回
      */
-    function actionIndex_info(){
+    function actionInfo(){
         //banners
         $banner = BannerTypeForm::find()->where(['type' => Options::TYPE_BANNER,'name'=>'index'])->asArray()->one();
         $imgs = [];
