@@ -60,6 +60,7 @@ class HospitalController extends BaseController
         $search_word = Yii::$app->request->get('search_word');
         $page = Yii::$app->request->get('page',1);
         return [
+            'code'=>1,
             'data'=>DoctorHospitals::like('hospital_name',$search_word,$page)
         ];
     }
