@@ -83,7 +83,7 @@ class DoctorHospitals extends My
         if (!$value){
             return $query->all();
         }
-        return $query->where($coloum.' like "%'.$value.'%"')->all();
+        return $query->andWhere($coloum.' like "%'.$value.'%"')->all();
     }
 
     function beforeSave($insert)
