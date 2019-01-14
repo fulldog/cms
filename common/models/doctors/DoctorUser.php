@@ -14,4 +14,17 @@ use frontend\models\User;
 class DoctorUser extends User
 {
 
+    public function rules()
+    {
+        return [
+            [['username', 'password', 'repassword'], 'string'],
+            [['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
+            [['username', 'email'], 'unique'],
+            ['email', 'email'],
+            [['repassword'], 'compare', 'compareAttribute' => 'password'],
+            [['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            [['username',  'password', 'repassword'], 'required', 'on' => ['create']],//'email'
+            [['username', ], 'required', 'on' => ['update']],//'email'
+        ];
+    }
 }

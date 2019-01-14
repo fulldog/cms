@@ -241,8 +241,5 @@ class User extends \common\models\User
         return rtrim($str, $glue);
     }
 
-    function getHospital(){
-        return $this->hasOne(DoctorHospitals::className(),['id'=>'hospital_id']);
-    }
 }
 

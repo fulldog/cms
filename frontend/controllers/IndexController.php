@@ -94,7 +94,6 @@ class IndexController extends BaseController
             $user = new SignupForm();
             $user->username = $username;
             $user->password = $password;
-            $user->email = $username.'@qq.com';
 
             if ($user->signup()) {
                 $model = new LoginForm();
