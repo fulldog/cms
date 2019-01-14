@@ -58,7 +58,7 @@ class HospitalController extends BaseController
     function actionSearch()
     {
         $search_word = Yii::$app->request->get('search_word');
-        $page = Yii::$app->request->get('page',1);
+        $page = Yii::$app->request->get('page',0);
         return [
             'code'=>1,
             'data'=>DoctorHospitals::like('hospital_name',$search_word,$page)

@@ -15,6 +15,8 @@ use yii\db\Exception;
 
 class My extends ActiveRecord
 {
+    public $pageSize = 20;
+
     public  $_status = [
         '待审核', '通过', '拒绝' ,
     ];
