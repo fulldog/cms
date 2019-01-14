@@ -79,7 +79,7 @@ class DoctorHospitals extends My
     }
 
     static function like($coloum,$value,$page){
-        $query = self::find()->limit(20)->offset(20*$page);
+        $query = self::find()->limit(20)->offset(20*$page)->where(['status'=>1]);
         if (!$value){
             return $query->all();
         }

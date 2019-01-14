@@ -90,10 +90,9 @@ class PatientController extends BaseController
     /**
      *我的病人/转给wode
      */
-    function actionTransfer_list($page=0)
+    function actionTransfer_list($is_ransfer=false,$page=0)
     {
-        $is_ransfer = false;
-        if (Yii::$app->request->get('is_ransfer')=='is_ransfer'){
+        if ($is_ransfer =='is_ransfer'){
             $is_ransfer = true;
         }
         return [
