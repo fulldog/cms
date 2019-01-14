@@ -133,9 +133,12 @@ class IndexController extends BaseController
             $imgs = \Qiniu\json_decode($banner['value']);
         }
         return [
-            'banners'=>$imgs,
-            'recommend_hospitals'=>DoctorHospitals::findAll(['recommend'=>1,'status'=>1]),
-            'recommend_doctors'=>DoctorInfos::findAll(['recommend'=>1,'status'=>1]),
+            'code'=>1,
+            'data'=>[
+                'banners'=>$imgs,
+                'recommend_hospitals'=>DoctorHospitals::findAll(['recommend'=>1,'status'=>1]),
+                'recommend_doctors'=>DoctorInfos::findAll(['recommend'=>1,'status'=>1]),
+            ]
         ];
     }
 
