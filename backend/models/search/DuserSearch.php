@@ -8,14 +8,13 @@
 
 namespace backend\models\search;
 
-use backend\models\DadminUser;
 use Yii;
 use backend\behaviors\TimeSearchBehavior;
 use backend\components\search\SearchEvent;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
-class DuserSearch extends DadminUser
+class DuserSearch extends UserSearch
 {
 
     public function behaviors()
@@ -64,11 +63,12 @@ class DuserSearch extends DadminUser
         if (! $this->validate()) {
             return $dataProvider;
         }
-        $query->andFilterWhere(['like', 'username', $this->name_fix.$this->username])
+        $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['status' => $this->status]);
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, Yii::createObject([ 'class' => SearchEvent::className(), 'query'=>$query]));
         return $dataProvider;
     }
+
 }

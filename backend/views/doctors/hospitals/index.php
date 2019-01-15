@@ -64,6 +64,24 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Hospitals');
                             'class' => DateColumn::className(),
                             'attribute' => 'updated_at',
                         ],
+                        [
+//                            'attribute' => '',
+                            'label'=>'管理账号',
+                            'format'=>'raw',
+                            'value'=>function($model){
+                                  if ($model->relatedAdmin){
+                                    return $model->relatedAdmin->username;
+                                  }else{
+                                    return \yii\helpers\Html::a('创建',\yii\helpers\Url::to(['doctors/dadmin-user/hospital','hospital_id'=>$model->id]),[
+                                        'id'=>'aotu-admin',
+                                        'type'=>'button',
+//                                        'target'=>'_blank',
+                                        'class'=>'btn btn-sm btn-info',
+//                                        'data-confirm' => '此操作将会更新医院为已通过审核并创建管理员？',
+                                    ]);
+                                  }
+                            }
+                        ],
 //                         'imgs:ntext',
 
                         ['class' => ActionColumn::className(),],

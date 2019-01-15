@@ -37,6 +37,7 @@ $this->title = "Admin";
                 </div>
               </div>
                 <?= $form->field($model, 'username')->textInput(['maxlength' => 64]) ?>
+                <?= $form->field($model, 'hospital_id')->textInput(['readonly'=>'readonly']) ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'avatar')->imgInput() ?>
                 <div class="hr-line-dashed"></div>

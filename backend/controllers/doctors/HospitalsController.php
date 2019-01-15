@@ -2,6 +2,7 @@
 
 namespace backend\controllers\doctors;
 
+use backend\models\DadminUser;
 use Yii;
 use common\models\doctors\DoctorHospitalsSearch;
 use common\models\doctors\DoctorHospitals;
@@ -54,4 +55,5 @@ class HospitalsController extends \yii\web\Controller
             ],
         ];
     }
+
 }
