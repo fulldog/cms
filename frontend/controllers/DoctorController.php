@@ -39,6 +39,7 @@ class DoctorController extends BaseController
         $model = DoctorInfos::findOne(['uid'=>$uid]);
         if (!$model){
             $model = new DoctorInfos();
+            $model->uid = $uid;
         }
         if ($model->load($_post,'') && $model->save()) {
             return [
