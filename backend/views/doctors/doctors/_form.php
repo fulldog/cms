@@ -24,14 +24,13 @@ use backend\widgets\ActiveForm;
                         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
                         <?= $form->field($model, 'doctor_type')->textInput(['maxlength' => true]) ?>
-
+                        <?= $form->field($model, 'status')->dropDownList([0=>'待审核',1=>'通过',2=>'拒绝']) ?>
                         <?= $form->field($model, 'role')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'ills')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'province')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'city')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'area')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
-
 
                         <?= $form->field($model, 'certificate')->widget(\backend\widgets\webuploader\Webuploader::className()); ?>
 
