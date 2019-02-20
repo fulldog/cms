@@ -34,7 +34,7 @@ class CommonHelpers
                 $type = $res[2];
                 $fineName = md5($v);
                 if (file_put_contents($path.DIRECTORY_SEPARATOR.$fineName.'.'.$type,base64_decode(str_replace($res[1],'', $v)))) {
-                    $imgs_url[] = $path.DIRECTORY_SEPARATOR.$fineName.'.'.$type;
+                    $imgs_url[] = '/uploads/'.$fineName.'.'.$type;
                 }
             }else{
                 $imgs_url[] = $v;
