@@ -20,10 +20,13 @@ class CommonHelpers
      */
     static function base64ToImg(array $data, $path=''){
         $_path = \Yii::getAlias('@uploads');
+        $www = '/uploads/';
         if (!$path && !\Yii::$app->user->isGuest){
             $path = $_path.DIRECTORY_SEPARATOR.\Yii::$app->user->identity->username;
+            $www .= \Yii::$app->user->identity->username;
         }else{
             $path = $_path.DIRECTORY_SEPARATOR.$path;
+            $www .= $path;
         }
 
         self::mkdirs($path);
@@ -34,7 +37,7 @@ class CommonHelpers
                 $type = $res[2];
                 $fineName = md5($v);
                 if (file_put_contents($path.DIRECTORY_SEPARATOR.$fineName.'.'.$type,base64_decode(str_replace($res[1],'', $v)))) {
-                    $imgs_url[] = '/uploads/'.$fineName.'.'.$type;
+                    $imgs_url[] = $www.'/'.$fineName.'.'.$type;
                 }
             }else{
                 $imgs_url[] = $v;
