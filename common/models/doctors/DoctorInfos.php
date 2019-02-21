@@ -92,7 +92,7 @@ class DoctorInfos extends My
     {
         $doctor =  self::findOne(['id' => $uid]);
         if ($doctor){
-            return $doctor['hospital_id'];
+            return $doctor->hospital_id;
         }
         return null;
     }
