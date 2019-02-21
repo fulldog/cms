@@ -90,7 +90,7 @@ class DoctorInfos extends My
 
     static function getHospitalIdByUid($uid)
     {
-        $doctor =  self::findOne(['id' => $uid]);
+        $doctor =  self::findOne(['uid' => $uid]);
         if ($doctor){
             return $doctor->hospital_id;
         }
