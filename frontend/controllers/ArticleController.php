@@ -50,7 +50,8 @@ class ArticleController extends Controller
      *
      * @param string $cat 分类名称
      * @return string
-     * @throws \yii\web\NotFoundHttpException
+     * @throws NotFoundHttpException
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionIndex($cat = '')
     {
@@ -86,7 +87,9 @@ class ArticleController extends Controller
                 ]
             ]
         ]);
-        return $this->render('index', [
+        $template = "index";
+        isset($category) && $category->template != "" && $template = $category->template;
+        return $this->render($template, [
             'dataProvider' => $dataProvider,
             'type' => ( !empty($cat) ? Yii::t('frontend', 'Category {cat} articles', ['cat'=>$cat]) : Yii::t('frontend', 'Latest Articles') ),
         ]);
@@ -139,13 +142,16 @@ class ArticleController extends Controller
                 $authorized = Yii::$app->getSession()->get("article_password_" . $model->id, null);
                 if( $authorized === null ) $this->redirect(Url::toRoute(['password', 'id'=>$id]));
                 break;
-            case Constants::ARTICLE_VISIBILITY_LOGIN://登陆可见
+            case Constants::ARTICLE_VISIBILITY_LOGIN://登录可见
                 if( Yii::$app->getUser()->getIsGuest() ) {
                     $model->articleContent->content = "<p style='color: red'>" . Yii::t('frontend', "Only login user can visit this article") . "</p>";
                 }
                 break;
         }
-        return $this->render('view', [
+        $template = "view";
+        $model->category->template != "" && $template = $model->category->template;
+        $model->template != "" && $template = $model->template;
+        return $this->render($template, [
             'model' => $model,
             'prev' => $prev,
             'next' => $next,
