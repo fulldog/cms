@@ -72,12 +72,14 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Hospitals');
                                   if ($model->relatedAdmin){
                                     return $model->relatedAdmin->username;
                                   }else{
-                                    return \yii\helpers\Html::a('创建',\yii\helpers\Url::to(['doctors/dadmin-user/hospital','hospital_id'=>$model->id]),[
+                                    return \yii\helpers\Html::a('创建账号',\yii\helpers\Url::to(['doctors/dadmin-user/hospital','hospital_id'=>$model->id]),[
                                         'id'=>'aotu-admin',
-                                        'type'=>'button',
+//                                        'type'=>'button',
 //                                        'target'=>'_blank',
                                         'class'=>'btn btn-sm btn-info',
-//                                        'data-confirm' => '此操作将会更新医院为已通过审核并创建管理员？',
+                                        'data-confirm' => '此操作将会更新医院为已通过审核并创建默认医院管理员(账号密码均为：hospital_admin'.$model->id.')？',
+                                        'data-method'=>'get',
+                                        'data-ajax'=>'1'
                                     ]);
                                   }
                             }

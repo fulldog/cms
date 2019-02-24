@@ -18,11 +18,8 @@ use backend\widgets\ActiveForm;
                 ]); ?>
                 <div class="hr-line-dashed"></div>
 <!--                        --><?//= $form->field($model, 'uid')->dropDownList()->label('关联用户') ?>
-
-<!--                        --><?//= $form->field($model, 'hospital_id')->textInput() ?>
-
                         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-
+                        <?= $form->field($model, 'hospital_id')->dropDownList(\common\models\doctors\DoctorHospitals::find()->getHospitals())->label('医院')?>
                         <?= $form->field($model, 'doctor_type')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'status')->dropDownList([0=>'待审核',1=>'通过',2=>'拒绝']) ?>
                         <?= $form->field($model, 'role')->textInput(['maxlength' => true]) ?>

@@ -56,7 +56,11 @@ class DoctorPatientsSearch extends DoctorPatients
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        if (Yii::$app->user->identity->hospital_id){
+            $query->andFilterWhere([
+                'hospital_id' => Yii::$app->user->identity->hospital_id,
+            ]);
+        }
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -84,5 +88,18 @@ class DoctorPatientsSearch extends DoctorPatients
             ->andFilterWhere(['like', 'desc', $this->desc]);
 
         return $dataProvider;
+    }
+
+    function getRelateHospital(){
+        return $this->hasOne(DoctorHospitals::className(),['id'=>'hospital_id']);
+    }
+
+    function getRelateDoctor(){
+        return $this->hasOne(DoctorInfos::className(),['id'=>'doctor_id']);
+    }
+
+    function IsTransferText(){
+        $map = ['否','是'];
+        return $map[$this->is_transfer];
     }
 }

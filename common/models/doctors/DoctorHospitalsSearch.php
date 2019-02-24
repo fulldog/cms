@@ -63,7 +63,11 @@ class DoctorHospitalsSearch extends DoctorHospitals
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        if (Yii::$app->user->identity->hospital_id){
+            $query->andFilterWhere([
+                'id' => Yii::$app->user->identity->hospital_id,
+            ]);
+        }
         // grid filtering conditions
         $query->andFilterWhere([
 //            'id' => $this->id,

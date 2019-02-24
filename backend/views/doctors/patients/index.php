@@ -26,14 +26,20 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Patients');
                         ['class' => CheckboxColumn::className()],
 
 //                        'id',
-//                        'hospital_id',
-//                        'doctor_id',
                         'name',
+                        [
+                            'attribute'=>'relateHospital.hospital_name',
+                            'label'=>'所属医院'
+                        ],
+                        [
+                            'attribute'=>'relateDoctor.name',
+                            'label'=>'所属医生'
+                        ],
+
                         [
                             'attribute'=>'is_transfer',
                             'value'=>function($model){
-                                $map = ['否','是'];
-                                return $map[$model->is_transfer];
+                                return $model->IsTransferText;
                             },
                             'filter'=>['否','是']
                         ],

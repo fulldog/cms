@@ -19,10 +19,11 @@ use backend\actions\IndexAction;
 use backend\actions\DeleteAction;
 use backend\actions\SortAction;
 use backend\actions\ViewAction;
+use yii\web\Response;
 
 class DadminUserController extends AdminUserController
 {
-    protected $name_fix = 'hospital_';
+    protected $name_fix = 'hospital_admin';
 
     public function actions()
     {
@@ -89,31 +90,25 @@ class DadminUserController extends AdminUserController
         ]);
     }
 
+    /**
+     * 创建医院管理员
+     * @param $hospital_id
+     * @return string|\yii\web\Response
+     * @throws \yii\base\InvalidConfigException
+     */
     function actionHospital($hospital_id){
         $model = Yii::createObject( DadminUser::className() );
         $model->setScenario('create');
 //        $model->username = $this->name_fix.$hospital_id;
         $model->hospital_id = $hospital_id;
-        if (Yii::$app->getRequest()->getIsPost()) {
-            $data = Yii::$app->getRequest()->post();
-            if ($data["DadminUser"]['username']){
-                $data["DadminUser"]['username'] = $this->name_fix.$data["DadminUser"]['username'];
-            }
-            if ( $model->load($data) && $model->save() && $model->assignPermission() ) {
-                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
-                return $this->redirect(['doctors/hospitals/index']);
-            } else {
-                $errors = $model->getErrors();
-                $err = '';
-                foreach ($errors as $v) {
-                    $err .= $v[0] . '<br>';
-                }
-                Yii::$app->getSession()->setFlash('error', $err);
-            }
+        $model->username = $model->password= $this->name_fix.$hospital_id;
+        $model->permissions = [];
+
+        if ($model->save() && $model->assignPermission() ) {
+            Yii::$app->getSession()->setFlash('success', '创建成功');
+        } else {
+            Yii::$app->getSession()->setFlash('error', $model->getFirstError());
         }
-        $model->loadDefaultValues();
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return true;
     }
 }

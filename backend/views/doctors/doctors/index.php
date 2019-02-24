@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Infos');
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-                <?= Bar::widget(['template' => "{refresh} {delete}"]) ?>
+                <?= Bar::widget(['template' => "{refresh}  {delete}"]) //{create}?>
                 <?php //$this->render('_search', ['model' => $searchModel]); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -33,11 +33,11 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Infos');
 //                            'value'=>'relatedUser.username',
 //                            'filter'=>false
 //                        ],
-//                        [
-//                            'label'=>'所属医院',
-//                            'value'=>'relatedHospital.hospital_name',
-//                            'filter'=>false
-//                        ],
+                        [
+                            'label'=>'所属医院',
+                            'value'=>'relatedHospital.hospital_name',
+                            'filter'=>false
+                        ],
                         [
                             'attribute'=>'status',
                             'value'=>function($model){

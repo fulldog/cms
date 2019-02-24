@@ -56,12 +56,15 @@ class DoctorInfosSearch extends DoctorInfos
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        if (Yii::$app->user->identity->hospital_id){
+            $query->andFilterWhere([
+                'hospital_id' => Yii::$app->user->identity->hospital_id,
+            ]);
+        }
         // grid filtering conditions
         $query->andFilterWhere([
 //            'id' => $this->id,
             'status' => $this->status,
-//            'hospital_id' => $this->hospital_id,
             'recommend' => $this->recommend,
 //            'created_at' => $this->created_at,
 //            'updated_at' => $this->updated_at,

@@ -18,6 +18,10 @@ use common\widgets\JsBlock;
 use yii\helpers\Html;
 
 $this->title = "Admin";
+$disabled = [];
+if (!$model->isNewRecord){
+    $disabled = ['disabled'=>'disabled'];
+}
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -30,19 +34,22 @@ $this->title = "Admin";
                         'class' => 'form-horizontal'
                     ]
                 ]); ?>
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="user-username"></label>
-                <div class="col-sm-10">
-                  <span style="color:red">*注意:医院管理员创建时，用户名默认会加上前缀：【hospital_】，如填写为：demo，创建成功后登陆用户名为：hospital_demo</span>
-                </div>
-              </div>
-                <?= $form->field($model, 'username')->textInput(['maxlength' => 64]) ?>
-                <?= $form->field($model, 'hospital_id')->textInput(['readonly'=>'readonly']) ?>
+<!--              <div class="form-group">-->
+<!--                <label class="col-sm-2 control-label" for="user-username"></label>-->
+<!--                <div class="col-sm-10">-->
+<!--                  <span style="color:red">*注意:医院管理员创建时，用户名默认会加上前缀：【hospital_】，如填写为：demo，创建成功后登陆用户名为：hospital_demo</span>-->
+<!--                </div>-->
+<!--              </div>-->
+
+                <??>
+
+                <?= $form->field($model, 'username')->textInput(array_merge(['maxlength' => 64],$disabled)) ?>
+                <?= $form->field($model, 'hospital_id')->dropDownList(\common\models\doctors\DoctorHospitals::find()->getHospitals($model->hospital_id))->label('所属医院') ?>
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'avatar')->imgInput() ?>
-                <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'email')->textInput(['maxlength' => 64]) ?>
-                <div class="hr-line-dashed"></div>
+<!--                --><?//= $form->field($model, 'avatar')->imgInput() ?>
+<!--                <div class="hr-line-dashed"></div>-->
+<!--                --><?//= $form->field($model, 'email')->textInput(['maxlength' => 64]) ?>
+<!--                <div class="hr-line-dashed"></div>-->
                 <?= $form->field($model, 'password')->passwordInput(['maxlength' => 512]) ?>
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'status')->radioList( User::getStatuses() ) ?>
