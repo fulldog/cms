@@ -90,16 +90,4 @@ class DoctorPatientsSearch extends DoctorPatients
         return $dataProvider;
     }
 
-    function getRelateHospital(){
-        return $this->hasOne(DoctorHospitals::className(),['id'=>'hospital_id']);
-    }
-
-    function getRelateDoctor(){
-        return $this->hasOne(DoctorInfos::className(),['id'=>'doctor_id']);
-    }
-
-    function IsTransferText(){
-        $map = ['否','是'];
-        return $map[$this->is_transfer];
-    }
 }

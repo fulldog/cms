@@ -367,4 +367,6 @@ return [
     'Upload Image' => '上传图片',
     'Click select image' => '点击选择图片',
     /*webuploader*/
+
+    'Export'=>'导出'
 ];

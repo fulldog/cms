@@ -57,18 +57,25 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Infos');
                         'doctor_type',
                         'role',
                         'ills',
-                        'province',
-                        'city',
-                        'area',
-                        'address',
+                        [
+                            'label'=>'住址',
+                            'value'=>function($model){
+                                return $model->province.$model->city.$model->area.$model->address;
+                            },
+                        ],
+                        'money',
+//                        'province',
+//                        'city',
+//                        'area',
+//                        'address',
                         [
                             'class' => \backend\grid\DateColumn::className(),
                             'attribute' => 'created_at',
                         ],
-                        [
-                            'class' => \backend\grid\DateColumn::className(),
-                            'attribute' => 'updated_at',
-                        ],
+//                        [
+//                            'class' => \backend\grid\DateColumn::className(),
+//                            'attribute' => 'updated_at',
+//                        ],
 
                         ['class' => ActionColumn::className(),],
                     ],

@@ -27,6 +27,7 @@ use Yii;
  * @property int $province
  * @property int $ills
  * @property int $recommend
+ * @property int $money
  */
 class DoctorInfos extends My
 {
@@ -44,11 +45,13 @@ class DoctorInfos extends My
     public function rules()
     {
         return [
-            [['uid', 'hospital_id', 'created_at', 'updated_at','status','recommend','status'], 'integer'],
+            [['uid', 'hospital_id', 'created_at', 'updated_at','recommend','status'], 'integer'],
             [['name', 'doctor_type','hospital_id','uid'], 'required'],
             [['certificate'], 'safe'],
             [['name', 'role', 'hospital_location', 'hospital_name'], 'string', 'max' => 255],
             [['doctor_type'], 'string', 'max' => 10],
+            [['money'],'compare','compareValue'=>0,'operator'=>'>='],
+            [['money'], 'number'],
         ];
     }
 
@@ -76,6 +79,7 @@ class DoctorInfos extends My
             'updated_at' => '更新时间',
             'ills'=> '擅长疾病',
             'recommend'=> '是否推荐',
+            'money'=>'余额'
         ];
     }
 

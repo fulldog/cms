@@ -12,6 +12,7 @@ namespace common\models\doctors;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Exception;
+use yii\helpers\VarDumper;
 
 class My extends ActiveRecord
 {
@@ -45,5 +46,21 @@ class My extends ActiveRecord
 
     function getRecommend(){
         return $this->_recommendMap[$this->recommend];
+    }
+
+    function getStatus2(){
+        return $this->_status[$this->status];
+    }
+
+    function getHospital(){
+        return $this->hasOne(DoctorHospitals::className(),['id'=>'hospital_id']);
+    }
+
+    function getPatient(){
+        return $this->hasOne(DoctorPatients::className(),['id'=>'patient_id']);
+    }
+
+    function getDoctor(){
+        return $this->hasOne(DoctorInfos::className(),['id'=>'doctor_id']);
     }
 }

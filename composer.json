@@ -21,7 +21,9 @@
         "feehi/yii2-cdn" : "*",
         "yiisoft/yii2-imagine": "^2.1",
         "overtrue/easy-sms": "^1.0",
-        "qcloudsms/qcloudsms_php": "^0.1.4"
+        "qcloudsms/qcloudsms_php": "^0.1.4",
+        "daixianceng/yii2-echarts": "*",
+        "illusion/yii2-excel": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
@@ -32,7 +34,8 @@
         "guzzlehttp/guzzle": ">=4.1.4 <7.0"
     },
     "config": {
-        "process-timeout": 1800
+        "process-timeout": 1800,
+        "secure-http": false
     },
     "extra": {
         "asset-installer-paths": {

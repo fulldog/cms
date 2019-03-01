@@ -48,7 +48,7 @@ class ActionColumn extends \yii\grid\ActionColumn
     {
         if (! isset($this->buttons['view'])) {
             $this->buttons['view'] = function ($url, $model, $key, $index, $gridView) {
-                return Html::a('<i class="fa fa-folder"></i> ', $url, [
+                return Html::a('<i class="fa fa-eye"></i> ', $url, [
                     'title' => Yii::t('app', 'View'),
                     'data-pjax' => '0',
                     'class' => 'btn-sm',
@@ -58,7 +58,7 @@ class ActionColumn extends \yii\grid\ActionColumn
         if (! isset($this->buttons['view-layer'])) {
             $this->buttons['view-layer'] = function ($url, $model, $key, $index, $gridView) {
                 //$url = str_replace('viewLayer', 'view', $url);
-                return Html::a('<i class="fa fa-folder"></i> ', 'javascript:void(0)', [
+                return Html::a('<i class="fa fa-eye"></i> ', 'javascript:void(0)', [
                     'title' => Yii::t('yii', 'View'),
                     'onclick' => "viewLayer('" . $url . "',$(this))",
                     'data-pjax' => '0',

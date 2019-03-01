@@ -20,7 +20,7 @@ class Bar extends Widget
     public $options = [
         'class' => 'mail-tools tooltip-demo m-t-md',
     ];
-    public $template = "{refresh} {create} {delete}";
+    public $template = "{refresh} {create} {delete} ";
 
 
     /**
@@ -84,6 +84,18 @@ class Bar extends Widget
                     'data-pjax' => '0',
                     'data-confirm' => Yii::t('app', 'Really to delete?'),
                     'class' => 'btn btn-white btn-sm multi-operate',
+                ]);
+            };
+        }
+
+        if (! isset($this->buttons['export'])) {
+            $this->buttons['export'] = function () {
+                return Html::a('<i class="fa fa-download"></i> ' . Yii::t('app', 'Export'), Url::to(['export','data'=>Yii::$app->request->get()]), [
+                    'title' => Yii::t('app', 'Export'),
+                    'data-pjax' => '1',
+                    'target'=>'_blank',
+//                    'data-confirm' => '确定要导出当前查询条件的数据吗？',
+                    'class' => 'btn btn-white btn-sm ',
                 ]);
             };
         }
