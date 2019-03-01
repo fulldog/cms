@@ -12,14 +12,16 @@ use common\models\doctors\DoctorCommission;
  */
 class CommissionSearch extends DoctorCommission
 {
+    public $patient_name;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'hospital_id', 'patient_id', 'point', 'created_at', 'updated_at'], 'integer'],
-            [['extend1', 'extend2', 'extend3'], 'safe'],
+            [['id', 'hospital_id', 'point', 'created_at', 'updated_at'], 'integer'],
+            [['extend1', 'extend2', 'extend3','patient_id'], 'safe'],
         ];
     }
 
@@ -49,6 +51,20 @@ class CommissionSearch extends DoctorCommission
             'query' => $query,
         ]);
 
+        $name = $params['CommissionSearch']['patient_id'];
+//        unset($params['CommissionSearch']['patient_id']);
+        $names_id = [];
+        if ($name){
+            $names = DoctorPatients::find()->select(['id'])->where(['like','name',$name])->asArray()->all();
+            if (!empty($names)){
+                foreach ($names as $v){
+                    $names_id[] = $v['id'];
+                }
+            }else{
+                $names_id[] = 0;
+            }
+        }
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -67,15 +83,15 @@ class CommissionSearch extends DoctorCommission
         $query->andFilterWhere([
             'id' => $this->id,
             'hospital_id' => $this->hospital_id,
-            'patient_id' => $this->patient_id,
+//            'patient_id' => $this->patient_id,
             'point' => $this->point,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
-
-        $query->andFilterWhere(['like', 'extend1', $this->extend1])
-            ->andFilterWhere(['like', 'extend2', $this->extend2])
-            ->andFilterWhere(['like', 'extend3', $this->extend3]);
+        $query->andFilterWhere(['in','patient_id',$names_id]);
+//        $query->andFilterWhere(['like', 'extend1', $this->extend1])
+//            ->andFilterWhere(['like', 'extend2', $this->extend2])
+//            ->andFilterWhere(['like', 'extend3', $this->extend3]);
 
         return $dataProvider;
     }

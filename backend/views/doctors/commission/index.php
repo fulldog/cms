@@ -33,8 +33,10 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Commission');
                             'attribute'=>'hospital_id'
                         ],
                         [
-                            'label'=>'病人名称',
-                            'attribute'=>'patient.name'
+                            'attribute'=>'patient_id',
+                            'value'=>function($model){
+                                return $model->patient->name;
+                            },
                         ],
                         [
                             'label'=>'身份证',
