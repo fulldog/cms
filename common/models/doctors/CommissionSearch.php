@@ -51,7 +51,7 @@ class CommissionSearch extends DoctorCommission
             'query' => $query,
         ]);
 
-        $name = $params['CommissionSearch']['patient_id'];
+        $name = $params['CommissionSearch']['patient_id'] ?? '';
 //        unset($params['CommissionSearch']['patient_id']);
         $names_id = [];
         if ($name){

@@ -3,6 +3,7 @@
 namespace backend\controllers\doctors;
 
 use backend\actions\ExportAction;
+use common\models\doctors\DoctorHospitals;
 use common\models\doctors\DoctorInfos;
 use Yii;
 use common\models\doctors\DoctorMoneylogSearch;
@@ -76,18 +77,53 @@ class MoneylogController extends \yii\web\Controller
 
     /**
      * 单日或单月财务图表
-     * @param string $s
+     * @param string $time
+     * @return string
      */
-    function actionEchart($s='day'){
-
+    function actionChart(){
+        $data = Yii::$app->request->post('data');
+        if (!Yii::$app->user->identity->hospital_id){
+            $hospital_id = $data['hospital_id'] ?? null;
+        }else{
+            $hospital_id = Yii::$app->user->identity->hospital_id;
+        }
+        $query = DoctorMoneylog::find()->select('sum(money) as money,type,status')->andFilterWhere([
+            'hospital_id'=>$hospital_id,
+        ]);
+        if ($data['time']){
+            $time = explode('~',$data['time']);
+            $query->andFilterWhere(['between','created_at',strtotime($time[0]),strtotime($time[1])]);
+        }
+//        echo $query->createCommand()->getRawSql();
+        $json['title'] = '全平台收益';
+        if ($hospital_id){
+            $hospital = DoctorHospitals::findOne(['id'=>$hospital_id]);
+            $json['title'] = $hospital->hospital_name.'收益';
+        }
+        $res = $query->groupBy(['status','type'])->asArray()->all();
+        if (!empty($res)){
+            foreach ($res as $item){
+                if ($item['status']==1 && $item['type']=='add'){
+                    $json['add'] = $item['money'];
+                }elseif ($item['status']==1 && $item['type']=='reduce'){
+                    $json['reduce'] = $item['money'];
+                }else{
+                    $json['reduce_no'] = $item['money'];
+                }
+            }
+        }
+        return $this->render($this->action->id,[
+            'hospital'=>DoctorHospitals::find()->getHospitals(),
+            'post'=>$data,
+            'json'=>$json,
+        ]);
     }
 
     function actionExport(){
         $title = ['医院名称','医生姓名','病人名称','病人身份证','类型','状态','描述','金额','创建时间'];
         $data = [];
-
         $get = \yii::$app->getRequest()->get('data');
-        $query = DoctorMoneylog::find();
+        $query = DoctorMoneylog::find()->with('hospital')->with('doctor')->with('patient');
         $keyId = 'hospital_id';
         $inputName = 'DoctorMoneylogSearch';
         if (isset($get[$inputName])){

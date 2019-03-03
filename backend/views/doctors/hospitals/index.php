@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Hospitals');
 //                            'attribute' => 'id',
 //                        ],
                         'hospital_name',
-                        'province',
                         [
                             'attribute'=>'status',
                             'value'=>function($model){
@@ -38,6 +37,7 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Hospitals');
                             'format'=>'raw',
                             'filter'=>\common\models\doctors\My::_getStatusAll()
                         ],
+                        'province',
                         'city',
                         'area',
 //                        [
