@@ -64,8 +64,6 @@ class DoctorPatientsSearch extends DoctorPatients
             'doctor_id' => $this->doctor_id,
             'is_transfer' => $this->is_transfer,
             'id_number' => $this->id_number,
-//            'created_at' => $this->created_at,
-//            'updated_at' => $this->updated_at,
             'age' => $this->age,
             'sex' => $this->sex,
             'phone' => $this->phone,
