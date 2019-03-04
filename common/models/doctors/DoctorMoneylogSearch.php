@@ -57,22 +57,17 @@ class DoctorMoneylogSearch extends DoctorMoneylog
             // $query->where('0=1');
             return $dataProvider;
         }
-        if (Yii::$app->user->identity->hospital_id){
-            $query->andFilterWhere([
-                'hospital_id' => Yii::$app->user->identity->hospital_id,
-            ]);
-        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'doctor_id' => $this->doctor_id,
             'patient_id' => $this->patient_id,
             'money' => $this->money,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
             'status' => $this->status,
         ]);
-
+        $this->SearchAddHospitalId($query);
+        $this->SearchAddTime($query,$params,__CLASS__);
         $query->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'desc', $this->desc]);
 

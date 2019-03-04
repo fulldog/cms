@@ -56,15 +56,11 @@ class DoctorPatientsSearch extends DoctorPatients
             // $query->where('0=1');
             return $dataProvider;
         }
-        if (Yii::$app->user->identity->hospital_id){
-            $query->andFilterWhere([
-                'hospital_id' => Yii::$app->user->identity->hospital_id,
-            ]);
-        }
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'hospital_id' => $this->hospital_id,
+//            'hospital_id' => $this->hospital_id,
             'doctor_id' => $this->doctor_id,
             'is_transfer' => $this->is_transfer,
             'id_number' => $this->id_number,
@@ -74,14 +70,8 @@ class DoctorPatientsSearch extends DoctorPatients
             'sex' => $this->sex,
             'phone' => $this->phone,
         ]);
-        if (isset($params['DoctorPatientsSearch']['created_at']) && $params['DoctorPatientsSearch']['created_at']){
-            $created_at = explode('~',$params['DoctorPatientsSearch']['created_at']);
-            $query->andFilterWhere(['between','created_at',strtotime($created_at[0]),strtotime($created_at[1])]);
-        }
-        if (isset($params['DoctorPatientsSearch']['updated_at']) && $params['DoctorPatientsSearch']['updated_at']){
-            $updated_at = explode('~',$params['DoctorPatientsSearch']['updated_at']);
-            $query->andFilterWhere(['between','created_at',strtotime($updated_at[0]),strtotime($updated_at[1])]);
-        }
+        $this->SearchAddHospitalId($query);
+        $this->SearchAddTime($query,$params,__CLASS__);
         $query->andFilterWhere(['like', 'name', $this->name])
 //            ->andFilterWhere(['like', 'phone', $this->phone])
 //            ->andFilterWhere(['like', 'sex', $this->sex])

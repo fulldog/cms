@@ -73,21 +73,17 @@ class CommissionSearch extends DoctorCommission
             return $dataProvider;
         }
 
-        if (Yii::$app->user->identity->hospital_id){
-            $query->andFilterWhere([
-                'hospital_id' => Yii::$app->user->identity->hospital_id,
-            ]);
-        }
-
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'hospital_id' => $this->hospital_id,
+//            'hospital_id' => $this->hospital_id,
 //            'patient_id' => $this->patient_id,
             'point' => $this->point,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+//            'created_at' => $this->created_at,
+//            'updated_at' => $this->updated_at,
         ]);
+        $this->SearchAddHospitalId($query);
+        $this->SearchAddTime($query,$params,__CLASS__);
         $query->andFilterWhere(['in','patient_id',$names_id]);
 //        $query->andFilterWhere(['like', 'extend1', $this->extend1])
 //            ->andFilterWhere(['like', 'extend2', $this->extend2])

@@ -51,10 +51,10 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Commission');
                             'class' => \backend\grid\DateColumn::className(),
                             'attribute' => 'created_at',
                         ],
-                        [
-                            'class' => \backend\grid\DateColumn::className(),
-                            'attribute' => 'updated_at',
-                        ],
+//                        [
+//                            'class' => \backend\grid\DateColumn::className(),
+//                            'attribute' => 'updated_at',
+//                        ],
 
                         ['class' => ActionColumn::className(),],
                     ],

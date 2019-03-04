@@ -64,8 +64,13 @@ class DadminUserSearch extends DadminUser
         if (! $this->validate()) {
             return $dataProvider;
         }
-        $query->andFilterWhere(['like', 'username', $this->name_fix.$this->username])
-            ->andFilterWhere(['like', 'email', $this->email])
+        if (Yii::$app->user->identity->hospital_id){
+            $query->andFilterWhere([
+                'hospital_id' => Yii::$app->user->identity->hospital_id,
+            ]);
+        }
+        $query->andFilterWhere(['like', 'username', $this->username])
+//            ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['status' => $this->status]);
 
         $this->trigger(SearchEvent::BEFORE_SEARCH, Yii::createObject([ 'class' => SearchEvent::className(), 'query'=>$query]));

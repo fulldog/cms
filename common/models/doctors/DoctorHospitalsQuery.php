@@ -34,11 +34,12 @@ class DoctorHospitalsQuery extends \yii\db\ActiveQuery
 
     function getHospitals($hospital_id=0): array {
         $data = [];
-        if ($hospital_id){
-            $this->andFilterWhere(['id'=>$hospital_id]);
-        }
-        elseif (\Yii::$app->user->identity->hospital_id){
+        if (\Yii::$app->user->identity->hospital_id){
             $this->andFilterWhere(['id'=>\Yii::$app->user->identity->hospital_id]);
+        }else{
+            if ($hospital_id){
+                $this->andFilterWhere(['id'=>$hospital_id]);
+            }
         }
         $temp = $this->select(['id','hospital_name'])->asArray()->all();
         if (!empty($temp)){
