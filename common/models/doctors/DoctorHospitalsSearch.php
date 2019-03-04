@@ -72,7 +72,7 @@ class DoctorHospitalsSearch extends DoctorHospitals
 //            'created_at' => $this->created_at,
 //            'updated_at' => $this->updated_at,
         ]);
-        $this->SearchAddHospitalId($query);
+        $this->SearchAddHospitalId($query,'id');
         $this->SearchAddTime($query,$params,__CLASS__);
         $query->andFilterWhere(['like', 'hospital_name', $this->hospital_name])
             ->andFilterWhere(['like', 'city', $this->city])

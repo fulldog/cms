@@ -64,14 +64,14 @@ class My extends ActiveRecord
         return $this->hasOne(DoctorInfos::className(),['id'=>'doctor_id']);
     }
 
-    function SearchAddHospitalId($query){
+    function SearchAddHospitalId($query,$key='hospital_id'){
         if (\Yii::$app->user->identity->hospital_id){
             $query->andFilterWhere([
-                'hospital_id' => \Yii::$app->user->identity->hospital_id,
+                $key => \Yii::$app->user->identity->hospital_id,
             ]);
         }else{
             $query->andFilterWhere([
-                'hospital_id' => $this->hospital_id,
+                $key => $this->$key,
             ]);
         }
         return $query;
