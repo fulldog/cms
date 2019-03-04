@@ -35,8 +35,8 @@ class User extends \common\models\User
             ['email', 'email'],
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
             [['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-            [['username', 'email', 'password', 'repassword'], 'required', 'on' => ['create']],
-            [['username', 'email'], 'required', 'on' => ['update']],
+            [['username', 'password', 'repassword'], 'required', 'on' => ['create']],
+            [['username'], 'required', 'on' => ['update']],
         ];
     }
 

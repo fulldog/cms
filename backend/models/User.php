@@ -60,8 +60,8 @@ class User extends \common\models\User
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
             [['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
             [['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-            [['username', 'email', 'password', 'repassword'], 'required', 'on' => ['create']],
-            [['username', 'email'], 'required', 'on' => ['update', 'self-update']],
+            [['username', 'password', 'repassword'], 'required', 'on' => ['create']],
+            [['username'], 'required', 'on' => ['update', 'self-update']],
             [['username'], 'unique', 'on' => 'create'],
             [['roles', 'permissions'], 'safe'],
         ];

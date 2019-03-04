@@ -111,4 +111,43 @@ class DadminUserController extends AdminUserController
         }
         return true;
     }
+
+    /**
+     * 修改管理员账号
+     *
+     * @auth - item group=权限 category=管理员 description=修改 sort-get=526 sort-post=527 method=get,post
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws \Throwable
+     */
+    public function actionUpdate($id)
+    {
+        $model = User::findOne($id);
+        $model->setScenario('update');
+        $model->roles = $model->permissions = call_user_func(function() use($id){
+            $permissions = Yii::$app->getAuthManager()->getAssignments($id);
+            foreach ($permissions as $k => &$v){
+                $v = $k;
+            }
+            return $permissions;
+        });
+        if (Yii::$app->getRequest()->getIsPost()) {
+            if ($model->load(Yii::$app->request->post()) && $model->save() && $model->assignPermission() ) {
+                Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
+                return $this->redirect(['update', 'id' => $model->getPrimaryKey()]);
+            } else {
+                $errors = $model->getErrors();
+                $err = '';
+                foreach ($errors as $v) {
+                    $err .= $v[0] . '<br>';
+                }
+                Yii::$app->getSession()->setFlash('error', $err);
+            }
+//            $model = User::findOne(['id' => Yii::$app->getUser()->getIdentity()->getId()]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
 }
