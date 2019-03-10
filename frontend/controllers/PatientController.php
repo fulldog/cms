@@ -75,6 +75,12 @@ class PatientController extends BaseController
             ];
         }
         $patient = DoctorPatients::findOne(['id' => $_post['patient_id']]);
+        if ($patient->is_transfer>0){
+            return [
+                'code' => 0,
+                'msg' => '转诊病人不能再次转移！'
+            ];
+        }
         $patient->is_transfer = 1;
         $patient->transfer_doctor = $patient->doctor_id;
         $patient->hospital_id = $_post['hospital_id'];
@@ -97,7 +103,7 @@ class PatientController extends BaseController
      *我的病人
      */
     function actionList($page = 1)
-    {
+    {$this->uid= 7;
         return [
             'data' => DoctorPatients::find()->where(['doctor_id' => $this->uid])
                 ->orWhere(['transfer_doctor'=>$this->uid])
