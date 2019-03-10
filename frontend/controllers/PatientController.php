@@ -10,12 +10,17 @@ namespace frontend\controllers;
 
 use common\models\doctors\DoctorInfos;
 use common\models\doctors\DoctorPatients;
+use common\models\Options;
+use GuzzleHttp\Client;
 use yii\helpers\ArrayHelper;
 use Yii;
+use yii\helpers\Json;
 
 
 class PatientController extends BaseController
 {
+
+    const PAGE_SIZE = 50;
 
     function behaviors()
     {
@@ -63,7 +68,7 @@ class PatientController extends BaseController
     function actionTransfer()
     {
         $_post = Yii::$app->request->post();
-        if (!$_post['patient_id'] || $_post['hospital_id']) {
+        if (!$_post['patient_id'] || !$_post['hospital_id']) {
             return [
                 'code' => 0,
                 'msg' => '参数错误:hospital_id'
@@ -116,12 +121,25 @@ class PatientController extends BaseController
         ];
     }
 
-    function actionGetFee($patient_id)
+    function actionPayLog($patient_id, $date)
     {
-        $patient = DoctorPatients::findOne(['id' => $patient_id]);
+        $patient = DoctorPatients::find()->where(['id' => $patient_id])->with('hospital')->one();
         $post = [
-            'sign'=>md5($patient->id_number.$patient->getHospital())
+            'sign' => md5($patient->id_number . $patient->hospital->code),
+            'start_time' =>strtotime($date),
+            'end_time'=>strtotime($date)+1*24*3600-1,
+            'id_card'=>$patient->id_number,
+            'hospital_code'=>$patient->hospital->code,
+            'page'=>1,
+            'limit'=>self::PAGE_SIZE
         ];
 
+        return $this->runPayLog($post);
+    }
+
+    function runPayLog($post){
+        $api = Options::findOne(['name'=>'api_url'])->value;
+        $client = new Client();
+        return \GuzzleHttp\json_decode($client->post($api,$post)->getBody()->getContents());
     }
 }
