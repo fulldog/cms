@@ -51,7 +51,7 @@ class IndexController extends BaseController
             'code'=>1,
             'msg'=>'',
             'doctors'=>DoctorInfos::findAll(),
-            'users'=>User::find()->select('*')->all()
+//            'users'=>User::find()->select('*')->all()
         ];
     }
 
@@ -136,7 +136,9 @@ class IndexController extends BaseController
             'data'=>[
                 'banners'=>$imgs,
                 'recommend_hospitals'=>DoctorHospitals::findAll(['recommend'=>1,'status'=>1]),
-                'recommend_doctors'=>DoctorInfos::find()->where(['recommend'=>1,'status'=>1])->with('hospital')->all(),
+                'recommend_doctors'=>DoctorInfos::find()->where(['recommend'=>1,'status'=>1])->with(['hospital'=>function($query){
+                    $query->select('id,hospital_name,city,address,levels,province,area,grade,recommend,status,tel');
+                }])->asArray()->all(),
             ]
         ];
     }
