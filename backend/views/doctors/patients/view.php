@@ -26,21 +26,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'desc:ntext',
             [
                 'label'=>'所属医院',
-                'value'=>function($model){
-                    $info = \common\models\doctors\DoctorHospitals::findOne(['id'=>$model->hospital_id]);
-                    if ($info){
-                        return $info->hospital_name;
-                    }
-                },
+                'attribute'=>'hospital.hospital_name'
             ],
             [
                 'label'=>'所属医生',
-                'value'=>function($model){
-                    $info = \common\models\doctors\DoctorInfos::findOne(['id'=>$model->doctor_id]);
-                    if ($info){
-                        return $info->name;
-                    }
-                },
+                'attribute'=>'doctor.name'
             ],
             [
                 'attribute'=>'is_transfer',

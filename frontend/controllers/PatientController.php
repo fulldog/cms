@@ -43,7 +43,7 @@ class PatientController extends BaseController
         $_post['hospital_id'] = DoctorInfos::getHospitalIdByUid($_post['doctor_id']);
 
         $model = new DoctorPatients();
-        if ($model->load($_post,'') && $model->save()){
+        if ($model->load($_post, '') && $model->save()) {
             return [
                 'data' => $model->toArray(),
                 'code' => 1,
@@ -90,13 +90,13 @@ class PatientController extends BaseController
     /**
      *我的病人/转给wode
      */
-    function actionTransfer_list($is_ransfer=false,$page=0)
+    function actionTransfer_list($is_ransfer = false, $page = 0)
     {
-        if ($is_ransfer =='is_ransfer'){
+        if ($is_ransfer == 'is_ransfer') {
             $is_ransfer = true;
         }
         return [
-            'data' => DoctorPatients::getPatientsByDoctorId($this->_getUid(),$page,$is_ransfer),
+            'data' => DoctorPatients::getPatientsByDoctorId($this->_getUid(), $page, $is_ransfer),
             'code' => 1,
             'msg' => ''
         ];
@@ -114,5 +114,14 @@ class PatientController extends BaseController
             'code' => 1,
             'msg' => ''
         ];
+    }
+
+    function actionGetFee($patient_id)
+    {
+        $patient = DoctorPatients::findOne(['id' => $patient_id]);
+        $post = [
+            'sign'=>md5($patient->id_number.$patient->getHospital())
+        ];
+
     }
 }

@@ -135,8 +135,4 @@ class DoctorInfos extends My
     function getRelatedUser(){
         return $this->hasOne(User::className(),['id'=>'uid']);
     }
-
-    function getRelatedHospital(){
-        return $this->hasOne(DoctorHospitals::className(),['id'=>'hospital_id']);
-    }
 }

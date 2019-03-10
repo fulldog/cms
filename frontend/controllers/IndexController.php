@@ -136,7 +136,7 @@ class IndexController extends BaseController
             'data'=>[
                 'banners'=>$imgs,
                 'recommend_hospitals'=>DoctorHospitals::findAll(['recommend'=>1,'status'=>1]),
-                'recommend_doctors'=>DoctorInfos::findAll(['recommend'=>1,'status'=>1]),
+                'recommend_doctors'=>DoctorInfos::find()->where(['recommend'=>1,'status'=>1])->with('hospital')->all(),
             ]
         ];
     }

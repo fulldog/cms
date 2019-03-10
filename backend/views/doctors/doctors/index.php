@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Infos');
 //                        ],
                         [
                             'label'=>'所属医院',
-                            'value'=>'relatedHospital.hospital_name',
+                            'value'=>'hospital.hospital_name',
                             'filter'=>false
                         ],
                         [

@@ -28,11 +28,11 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Patients');
 //                        'id',
                         'name',
                         [
-                            'attribute'=>'relateHospital.hospital_name',
+                            'attribute'=>'hospital.hospital_name',
                             'label'=>'所属医院'
                         ],
                         [
-                            'attribute'=>'relateDoctor.name',
+                            'attribute'=>'doctor.name',
                             'label'=>'所属医生'
                         ],
 

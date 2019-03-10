@@ -21,21 +21,23 @@ $this->params['breadcrumbs'][] = $this->title;
             'uid',
             [
                 'label'=>'手机号',
-                'value'=>function($model){
-                    $info = \common\models\doctors\DoctorUser::findOne(['id'=>$model->uid]);
-                    if ($info){
-                        return $info->username;
-                    }
-                },
+                'attribute' => 'relatedUser.username',
+//                'value'=>function($model){
+//                    $info = \common\models\doctors\DoctorUser::findOne(['id'=>$model->uid]);
+//                    if ($info){
+//                        return $info->username;
+//                    }
+//                },
             ],
             [
                 'label'=>'所属医院',
-                'value'=>function($model){
-                    $info = \common\models\doctors\DoctorHospitals::findOne(['id'=>$model->hospital_id]);
-                    if ($info){
-                        return $info->hospital_name;
-                    }
-                },
+                'attribute' => 'hospital.hospital_name',
+//                'value'=>function($model){
+//                    $info = \common\models\doctors\DoctorHospitals::findOne(['id'=>$model->hospital_id]);
+//                    if ($info){
+//                        return $info->hospital_name;
+//                    }
+//                },
             ],
             'name',
             [
@@ -70,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function($model){
                     $imgs = '';
-                    if ($model->certificate){
+                    if ($model->certificate && !empty($model->certificate)){
                         foreach ($model->certificate as $v){
                             $imgs .="<img style='max-width:200px;max-height:200px' src='" . $v . "' >";
                         }
