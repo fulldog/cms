@@ -19,6 +19,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'hospital_name',
+            [
+                'attribute' => 'avatar',
+                'format' => 'raw',
+                'value' => function($model){
+                    if ($model->avatar){
+                        return "<img style='max-width:200px;max-height:200px' src='" . $model->avatar . "' >";
+                    }
+                }
+            ],
             'tel',
             'invite',
             [

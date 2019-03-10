@@ -24,6 +24,7 @@ use Yii;
  * @property string $code
  * @property string $tel
  * @property string $invite
+ * @property string $avatar
  */
 class DoctorHospitals extends My
 {
@@ -45,9 +46,9 @@ class DoctorHospitals extends My
     {
         return [
             [['hospital_name', 'province','tel'], 'required'],
-            [['created_at', 'updated_at'], 'integer'],
-            [['imgs', 'grade', 'area', 'status','tel', 'invite'], 'safe'],
-            [['hospital_name', 'city', 'address', 'levels', 'code'], 'string', 'max' => 255],
+            [['created_at', 'updated_at','recommend'], 'integer'],
+            [['imgs', 'grade', 'area', 'status','tel', 'invite','avatar'], 'safe'],
+            [['hospital_name', 'city', 'address', 'levels', 'code',], 'string', 'max' => 255],
         ];
     }
 
@@ -73,6 +74,7 @@ class DoctorHospitals extends My
             'code' => '医院代码',
             'tel' => '电话',
             'invite' => '被邀请码',
+            'avatar' => '头像'
         ];
     }
 
