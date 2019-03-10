@@ -35,7 +35,7 @@ class DoctorController extends BaseController
     function actionSubmit()
     {
         $_post = \Yii::$app->request->post();
-        $uid = $this->_getUid();
+        $uid = $this->uid;
         $model = DoctorInfos::findOne(['uid'=>$uid]);
         if (!$model){
             $model = new DoctorInfos();

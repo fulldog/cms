@@ -11,6 +11,7 @@ use Yii;
  * @property int $hospital_id 所属医院
  * @property int $doctor_id 所属医生
  * @property int $is_transfer 转诊
+ * @property int $transfer_doctor 转诊医生
  * @property string $name 姓名
  * @property string $phone 手机
  * @property string $sex 性别
@@ -36,7 +37,7 @@ class DoctorPatients extends My
     public function rules()
     {
         return [
-            [['hospital_id', 'doctor_id', 'is_transfer','created_at', 'updated_at', 'age'], 'integer'],
+            [['hospital_id', 'doctor_id', 'is_transfer','created_at', 'updated_at', 'age','transfer_doctor'], 'integer'],
             [['doctor_id','hospital_id','name'], 'required'],
             [['desc','id_number'], 'string'],
             [['name', 'phone', 'sex'], 'string', 'max' => 255],
@@ -53,6 +54,7 @@ class DoctorPatients extends My
             'hospital_id' => '所属医院',
             'doctor_id' => '所属医生',
             'is_transfer' => '转诊',
+            'transfer_doctor' => '转诊医生',
             'name' => '姓名',
             'phone' => '手机',
             'sex' => '性别',
@@ -73,17 +75,7 @@ class DoctorPatients extends My
         return new DoctorPatientsQuery(get_called_class());
     }
 
-    static function getPatientsByDoctorId($DoctorId,$page,$is_transfer = false)
-    {
-        $query = self::find()->limit(20)->offset(20*$page)->where(['doctor_id' => $DoctorId]);
-        if ($is_transfer){
-             $query->andWhere(['is_transfer'=>1]);
-        }
-        return $query->all();
-    }
-
-    function IsTransferText(){
-        $map = ['否','是'];
-        return $map[$this->is_transfer];
+    function getTransferDoctor(){
+       return $this->hasOne(DoctorInfos::className(),['id'=>'transfer_doctor']);
     }
 }

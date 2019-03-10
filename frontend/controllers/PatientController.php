@@ -20,15 +20,15 @@ use yii\helpers\Json;
 class PatientController extends BaseController
 {
 
-    const PAGE_SIZE = 50;
+    const PAGE_SIZE = 20;
 
     function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [
             'verbs' => [
                 'actions' => [
-                    'create' => ['POST'],
-                    'transfer' => ['POST'],
+                    'create' => [self::POST],
+                    'transfer' => [self::POST],
                 ],
             ],
 //            'access' => [
@@ -44,7 +44,7 @@ class PatientController extends BaseController
     function actionCreate()
     {
         $_post = Yii::$app->request->post();
-        $_post['doctor_id'] = $this->_getUid();
+        $_post['doctor_id'] = $this->uid;
         $_post['hospital_id'] = DoctorInfos::getHospitalIdByUid($_post['doctor_id']);
 
         $model = new DoctorPatients();
@@ -71,11 +71,12 @@ class PatientController extends BaseController
         if (!$_post['patient_id'] || !$_post['hospital_id']) {
             return [
                 'code' => 0,
-                'msg' => '参数错误:hospital_id'
+                'msg' => '参数错误'
             ];
         }
         $patient = DoctorPatients::findOne(['id' => $_post['patient_id']]);
-//        $patient->is_transfer = 0;
+        $patient->is_transfer = 1;
+        $patient->transfer_doctor = $patient->doctor_id;
         $patient->hospital_id = $_post['hospital_id'];
         $patient->doctor_id = 0;
         if ($patient->update()) {
@@ -87,21 +88,33 @@ class PatientController extends BaseController
         }
         return [
             'code' => 0,
-            'msg' => 'error'
+            'msg' => $patient->getFirstError()
         ];
     }
 
 
     /**
-     *我的病人/转给wode
+     *我的病人
      */
-    function actionTransfer_list($is_ransfer = false, $page = 0)
+    function actionList($page = 1)
     {
-        if ($is_ransfer == 'is_ransfer') {
-            $is_ransfer = true;
-        }
         return [
-            'data' => DoctorPatients::getPatientsByDoctorId($this->_getUid(), $page, $is_ransfer),
+            'data' => DoctorPatients::find()->where(['doctor_id' => $this->uid])
+                ->orWhere(['transfer_doctor'=>$this->uid])
+                ->offset(self::PAGE_SIZE * ($page - 1))->asArray()->all(),
+            'code' => 1,
+            'msg' => ''
+        ];
+    }
+
+    /**
+     *转给wode
+     */
+    function actionTransfer_list($page = 1)
+    {
+        return [
+            'data' => DoctorPatients::find()->where(['doctor_id' => $this->uid, 'is_transfer' => 1])
+                ->offset(self::PAGE_SIZE * ($page - 1))->asArray()->all(),
             'code' => 1,
             'msg' => ''
         ];
@@ -113,7 +126,6 @@ class PatientController extends BaseController
      */
     function actionDetail($patient_id)
     {
-//        $patient_id = Yii::$app->request->get('patient_id');
         return [
             'data' => DoctorPatients::findOne(['id' => $patient_id]),
             'code' => 1,
@@ -126,20 +138,27 @@ class PatientController extends BaseController
         $patient = DoctorPatients::find()->where(['id' => $patient_id])->with('hospital')->one();
         $post = [
             'sign' => md5($patient->id_number . $patient->hospital->code),
-            'start_time' =>strtotime($date),
-            'end_time'=>strtotime($date)+1*24*3600-1,
-            'id_card'=>$patient->id_number,
-            'hospital_code'=>$patient->hospital->code,
-            'page'=>1,
-            'limit'=>self::PAGE_SIZE
+            'start_time' => $date,
+            'end_time' => date('Y-m-d', strtotime('+1 day', strtotime($date))),
+            'id_card' => $patient->id_number,
+            'hospital_code' => $patient->hospital->code,
+//            'page'=>1,
+            'limit' => self::PAGE_SIZE
         ];
 
         return $this->runPayLog($post);
     }
 
-    function runPayLog($post){
-        $api = Options::findOne(['name'=>'api_url'])->value;
+    function runPayLog($post, $page = 1)
+    {
+        $post['page'] = $page;
+        $api = Options::findOne(['name' => 'api_url'])->value;
         $client = new Client();
-        return \GuzzleHttp\json_decode($client->post($api,$post)->getBody()->getContents());
+        $data = [
+            'body' => json_encode($post, JSON_UNESCAPED_UNICODE),
+            'headers' => ['content-type' => 'application/json']
+        ];
+        $response = $client->post($api, $data);
+        return Json::decode($response->getBody()->getContents());
     }
 }
