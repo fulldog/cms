@@ -18,6 +18,7 @@ use backend\widgets\ActiveForm;
                 ]); ?>
                 <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'hospital_name')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'status')->dropDownList(\common\models\doctors\My::_getStatusAll()) ?>
                         <?= $form->field($model, 'recommend')->dropDownList(\common\models\doctors\My::_getStatusAll('recommend')) ?>

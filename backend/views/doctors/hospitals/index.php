@@ -37,15 +37,19 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Hospitals');
                             'format'=>'raw',
                             'filter'=>\common\models\doctors\My::_getStatusAll()
                         ],
-                        'province',
-                        'city',
-                        'area',
-//                        [
+                        'tel',
+                        'invite',
+                        'code',
+//                        'province',
+//                        'city',
+//                        'area',
+                        [
 //                            'attribute' => 'address',
-//                            'value'=>function($model){
-//                                return $model->province.'-'.$model->city.'-'.$model->area.'-'.$model->address;
-//                            }
-//                        ],
+                            'label'=>'省-市-区',
+                            'value'=>function($model){
+                                return $model->province.'-'.$model->city.'-'.$model->area;
+                            }
+                        ],
                         'address',
                         'grade',
                         [
@@ -60,10 +64,10 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Hospitals');
                             'class' => DateColumn::className(),
                             'attribute' => 'created_at',
                         ],
-                        [
-                            'class' => DateColumn::className(),
-                            'attribute' => 'updated_at',
-                        ],
+//                        [
+//                            'class' => DateColumn::className(),
+//                            'attribute' => 'updated_at',
+//                        ],
                         [
 //                            'attribute' => '',
                             'label'=>'管理账号',

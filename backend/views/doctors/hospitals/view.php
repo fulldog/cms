@@ -19,6 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'hospital_name',
+            'tel',
+            'invite',
             [
                 'attribute'=>'status',
                 'value'=>function($model){

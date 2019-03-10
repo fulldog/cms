@@ -37,6 +37,8 @@ class SettingWebsiteForm extends \common\models\Options
 
     public $seo_description;
 
+    public $api_url;
+
 
     /**
      * @inheritdoc
@@ -56,6 +58,7 @@ class SettingWebsiteForm extends \common\models\Options
             'website_url' => Yii::t('app', 'Website Url'),
             'seo_keywords' => Yii::t('app', 'Seo Keywords'),
             'seo_description' => Yii::t('app', 'Seo Description'),
+            'api_url' => '流水接口',
         ];
     }
 
@@ -75,10 +78,12 @@ class SettingWebsiteForm extends \common\models\Options
                     'website_timezone',
                     'website_url',
                     'seo_keywords',
-                    'seo_description'
+                    'seo_description',
+                    'api_url'
                 ],
                 'string'
             ],
+            [['api_url','website_url'],'url','defaultScheme' => 'http'],
             [['website_status', 'website_comment', 'website_comment_need_verify'], 'integer'],
         ];
     }

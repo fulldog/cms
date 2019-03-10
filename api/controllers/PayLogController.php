@@ -1,6 +1,7 @@
 <?php
 namespace api\controllers;
 
+use Guzzle\Http\Client;
 use yii\web\Response;
 
 class PayLogController extends \yii\rest\ActiveController
@@ -53,4 +54,8 @@ class PayLogController extends \yii\rest\ActiveController
         ];
     }
 
+    function actionTest(){
+        $client = new Client();
+        return $client->createRequest('GET','http://58.19.245.66:9090')->send()->getBody();
+    }
 }

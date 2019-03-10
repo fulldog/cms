@@ -56,6 +56,7 @@ return [
                 'login' => 'site/login',
                 'register' => 'site/register',
                 'paylog' => 'pay-log/index',
+                'test' => 'pay-log/test',
                 [
                     'class' => yii\rest\UrlRule::className(),
                     'controller' => ['user', 'article'],
