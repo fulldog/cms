@@ -17,6 +17,16 @@ use backend\actions\ViewAction;
  */
 class HospitalsController extends \yii\web\Controller
 {
+
+    /**
+     * @auth
+     * - item group=转诊平台 category=医院管理 description-get=列表 sort=0 method=get
+     * - item group=转诊平台 category=医院管理 description-get=查看 sort=0 method=get  
+     * - item group=转诊平台 category=医院管理 description=创建 sort-get=0 sort-post=0 method=get,post  
+     * - item group=转诊平台 category=医院管理 description=修改 sort=0 sort-post=0 method=get,post  
+     * - item group=转诊平台 category=医院管理 description-post=删除 sort=0 method=post  
+     * @return array
+     */
     public function actions()
     {
         return [
@@ -33,6 +43,10 @@ class HospitalsController extends \yii\web\Controller
                     
                 }
             ],
+            'view-layer' => [
+                'class' => ViewAction::className(),
+                'modelClass' => DoctorHospitals::className(),
+            ],
             'create' => [
                 'class' => CreateAction::className(),
                 'modelClass' => DoctorHospitals::className(),
@@ -43,14 +57,6 @@ class HospitalsController extends \yii\web\Controller
             ],
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => DoctorHospitals::className(),
-            ],
-            'sort' => [
-                'class' => SortAction::className(),
-                'modelClass' => DoctorHospitals::className(),
-            ],
-            'view-layer' => [
-                'class' => ViewAction::className(),
                 'modelClass' => DoctorHospitals::className(),
             ],
         ];

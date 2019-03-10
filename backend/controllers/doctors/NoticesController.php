@@ -16,6 +16,15 @@ use backend\actions\ViewAction;
  */
 class NoticesController extends \yii\web\Controller
 {
+    /**
+     * @auth
+     * - item group=转诊平台 category=公告 description-get=列表 sort=0 method=get
+     * - item group=转诊平台 category=公告 description-get=查看 sort=0 method=get  
+     * - item group=转诊平台 category=公告 description=创建 sort-get=0 sort-post=0 method=get,post  
+     * - item group=转诊平台 category=公告 description=修改 sort=0 sort-post=0 method=get,post  
+     * - item group=转诊平台 category=公告 description-post=删除 sort=0 method=post  
+     * @return array
+     */
     public function actions()
     {
         return [
@@ -32,6 +41,10 @@ class NoticesController extends \yii\web\Controller
                     
                 }
             ],
+            'view-layer' => [
+                'class' => ViewAction::className(),
+                'modelClass' => DoctorNotices::className(),
+            ],
             'create' => [
                 'class' => CreateAction::className(),
                 'modelClass' => DoctorNotices::className(),
@@ -44,14 +57,7 @@ class NoticesController extends \yii\web\Controller
                 'class' => DeleteAction::className(),
                 'modelClass' => DoctorNotices::className(),
             ],
-            'sort' => [
-                'class' => SortAction::className(),
-                'modelClass' => DoctorNotices::className(),
-            ],
-            'view-layer' => [
-                'class' => ViewAction::className(),
-                'modelClass' => DoctorNotices::className(),
-            ],
+
         ];
     }
 }

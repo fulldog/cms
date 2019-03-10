@@ -25,6 +25,14 @@ class DadminUserController extends AdminUserController
 {
     protected $name_fix = 'hospital_admin';
 
+    /**
+     * @auth
+     *
+     * - item group=转诊平台 category=管理员 description-get=列表 sort=0 method=get
+     * - item group=转诊平台 category=管理员 description-get=查看 sort=0 method=get  
+     * - item group=转诊平台 category=管理员 description-post=删除 sort=0 method=post  
+     * @return array
+     */
     public function actions()
     {
         return [
@@ -48,17 +56,14 @@ class DadminUserController extends AdminUserController
                 'class' => DeleteAction::className(),
                 'modelClass' => DadminUser::className(),
             ],
-            'sort' => [
-                'class' => SortAction::className(),
-                'modelClass' => DadminUser::className(),
-            ],
         ];
     }
 
     /**
      * 创建管理员账号
      *
-     * @auth - item group=权限 category=管理员 description=创建 sort-get=524 sort-post=525 method=get,post
+     * @auth - item group=转诊平台 category=管理员 description=创建 sort-get=0 sort-post=0 method=get,post
+     *
      * @return string|\yii\web\Response
      * @throws \yii\base\InvalidConfigException
      */
@@ -69,9 +74,9 @@ class DadminUserController extends AdminUserController
         $model->setScenario('create');
         if (Yii::$app->getRequest()->getIsPost()) {
             $data = Yii::$app->getRequest()->post();
-            if ($data["DadminUser"]['username']){
-                $data["DadminUser"]['username'] = $this->name_fix.$data["DadminUser"]['username'];
-            }
+//            if ($data["DadminUser"]['username']){
+//                $data["DadminUser"]['username'] = $this->name_fix.$data["DadminUser"]['username'];
+//            }
             if ( $model->load($data) && $model->save() && $model->assignPermission() ) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
@@ -92,6 +97,9 @@ class DadminUserController extends AdminUserController
 
     /**
      * 创建医院管理员
+     *
+     * @auth - item group=转诊平台 category=管理员 description=创建(医院列表) sort-get=0 method=get
+     *
      * @param $hospital_id
      * @return string|\yii\web\Response
      * @throws \yii\base\InvalidConfigException
@@ -115,7 +123,8 @@ class DadminUserController extends AdminUserController
     /**
      * 修改管理员账号
      *
-     * @auth - item group=权限 category=管理员 description=修改 sort-get=526 sort-post=527 method=get,post
+     * @auth - item group=转诊平台 category=管理员 description=修改 sort-get=0 sort-post=0 method=get,post
+     *
      * @param $id
      * @return string|\yii\web\Response
      * @throws \Throwable

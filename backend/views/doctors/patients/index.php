@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Patients');
                       'headerOptions' => ['width' => '10%'],
                       'attribute' => 'name',
                   ],
+                  'invite',
                   [
                       'attribute' => 'hospital.hospital_name',
                       'label' => '所属医院'

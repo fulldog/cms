@@ -20,6 +20,7 @@ use Yii;
  * @property int $create_at 创建时间
  * @property int $update_at 更新时间
  * @property int $age 年龄
+ * @property int $invite 被邀请码
  */
 class DoctorPatients extends My
 {
@@ -40,7 +41,7 @@ class DoctorPatients extends My
             [['hospital_id', 'doctor_id', 'is_transfer','created_at', 'updated_at', 'age','transfer_doctor'], 'integer'],
             [['doctor_id','hospital_id','name'], 'required'],
             [['desc','id_number'], 'string'],
-            [['name', 'phone', 'sex'], 'string', 'max' => 255],
+            [['name', 'phone', 'sex','invite'], 'string', 'max' => 255],
         ];
     }
 
@@ -63,6 +64,7 @@ class DoctorPatients extends My
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
             'age' => '年龄',
+            'invite' =>'被邀请码'
         ];
     }
 

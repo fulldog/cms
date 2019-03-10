@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Hospitals');
                             'filter'=>\common\models\doctors\My::_getStatusAll()
                         ],
                         'tel',
-                        'invite',
+//                        'invite',
                         'code',
 //                        'province',
 //                        'city',

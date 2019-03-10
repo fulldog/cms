@@ -15,6 +15,7 @@ $this->params['breadcrumbs'] = [
  * @var $model backend\models\User
  */
 ?>
+<h3>注：业务员的账号即为其推广码！</h3>
 <?= $this->render('_form', [
     'model' => $model,
 ]); ?>

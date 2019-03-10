@@ -6,9 +6,10 @@
  * Created at: 2016-04-02 10:02
  */
 
-namespace backend\controllers;
+namespace backend\controllers\doctors;
 
 use backend\actions\ViewAction;
+use backend\controllers\UserController;
 use backend\models\Duser;
 use backend\models\search\DuserSearch;
 use Yii;
@@ -24,12 +25,11 @@ class DuserController extends UserController
 
     /**
      * @auth
-     * - item group=用户 category=前台用户 description-get=列表 sort=400 method=get
-     * - item group=用户 category=前台用户 description-get=查看 sort=401 method=get  
-     * - item group=用户 category=前台用户 description=创建 sort-get=402 sort-post=403 method=get,post  
-     * - item group=用户 category=前台用户 description=修改 sort-get=404 sort-post=405 method=get,post  
-     * - item group=用户 category=前台用户 description-post=删除 sort=406 method=post  
-     * - item group=用户 category=前台用户 description-post=排序 sort=407 method=post  
+     * - item group=转诊平台 category=医生账号 description-get=列表 sort=0 method=get
+     * - item group=转诊平台 category=医生账号 description-get=查看 sort=0 method=get  
+     * - item group=转诊平台 category=医生账号 description=创建 sort-get=0 sort-post=0 method=get,post  
+     * - item group=转诊平台 category=医生账号 description=修改 sort=0 sort-post=0 method=get,post  
+     * - item group=转诊平台 category=医生账号 description-post=删除 sort=0 method=post  
      * @return array
      */
     public function actions()
@@ -65,10 +65,10 @@ class DuserController extends UserController
                 'class' => DeleteAction::className(),
                 'modelClass' => Duser::className(),
             ],
-            'sort' => [
-                'class' => SortAction::className(),
-                'modelClass' => Duser::className(),
-            ],
+//            'sort' => [
+//                'class' => SortAction::className(),
+//                'modelClass' => Duser::className(),
+//            ],
         ];
     }
 }

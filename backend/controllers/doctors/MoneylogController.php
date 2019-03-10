@@ -19,6 +19,16 @@ use backend\actions\ViewAction;
  */
 class MoneylogController extends \yii\web\Controller
 {
+
+    /**
+     * @auth
+     * - item group=转诊平台 category=资金结算 description-get=列表 sort=0 method=get
+     * - item group=转诊平台 category=资金结算 description-get=查看 sort=0 method=get  
+     * - item group=转诊平台 category=资金结算 description=创建 sort-get=0 sort-post=0 method=get,post  
+     * - item group=转诊平台 category=资金结算 description=修改 sort=0 sort-post=0 method=get,post  
+     * - item group=转诊平台 category=资金结算 description-post=删除 sort=0 method=post  
+     * @return array
+     */
     public function actions()
     {
         return [
@@ -33,6 +43,10 @@ class MoneylogController extends \yii\web\Controller
                         ];
                 }
             ],
+            'view-layer' => [
+                'class' => ViewAction::className(),
+                'modelClass' => DoctorMoneylog::className(),
+            ],
             'create' => [
                 'class' => CreateAction::className(),
                 'modelClass' => DoctorMoneylog::className(),
@@ -45,17 +59,12 @@ class MoneylogController extends \yii\web\Controller
                 'class' => DeleteAction::className(),
                 'modelClass' => DoctorMoneylog::className(),
             ],
-            'sort' => [
-                'class' => SortAction::className(),
-                'modelClass' => DoctorMoneylog::className(),
-            ],
-            'view-layer' => [
-                'class' => ViewAction::className(),
-                'modelClass' => DoctorMoneylog::className(),
-            ],
         ];
     }
 
+    /**
+     * @auth - item group=转诊平台 category=资金结算 description=同意提现 sort-get=0 method=get
+     */
     function actionStatusSucc($id){
         $model = DoctorMoneylog::findOne(['id'=>$id]);
         $doctor = DoctorInfos::findOne(['id'=>$model->doctor_id]);
@@ -77,8 +86,8 @@ class MoneylogController extends \yii\web\Controller
 
     /**
      * 单日或单月财务图表
-     * @param string $time
-     * @return string
+     *
+     * @auth - item group=转诊平台 category=资金结算 description=图表查看 sort-get=0 sort-post=0 method=get,post
      */
     function actionChart(){
         $data = Yii::$app->request->post('data');
@@ -119,6 +128,9 @@ class MoneylogController extends \yii\web\Controller
         ]);
     }
 
+    /**
+     * @auth - item group=转诊平台 category=资金结算 description=导出表格 sort-get=0 method=get
+     */
     function actionExport(){
         $title = ['医院名称','医生姓名','病人名称','病人身份证','类型','状态','描述','金额','创建时间'];
         $data = [];

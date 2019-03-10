@@ -90,9 +90,9 @@ class FeehiController extends Controller
 
         if( !empty($needAdds) ) {
             if (
-                !$this->confirm("确定要增加下面这些规则吗?" . PHP_EOL . implode(PHP_EOL, ArrayHelper::getColumn($needAdds, 'name')) . PHP_EOL, false)
+                !$this->confirm("are u sure add this rules?" . PHP_EOL . implode(PHP_EOL, ArrayHelper::getColumn($needAdds, 'name')) . PHP_EOL, false)
             ) {
-                $this->stdout("已取消增加" . PHP_EOL, Console::FG_GREEN);
+                $this->stdout("cancel" . PHP_EOL, Console::FG_GREEN);
             } else {
                 foreach ($needAdds as $k => $v) {
                     /** @var Rbac $model */
@@ -115,9 +115,9 @@ class FeehiController extends Controller
         if( !empty($needModifies) ) {
 
             if (
-                !$this->confirm("确定要修改下面这些规则吗?" . PHP_EOL . implode(PHP_EOL, ArrayHelper::getColumn($needModifies, 'name')) . PHP_EOL, false)
+                !$this->confirm("are u sure edit this rules?" . PHP_EOL . implode(PHP_EOL, ArrayHelper::getColumn($needModifies, 'name')) . PHP_EOL, false)
             ) {
-                $this->stdout("已取消修改" . PHP_EOL, Console::FG_GREEN);
+                $this->stdout("cancel" . PHP_EOL, Console::FG_GREEN);
             } else {
                 foreach ($needModifies as $k => $v) {
                     /** @var Rbac $model */
@@ -136,9 +136,9 @@ class FeehiController extends Controller
 
         if( !empty($needRemoves) ) {
             if (
-                !$this->confirm("确定要删除下面这些规则吗?" . PHP_EOL . implode(PHP_EOL, $needRemoves) . PHP_EOL, false)
+                !$this->confirm("are u sure delete this rules??" . PHP_EOL . implode(PHP_EOL, $needRemoves) . PHP_EOL, false)
             ) {
-                $this->stdout("已取消删除" . PHP_EOL, Console::FG_GREEN);
+                $this->stdout("cancel" . PHP_EOL, Console::FG_GREEN);
             } else {
                 foreach ($needRemoves as $k => $v) {
                     /** @var Rbac $model */
@@ -149,9 +149,9 @@ class FeehiController extends Controller
             }
         }
 
-        $this->stdout("不受rbac权限控制的控制器" . PHP_EOL);
+        $this->stdout("not in rbac-rules controllers" . PHP_EOL);
         $this->stdout(implode(PHP_EOL, $obj->getNoNeedRbacControllers()) . PHP_EOL . PHP_EOL, Console::FG_BLUE);
-        $this->stdout("不受权限控制的方法" . PHP_EOL);
+        $this->stdout("not in rbac-rules method" . PHP_EOL);
         $this->stdout(implode(PHP_EOL, $obj->getNoNeedRbacRoutes()) . PHP_EOL, Console::FG_BLUE);
 
     }

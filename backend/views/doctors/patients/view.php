@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
+            'invite',
             'phone',
             'sex',
             'age',

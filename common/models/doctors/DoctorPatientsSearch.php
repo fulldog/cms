@@ -19,7 +19,7 @@ class DoctorPatientsSearch extends DoctorPatients
     {
         return [
             [['id', 'hospital_id', 'doctor_id', 'is_transfer', 'age'], 'integer'],
-            [['name', 'phone', 'sex', 'desc','id_number'], 'safe'],
+            [['name', 'phone', 'sex', 'desc','id_number','invite'], 'safe'],
         ];
     }
 

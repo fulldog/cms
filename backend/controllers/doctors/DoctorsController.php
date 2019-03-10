@@ -17,6 +17,16 @@ use backend\actions\ViewAction;
  */
 class DoctorsController extends \yii\web\Controller
 {
+
+    /**
+     * @auth
+     * - item group=转诊平台 category=医生信息 description-get=列表 sort=0 method=get
+     * - item group=转诊平台 category=医生信息 description=创建 sort-get=0 sort-post=0 method=get,post  
+     * - item group=转诊平台 category=医生信息 description=修改 sort=0 sort-post=0 method=get,post  
+     * - item group=转诊平台 category=医生信息 description-post=删除 sort=0 method=post  
+     * - item group=转诊平台 category=医生信息 description-get=查看 sort=0 method=get  
+     * @return array
+     */
     public function actions()
     {
         return [
@@ -41,10 +51,6 @@ class DoctorsController extends \yii\web\Controller
             ],
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => DoctorInfos::className(),
-            ],
-            'sort' => [
-                'class' => SortAction::className(),
                 'modelClass' => DoctorInfos::className(),
             ],
             'view-layer' => [
