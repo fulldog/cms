@@ -57,7 +57,8 @@ class GetFee extends Controller
         ];
     }
 
-    function post(){
+    function post()
+    {
         $client = new Client();
     }
 }
