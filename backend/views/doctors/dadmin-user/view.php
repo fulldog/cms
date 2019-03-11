@@ -16,7 +16,15 @@ use yii\widgets\DetailView;
     'attributes' => [
         'id',
         'username',
-        'email',
+        'job_number',
+        [
+            'attribute' => 'role',
+            'label' => Yii::t('app', 'Role'),
+            'value' => function ($model) {
+                /** @var $model backend\models\User */
+                return $model->getRolesNameString();
+            },
+        ],
         [
             'attribute' => 'avatar',
             'format' => 'raw',

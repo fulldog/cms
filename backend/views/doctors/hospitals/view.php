@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'tel',
-//            'invite',
+            'invite',
             [
                 'attribute'=>'status',
                 'value'=>function($model){

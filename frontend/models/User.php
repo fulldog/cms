@@ -8,6 +8,7 @@
 
 namespace frontend\models;
 
+use common\models\doctors\DoctorInfos;
 use Exception;
 use Yii;
 use common\helpers\Util;
@@ -98,4 +99,7 @@ class User extends \common\models\User
         return true;
     }
 
+    function getDoctor(){
+        return $this->hasOne(DoctorInfos::className(),['uid'=>'id']);
+    }
 }

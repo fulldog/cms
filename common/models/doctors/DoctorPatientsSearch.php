@@ -70,6 +70,12 @@ class DoctorPatientsSearch extends DoctorPatients
         ]);
         $this->SearchAddHospitalId($query);
         $this->SearchAddTime($query,$params,__CLASS__);
+
+        if (\Yii::$app->user->identity->job_number){
+            $query->andFilterWhere([
+                'invite'=>\Yii::$app->user->identity->username
+            ]);
+        }
         $query->andFilterWhere(['like', 'name', $this->name])
 //            ->andFilterWhere(['like', 'phone', $this->phone])
 //            ->andFilterWhere(['like', 'sex', $this->sex])

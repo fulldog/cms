@@ -60,9 +60,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Admin Users');
                                 return $model->getRolesNameString();
                             },
                         ],
-//                        [
-//                            'attribute' => 'email',
-//                        ],
+                        [
+                            'attribute' => 'job_number',
+                        ],
+                        [
+                            'attribute' => 'hospital.hospital_name',
+                        ],
                         [
                             'attribute' => 'status',
                             'label' => Yii::t('app', 'Status'),

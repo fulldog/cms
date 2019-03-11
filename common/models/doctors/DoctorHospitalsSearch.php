@@ -26,7 +26,7 @@ class DoctorHospitalsSearch extends DoctorHospitals
     {
         return [
             [['status', 'recommend'], 'integer'],
-            [['hospital_name', 'city', 'address','grade','province','area'], 'safe'],
+            [['hospital_name', 'city', 'address','grade','province','area','invite'], 'safe'],
         ];
     }
 
@@ -74,6 +74,13 @@ class DoctorHospitalsSearch extends DoctorHospitals
         ]);
         $this->SearchAddHospitalId($query,'id');
         $this->SearchAddTime($query,$params,__CLASS__);
+
+        if (\Yii::$app->user->identity->job_number){
+            $query->andFilterWhere([
+                'invite'=>\Yii::$app->user->identity->job_number
+            ]);
+        }
+
         $query->andFilterWhere(['like', 'hospital_name', $this->hospital_name])
             ->andFilterWhere(['like', 'city', $this->city])
             ->andFilterWhere(['like', 'address', $this->address])

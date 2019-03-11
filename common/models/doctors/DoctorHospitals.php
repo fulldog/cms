@@ -73,7 +73,7 @@ class DoctorHospitals extends My
             'status' => '状态',
             'code' => '医院代码',
             'tel' => '电话',
-            'invite' => '被邀请码',
+            'invite' => '邀请工号',
             'avatar' => '头像'
         ];
     }
@@ -93,7 +93,7 @@ class DoctorHospitals extends My
         if (!$value) {
             return $query->all();
         }
-        return $query->andWhere($coloum . ' like "%' . $value . '%"')->all();
+        return $query->andWhere($coloum . ' like "' . $value . '%"')->all();
     }
 
     function beforeSave($insert)

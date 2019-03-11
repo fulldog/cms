@@ -31,7 +31,7 @@ class DadminUserSearch extends DadminUser
     public function rules()
     {
         return [
-            [['username', 'email', 'created_at', 'updated_at'], 'string'],
+            [['username', 'email', 'created_at', 'updated_at','job_number'], 'string'],
             ['status', 'integer'],
         ];
     }

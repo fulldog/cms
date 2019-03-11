@@ -25,6 +25,7 @@ class DadminUserController extends AdminUserController
 {
     protected $name_fix = 'hospital_admin';
 
+    private $hospital_admin_role = '医院管理员';
     /**
      * @auth
      *
@@ -107,12 +108,17 @@ class DadminUserController extends AdminUserController
     function actionHospital($hospital_id){
         $model = Yii::createObject( DadminUser::className() );
         $model->setScenario('create');
-//        $model->username = $this->name_fix.$hospital_id;
+        $model->username = $this->name_fix.$hospital_id;
         $model->hospital_id = $hospital_id;
-        $model->username = $model->password= $this->name_fix.$hospital_id;
+        $model->password = '123456';
         $model->permissions = [];
 
         if ($model->save() && $model->assignPermission() ) {
+            Yii::$app->db->createCommand()->insert('auth_assignment', [
+                'item_name' => $this->hospital_admin_role,
+                'user_id' => $model->id,
+                'created_at' => time(),
+            ])->execute();
             Yii::$app->getSession()->setFlash('success', '创建成功');
         } else {
             Yii::$app->getSession()->setFlash('error', $model->getFirstError());
@@ -131,7 +137,7 @@ class DadminUserController extends AdminUserController
      */
     public function actionUpdate($id)
     {
-        $model = User::findOne($id);
+        $model = DadminUser::findOne($id);
         $model->setScenario('update');
         $model->roles = $model->permissions = call_user_func(function() use($id){
             $permissions = Yii::$app->getAuthManager()->getAssignments($id);

@@ -15,6 +15,13 @@ use common\helpers\Util;
 use yii\base\Event;
 use yii\web\ForbiddenHttpException;
 
+/**
+ * DadminUser model
+ *
+ * @property string $hospital_id
+ * @property string $job_number
+ */
+
 class DadminUser extends User
 {
 
@@ -25,7 +32,8 @@ class DadminUser extends User
     public function rules()
     {
         return [
-            [['username', 'password', 'repassword', 'password_hash'], 'string'],
+            [['username', 'password', 'repassword', 'password_hash','job_number'], 'string'],
+            ['hospital_id', 'integer'],
             ['email', 'email'],
             ['email', 'unique'],
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
@@ -35,6 +43,36 @@ class DadminUser extends User
             [['username'], 'required', 'on' => ['update', 'self-update']],//, 'email'
             [['username'], 'unique', 'on' => 'create'],
             [['roles', 'permissions'], 'safe'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'username' => Yii::t('app', 'Username'),
+            'hospital_id' => '所属医院ID',
+            'job_number' => '工号',
+            'email' => Yii::t('app', 'Email'),
+            'old_password' => Yii::t('app', 'Old Password'),
+            'password' => Yii::t('app', 'Password'),
+            'repassword' => Yii::t('app', 'Repeat Password'),
+            'avatar' => Yii::t('app', 'Avatar'),
+            'status' => Yii::t('app', 'Status'),
+            'created_at' => Yii::t('app', 'Created At'),
+            'updated_at' => Yii::t('app', 'Updated At')
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        return [
+            'default' => ['username', 'email'],
+            'create' => ['username', 'email', 'password', 'avatar', 'status', 'roles', 'permissions','hospital_id','job_number'],
+            'update' => ['username', 'email', 'password', 'avatar', 'status', 'roles', 'permissions','hospital_id','job_number'],
+            'self-update' => ['email', 'password', 'avatar', 'old_password', 'repassword'],
         ];
     }
 

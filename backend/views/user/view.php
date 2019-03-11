@@ -17,7 +17,7 @@ use yii\widgets\DetailView;
     'attributes' => [
         'id',
         'username',
-        'email',
+//        'email',
         [
             'attribute' => 'avatar',
             'format' => 'raw',

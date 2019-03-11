@@ -44,7 +44,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Users');
                             'attribute' => 'username',
                         ],
                         [
-                            'attribute' => 'email',
+                            'attribute' => 'doctor.name',
+                            'label'=>'关联医生'
                         ],
                         [
                             'attribute' => 'status',

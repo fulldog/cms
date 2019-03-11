@@ -45,6 +45,7 @@ if (!$model->isNewRecord){
 
                 <?= $form->field($model, 'username')->textInput(array_merge(['maxlength' => 64],$disabled)) ?>
                 <?= $form->field($model, 'hospital_id')->dropDownList(\common\models\doctors\DoctorHospitals::find()->getHospitals($model->hospital_id))->label('所属医院') ?>
+                <?= $form->field($model, 'job_number')->textInput() ?>
                 <div class="hr-line-dashed"></div>
 <!--                --><?//= $form->field($model, 'avatar')->imgInput() ?>
 <!--                <div class="hr-line-dashed"></div>-->
