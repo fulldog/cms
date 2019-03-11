@@ -105,10 +105,11 @@ class PatientController extends BaseController
      *我的病人
      */
     function actionList($page = 1)
-    {$this->uid= 7;
+    {
+        $doctor = DoctorInfos::findOne(['uid'=>$this->uid]);
         return [
-            'data' => DoctorPatients::find()->where(['doctor_id' => $this->uid])
-                ->orWhere(['transfer_doctor'=>$this->uid])
+            'data' => DoctorPatients::find()->where(['doctor_id' => $doctor->id])
+                ->orWhere(['transfer_doctor'=>$doctor->id])
                 ->offset(self::PAGE_SIZE * ($page - 1))->asArray()->all(),
             'code' => 1,
             'msg' => ''
@@ -120,8 +121,9 @@ class PatientController extends BaseController
      */
     function actionTransfer_list($page = 1)
     {
+        $doctor = DoctorInfos::findOne(['uid'=>$this->uid]);
         return [
-            'data' => DoctorPatients::find()->where(['doctor_id' => $this->uid, 'is_transfer' => 1])
+            'data' => DoctorPatients::find()->where(['doctor_id' => $doctor->id, 'is_transfer' => 1])
                 ->offset(self::PAGE_SIZE * ($page - 1))->asArray()->all(),
             'code' => 1,
             'msg' => ''
@@ -146,8 +148,8 @@ class PatientController extends BaseController
         $patient = DoctorPatients::find()->where(['id' => $patient_id])->with('hospital')->one();
         $post = [
             'sign' => md5($patient->id_number . $patient->hospital->code),
-            'start_time' => $date,
-            'end_time' => date('Y-m-d', strtotime('+1 day', strtotime($date))),
+            'start_time' => strtotime($date),
+            'end_time' => strtotime('+1 day', strtotime($date))-1,
             'id_card' => $patient->id_number,
             'hospital_code' => $patient->hospital->code,
 //            'page'=>1,

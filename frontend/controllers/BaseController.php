@@ -51,7 +51,7 @@ class BaseController extends Controller
                'rules' => [
                    [
                        'allow' => true,// 设置 actions 的操作是允许访问还是拒绝访问
-                       'roles' => ['@'], // @ 当前规则针对认证过的用户， ？所有用户均可访问
+                       'roles' => ['?'], // @ 当前规则针对认证过的用户， ？所有用户均可访问
 //                        'ips' => ['127.0.0.1'],//这里填写允许访问的IP
 //                       'actions'=>[], // 当前 rule 将会针对这里设置的 actions 起作用，如果为空，则默认对当前 controller 的所actions 起作用
                    ],
