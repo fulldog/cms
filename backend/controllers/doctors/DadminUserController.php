@@ -75,9 +75,9 @@ class DadminUserController extends AdminUserController
         $model->setScenario('create');
         if (Yii::$app->getRequest()->getIsPost()) {
             $data = Yii::$app->getRequest()->post();
-//            if ($data["DadminUser"]['username']){
-//                $data["DadminUser"]['username'] = $this->name_fix.$data["DadminUser"]['username'];
-//            }
+            if (empty($data["DadminUser"]['hospital_id'])){
+                $data["DadminUser"]['hospital_id'] = 0;
+            }
             if ( $model->load($data) && $model->save() && $model->assignPermission() ) {
                 Yii::$app->getSession()->setFlash('success', Yii::t('app', 'Success'));
                 return $this->redirect(['index']);
