@@ -44,8 +44,10 @@ class PatientController extends BaseController
     function actionCreate()
     {
         $_post = Yii::$app->request->post();
-        $_post['doctor_id'] = $this->uid;
-        $_post['hospital_id'] = DoctorInfos::getHospitalIdByUid($_post['doctor_id']);
+
+        $doctor = DoctorInfos::findOne(['uid'=>$this->uid]);
+        $_post['doctor_id'] = $doctor->id;
+        $_post['hospital_id'] = $doctor->hospital_id;
 
         $model = new DoctorPatients();
         if ($model->load($_post, '') && $model->save()) {
