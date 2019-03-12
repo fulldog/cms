@@ -27,7 +27,9 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Commission');
                         [
                             'label'=>'所属医院',
                             'value'=>function($model){
-                                return $model->hospital->hospital_name;
+                                if($model->hospital){
+                                    return $model->hospital->hospital_name;
+                                }
                             },
                             'filter'=>\common\models\doctors\DoctorHospitals::find()->getHospitals(),
                             'attribute'=>'hospital_id'
@@ -35,7 +37,8 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Commission');
                         [
                             'attribute'=>'patient_id',
                             'value'=>function($model){
-                                return $model->patient->name;
+                                if($model->patient)
+                                    return $model->patient->name;
                             },
                         ],
                         [

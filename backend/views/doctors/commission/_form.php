@@ -16,6 +16,7 @@ use backend\widgets\ActiveForm;
                         'class' => 'form-horizontal'
                     ]
                 ]); ?>
+                医院和病人不能同时为空！且如果重复添加数据，以最后添加的为主;比列为0-100的数字；
                 <div class="hr-line-dashed"></div>
                     <?= $form->field($model, 'hospital_id')->dropDownList(\common\models\doctors\DoctorHospitals::find()->getHospitals()) ?>
                         <div class="hr-line-dashed"></div>

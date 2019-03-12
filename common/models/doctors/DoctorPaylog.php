@@ -12,15 +12,17 @@ use Yii;
  * @property string $hospital_name
  * @property int $patient_id
  * @property string $patient_name
- * @property string $money
- * @property int $status
- * @property string $extend1
- * @property string $extend2
- * @property string $extend3
+ * @property string $out_trade_no
+ * @property string $id_card
+ * @property string $money 金额
+ * @property string $pay_status_text 状态
+ * @property string $row_number
+ * @property string $project
+ * @property string $sdesc
  * @property int $created_at
  * @property int $updated_at
  */
-class DoctorPaylog extends \common\models\doctors\My
+class DoctorPaylog extends My
 {
     /**
      * {@inheritdoc}
@@ -37,9 +39,12 @@ class DoctorPaylog extends \common\models\doctors\My
     {
         return [
             [['hospital_id', 'hospital_name', 'patient_id', 'patient_name'], 'required'],
-            [['hospital_id', 'patient_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['hospital_id', 'patient_id', 'created_at', 'updated_at'], 'integer'],
             [['money'], 'number'],
-            [['hospital_name', 'patient_name', 'extend1', 'extend2', 'extend3'], 'string', 'max' => 255],
+            [['hospital_name', 'out_trade_no', 'project', 'sdesc'], 'string', 'max' => 100],
+            [['patient_name', 'row_number'], 'string', 'max' => 50],
+            [['id_card'], 'string', 'max' => 20],
+            [['pay_status_text'], 'string', 'max' => 10],
         ];
     }
 
@@ -54,13 +59,15 @@ class DoctorPaylog extends \common\models\doctors\My
             'hospital_name' => 'Hospital Name',
             'patient_id' => 'Patient ID',
             'patient_name' => 'Patient Name',
+            'out_trade_no' => 'Out Trade No',
+            'id_card' => 'Id Card',
             'money' => '金额',
-            'status' => 'Status',
-            'id_number' => '身份证',
-            'extend2' => 'Extend2',
-            'extend3' => 'Extend3',
-            'created_at' => '创建时间',
-            'updated_at' => '修改时间',
+            'pay_status_text' => '状态',
+            'row_number' => 'Row Number',
+            'project' => 'Project',
+            'sdesc' => 'Sdesc',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
 }

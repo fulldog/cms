@@ -3,6 +3,7 @@
 namespace common\models\doctors;
 
 use backend\models\DadminUser;
+use common\helpers\CommonHelpers;
 use Yii;
 
 /**
@@ -99,9 +100,11 @@ class DoctorHospitals extends My
     function beforeSave($insert)
     {
         if ($this->imgs && is_array($this->imgs)) {
-            $this->imgs = json_encode($this->imgs);
+            $this->imgs = CommonHelpers::base64ToImg($this->imgs);
         }
-
+        if ($this->avatar) {
+            $this->avatar = CommonHelpers::base64ToImgOne($this->avatar);
+        }
         if (empty($this->code)) {
             $this->code = $this->createCode();
         }
