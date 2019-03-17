@@ -16,9 +16,8 @@ use Yii;
  * @property string $id_card
  * @property string $money 金额
  * @property string $pay_status_text 状态
- * @property string $row_number
  * @property string $project
- * @property string $sdesc
+ * @property string $desc
  * @property int $created_at
  * @property int $updated_at
  */
@@ -41,8 +40,8 @@ class DoctorPaylog extends My
             [['hospital_id', 'hospital_name', 'patient_id', 'patient_name'], 'required'],
             [['hospital_id', 'patient_id', 'created_at', 'updated_at'], 'integer'],
             [['money'], 'number'],
-            [['hospital_name', 'out_trade_no', 'project', 'sdesc'], 'string', 'max' => 100],
-            [['patient_name', 'row_number'], 'string', 'max' => 50],
+            [['hospital_name', 'out_trade_no', 'project', 'desc'], 'string', 'max' => 100],
+            [['patient_name'], 'string', 'max' => 50],
             [['id_card'], 'string', 'max' => 20],
             [['pay_status_text'], 'string', 'max' => 10],
         ];
@@ -63,9 +62,8 @@ class DoctorPaylog extends My
             'id_card' => 'Id Card',
             'money' => '金额',
             'pay_status_text' => '状态',
-            'row_number' => 'Row Number',
             'project' => 'Project',
-            'sdesc' => 'Sdesc',
+            'desc' => 'desc',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
