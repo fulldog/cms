@@ -85,7 +85,7 @@ $this->registerCss("
                 <div class="ibox-title">
                     <h5><?= Yii::t('app', 'Notify') ?></h5>
                     <div class="ibox-tools">
-                        <a target="_blank" href="http://api.feehi.com/cms"><?= Yii::t('app', 'More')?></a>
+                        <a target="_blank" href="#"><?= Yii::t('app', 'More')?></a>
                         <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         <a class="close-link"><i class="fa fa-times"></i></a>
                     </div>
@@ -253,31 +253,31 @@ $this->registerCss("
 <script>
 $(document).ready(function () {
     var notify = $("#notify");
-    $.ajax({
-        dataType:"jsonp",
-        url:"//api.feehi.com/cms/notify",
-        success:function (dataAll) {
-            data = dataAll.rows;
-            notify.empty();
-            var lis = "";
-            for(var index in data){
-                var label = '';
-                if( data[index].label ){
-                    label = data[index].label;
-                }
-                lis += "<li class='list-group-item'> \
-                                <a target='_blank' class='' href=\" " + data[index].href +" \"> " + data[index].title + " </a>\
-                                " + label +  "\
-                                <small class='pull-right block'>" + data[index].createdAt + "</small> \
-                        </li>"
-            }
-            notify.append(lis);
-        },
-        error:function (data) {
-            notify.empty();
-            notify.append("<li class='list-group-item'>Connect error</li>");
-        }
-    });
+    // $.ajax({
+    //     dataType:"jsonp",
+    //     url:"//api.feehi.com/cms/notify",
+    //     success:function (dataAll) {
+    //         data = dataAll.rows;
+    //         notify.empty();
+    //         var lis = "";
+    //         for(var index in data){
+    //             var label = '';
+    //             if( data[index].label ){
+    //                 label = data[index].label;
+    //             }
+    //             lis += "<li class='list-group-item'> \
+    //                             <a target='_blank' class='' href=\" " + data[index].href +" \"> " + data[index].title + " </a>\
+    //                             " + label +  "\
+    //                             <small class='pull-right block'>" + data[index].createdAt + "</small> \
+    //                     </li>"
+    //         }
+    //         notify.append(lis);
+    //     },
+    //     error:function (data) {
+    //         notify.empty();
+    //         notify.append("<li class='list-group-item'>Connect error</li>");
+    //     }
+    // });
 })
 </script>
 <?php JsBlock::end() ?>

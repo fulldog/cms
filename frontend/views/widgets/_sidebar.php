@@ -36,24 +36,24 @@ use frontend\models\FriendlyLink;
         </div>
     </div>
     <div class="widget d_textbanner">
-        <a class="style03" target="_blank"
-           href="http://shang.qq.com/wpa/qunwpa?idkey=3693ea25b07705069bc9210c5272830f2b00bd891b14bb6f60ce7bb070570aa9">
-            <strong><?=Yii::t('frontend', 'Join group')?></strong>
-            <h2><?=Yii::t('frontend', 'Official QQ group - main')?></h2>
-            <p><?=Yii::t('frontend', 'FeehiCMS official QQ group number: {number}', ['number'=>'258780872'])?>
-                <br>
-                <br>
-                <img border="0" src="<?=Yii::$app->getRequest()->getBaseUrl()?>/static/images/group.png" alt="feehi cms" title="feehi cms">
-            </p>
-        </a>
+<!--        <a class="style03" target="_blank"-->
+<!--           href="http://shang.qq.com/wpa/qunwpa?idkey=3693ea25b07705069bc9210c5272830f2b00bd891b14bb6f60ce7bb070570aa9">-->
+<!--            <strong>--><?//=Yii::t('frontend', 'Join group')?><!--</strong>-->
+<!--            <h2>--><?//=Yii::t('frontend', 'Official QQ group - main')?><!--</h2>-->
+<!--            <p>--><?//=Yii::t('frontend', 'FeehiCMS official QQ group number: {number}', ['number'=>'258780872'])?>
+<!--                <br>-->
+<!--                <br>-->
+<!--                <img border="0" src="--><?//=Yii::$app->getRequest()->getBaseUrl()?><!--/static/images/group.png" alt=" cms" title=" cms">-->
+<!--            </p>-->
+<!--        </a>-->
     </div>
 
     <div class="widget d_textbanner">
-        <a class="style01" target="_blank" href="http://cms.feehi.com">
-            <strong><?=Yii::t('frontend', 'New generation CMS FeehiCMS')?></strong>
-            <h2><?=Yii::t('frontend', 'Highly recommend')?></h2>
-            <p><?=Yii::t('frontend', 'FeehiCMS based on yii2, support php7, makes website more excellent...')?></p>
-        </a>
+<!--        <a class="style01" target="_blank" href="#">-->
+<!--            <strong>--><?//=Yii::t('frontend', 'New generation CMS FeehiCMS')?><!--</strong>-->
+<!--            <h2>--><?//=Yii::t('frontend', 'Highly recommend')?><!--</h2>-->
+<!--            <p>--><?//=Yii::t('frontend', 'FeehiCMS based on yii2, support php7, makes website more excellent...')?><!--</p>-->
+<!--        </a>-->
     </div>
 
     <div class="widget d_banner">

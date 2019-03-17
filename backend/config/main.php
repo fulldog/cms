@@ -54,7 +54,7 @@ return [
                     ],
                     'message' => [
                         'to' => ['admin@feehi.com', 'liufee@126.com'],//此处修改成自己接收错误的邮箱
-                        'subject' => '来自 Feehi CMS 后台的新日志消息',
+                        'subject' => '来自 CMS 后台的新日志消息',
                     ],
                 ],
             ],

@@ -1,6 +1,6 @@
 <?php
 $config = [
-    'name' => 'Feehi CMS',
+    'name' => 'CMS',
     'version' => '2.0.6',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'aliases' => [
@@ -45,7 +45,7 @@ $config = [
             ],
             'messageConfig' => [
                 'charset' => 'UTF-8',
-                'from' => ['admin@feehi.com' => 'Feehi CMS robot ']
+                'from' => ['admin@i.com' => ' CMS robot ']
             ],
         ],
         'feehi' => [

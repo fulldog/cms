@@ -36,8 +36,8 @@ return [
                         'yii\debug\Module::checkAccess',
                     ],
                     'message' => [
-                        'to' => ['admin@feehi.com', 'liufee@126.com'],
-                        'subject' => '来自 Feehi CMS api的新日志消息',
+                        'to' => ['admin@hi.com', ''],
+                        'subject' => '来自 CMS api的新日志消息',
                     ],
                 ],
             ],
