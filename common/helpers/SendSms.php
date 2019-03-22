@@ -69,23 +69,21 @@ class SendSms
     }
 
     /**
-     *   'appid' => '1400144048',
-        'appkey' => '2be1a87e8c089a38c0c13421cab78d09',
-        'templateId' => '202184',
-        //短信签名
-        'smsSign' => '洗e族',
+     * @param $phone
+     * @param $code
+     * @return bool
      */
     static function TenSend($phone, $code){
-        $appid = 1400144048;
-        $appkey = "2be1a87e8c089a38c0c13421cab78d09";
-        $templateId = 202184;
-        $smsSign = "洗e族";
+        $appid = 1400193446;
+        $appkey = "c52355f1ee7491c28e9c47984add35a4";
+        $templateId = 296930;
+        $smsSign = "杏林之家";
         try {
             $ssender = new SmsSingleSender($appid, $appkey);
             $params = [
                 $code,
-                10,//注册 模板场景$scene
-                rand(10, 99),
+                //10,//注册 模板场景$scene
+                //rand(10, 99),
                 5//有效期 分钟
             ];
             $result = $ssender->sendWithParam("86", $phone, $templateId, $params, $smsSign);  // 签名参数未提供或者为空时，会使用默认签名发送短信
