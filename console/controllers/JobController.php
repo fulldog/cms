@@ -69,6 +69,9 @@ class JobController extends Task
                                 $insert = [];
                                 $insert2 = [];
                                 foreach ($info as $k => $v) {
+                                    if (empty($v))
+                                        continue;
+
                                     $insert[] = [
                                         $patient->id,
                                         $k,
@@ -91,22 +94,22 @@ class JobController extends Task
                                         time()
                                     ];
                                 }
-                                $db = \Yii::$app->db;
-                                $tran = $db->beginTransaction();
-                                $commit = true;
                                 if (!empty($insert) && !empty($insert2)) {
+                                    $db = \Yii::$app->db;
+                                    $tran = $db->beginTransaction();
+                                    $commit = true;
                                     if (!$db->createCommand()->batchInsert(DoctorPatientDayMoney::tableName(), $this->day_log_keys, $insert)->execute()
                                         || !$db->createCommand()->batchInsert(DoctorMoneylog::tableName(), $this->menoylog_keys, $insert2)->execute()
                                     ) {
                                         $commit = false;
                                     }
-                                }
-                                if ($commit) {
-                                    $tran->commit();
-                                } else {
-                                    $tran->rollBack();
-                                    $this->logs['DoctorPatientDayMoney'] = $insert;
-                                    $this->logs['DoctorMoneylog'] = $insert2;
+                                    if ($commit) {
+                                        $tran->commit();
+                                    } else {
+                                        $tran->rollBack();
+                                        $this->logs['DoctorPatientDayMoney'] = $insert;
+                                        $this->logs['DoctorMoneylog'] = $insert2;
+                                    }
                                 }
                             } else {
                                 $this->logs['DoctorCommission'] = ['还没有配置当前病人得提成率', $patient->toArray()];
