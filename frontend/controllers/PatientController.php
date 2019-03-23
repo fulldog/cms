@@ -24,7 +24,7 @@ use yii\log\Logger;
 class PatientController extends BaseController
 {
 
-    const PAGE_SIZE = 20;
+    const PAGE_SIZE = 20 * 100;
 
     function behaviors()
     {
@@ -193,15 +193,7 @@ class PatientController extends BaseController
         set_time_limit(0);
         $patient = DoctorPatients::find()->where(['id' => $patient_id])->with('hospital')->one();
 
-//        $doctor = $this->getDoctor();
-//        if ($patient->is_transfer && $patient->transfer_doctor != $doctor->id){
-//            return [
-//                'code' => 0,
-//                'msg' => ''
-//            ];
-//        }
-
-        $logId = $this->has_check($patient_id, $patient->hospital->id, $date);
+//        $logId = $this->has_check($patient_id, $patient->hospital->id, $date);
 
         $config = Yii::$app->params['hospital_api'][$patient->hospital->code];
         if (empty($config)) {
@@ -226,6 +218,11 @@ class PatientController extends BaseController
         $client = new Client(['timeout' => 5]);
         try {
             $response = $client->post($api, ['form_params' => $post]);
+
+            //todo 这里不做任何操作，直接把数据仍给前端
+            exit($response->getBody()->getContents());
+
+            //todo 一下是逐条处理提成  移到定时任务处理
             $res = \GuzzleHttp\json_decode(trim($response->getBody()->getContents(), "\xEF\xBB\xBF"), true);
             $lists = [];
             if ($res['code'] == 200 && !empty($res['data'])) {
