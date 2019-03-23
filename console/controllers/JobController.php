@@ -21,6 +21,8 @@ set_time_limit(0);
 class JobController extends Task
 {
 
+    const GET_DAY_FLOW = "getDayFlow";
+
     private $hid;
     private $patients = [];
     private $date;
@@ -47,6 +49,18 @@ class JobController extends Task
         'status',
         'created_at',
     ];
+
+    /**
+     * 接口测试
+     */
+    function actionTest(){
+        $this->params = [
+            'sign'=>md5('42272219520826124234eIPM74Tj'),
+            'date'=>'2015-08-25',
+            'id_card'=>'420583199408123467,422723195401170437',
+        ];
+        print_r($this->curl('http://lixingss.gicp.net:24294/cbhis/admin.php/Index/findhj'));die;
+    }
 
     /**
      * 定时获取病人T-1日消费信息
@@ -158,6 +172,7 @@ class JobController extends Task
                             $this->params['id_card'] = $p->id_number;
                             $this->params['sign'] = md5($p->id_number . $item->code);
                             $this->params['date_time'] = $this->date;
+                            $this->params['method'] = self::GET_DAY_FLOW;
                             yield $this->curl($config['api_url']);
                         }
                     } else {

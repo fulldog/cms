@@ -25,6 +25,7 @@ class PatientController extends BaseController
 {
 
     const PAGE_SIZE = 20 * 100;
+    const GET_PAY_DETAIL = "getPayDetail";
 
     function behaviors()
     {
@@ -211,6 +212,7 @@ class PatientController extends BaseController
             'hospital_code' => $patient->hospital->code,
             'limit' => self::PAGE_SIZE,
             'page' => 1,
+            'method' => self::GET_PAY_DETAIL,
 //            'start_time' => strtotime($date),
 //            'end_time' => strtotime('+1 day', strtotime($date)) - 1,
         ];
