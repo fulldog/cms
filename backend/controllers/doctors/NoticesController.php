@@ -60,4 +60,8 @@ class NoticesController extends \yii\web\Controller
 
         ];
     }
+
+    function actionNotices(){
+        return $this->renderPartial('notices');
+    }
 }

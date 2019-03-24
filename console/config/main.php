@@ -27,11 +27,19 @@ return [
             'class' => yii\web\Session::className()
         ]
     ],
-    'controllerMap'=>[
+    'controllerMap' => [
         'serve' => [
             'class' => yii\console\controllers\ServeController::className(),
             'docroot' => '@frontend/web',
         ],
+//        'web-socket' => [
+//            'class' => 'console\controllers\WorkermanWebSocketController',
+//            'config' => [
+//                'ip' => '127.0.0.1',
+//                'port' => '2346',
+//                'daemonize' => true,
+//            ],
+//        ],
     ],
     'params' => $params,
 ];

@@ -47,12 +47,13 @@ class IndexController extends BaseController
 
     function actionIndex()
     {
-        return [
-            'code'=>1,
-            'msg'=>'',
-            'doctors'=>DoctorInfos::findAll(),
+        return Yii::$app->response->redirect('/html/');
+//        return [
+//            'code'=>1,
+//            'msg'=>'',
+//            'doctors'=>DoctorInfos::findAll(),
 //            'users'=>User::find()->select('*')->all()
-        ];
+//        ];
     }
 
     /**

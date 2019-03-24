@@ -51,7 +51,7 @@ class JobController extends Task
     ];
 
     /**
-     * 接口测试
+     * api test
      */
     function actionTest(){
         $this->params = [
@@ -63,7 +63,7 @@ class JobController extends Task
     }
 
     /**
-     * 定时获取病人T-1日消费信息
+     * get T-1 day pays
      */
     function actionIndex()
     {
