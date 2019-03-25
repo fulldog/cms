@@ -22,7 +22,7 @@ $config = [
             'class' => yii\caching\DummyCache::className(),//不使用缓存
         ],
         'formatter' => [//格式显示配置
-            'dateFormat' => 'php:Y-m-d H:i:s',
+            'dateFormat' => 'php:Y-m-d H:i',
             'decimalSeparator' => ',',
             'thousandSeparator' => ' ',
             'currencyCode' => 'CHY',
