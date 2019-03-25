@@ -22,6 +22,7 @@ $config = [
             'class' => yii\caching\DummyCache::className(),//不使用缓存
         ],
         'formatter' => [//格式显示配置
+            'defaultTimeZone'=>'Asia/Shanghai',
             'dateFormat' => 'php:Y-m-d H:i',
             'decimalSeparator' => ',',
             'thousandSeparator' => ' ',
