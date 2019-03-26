@@ -31,7 +31,7 @@ class HospitalController extends BaseController
     }
 
     /**
-     * 新增医院后，需要为医院开一个后台账号，账号规则暂时为hospital+hospital_id 密码都是123456后台那边 强制第一次登录后改密码
+     * 新增医院
         add_hospital
         param: { hospital_name, province, city, area, address, grade}
         result: {hospital_account}
