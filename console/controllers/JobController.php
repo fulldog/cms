@@ -59,6 +59,8 @@ class JobController extends Task
             'date'=>'2015-08-25',
             'id_card'=>'420583199408123467,422723195401170437',
         ];
+        echo "test";
+        print_r($this->params);
     }
 
     /**
