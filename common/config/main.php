@@ -5,7 +5,7 @@ $config = [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'components' => [
 //        'db' => [//数据库配置，这里的配置可能会被conf/db.local main-local.php配置覆盖
@@ -18,8 +18,14 @@ $config = [
         'cdn' => [//支持使用 七牛 腾讯云 阿里云 网易云 具体配置请参见 http://doc.feehi.com/cdn.html
             'class' => feehi\cdn\DummyTarget::className(),//不使用cdn
         ],
-        'cache' => [//缓存组件 具体配置请参考 http://doc.feehi.com/configs.html
-            'class' => yii\caching\DummyCache::className(),//不使用缓存
+        'cache' => [//缓存组件
+            'class' => yii\caching\FileCache::className(),
+//            'class' => 'yii\redis\Cache',//使用redis缓存作为项目缓存
+//            'redis' => [//配置redis
+//                'hostname' => '127.0.0.1',
+//                'port' => '6379',
+//                'database' => 0
+//            ],
         ],
         'formatter' => [//格式显示配置
             'dateFormat' => 'php:Y-m-d H:i',
@@ -27,7 +33,7 @@ $config = [
             'thousandSeparator' => ' ',
             'currencyCode' => 'CHY',
             'nullDisplay' => '-',
-            'datetimeFormat'=>'php:Y-m-d H:i:s'
+            'datetimeFormat' => 'php:Y-m-d H:i:s'
         ],
         'mailer' => [//邮箱发件人配置，会被main-local.php以及后台管理页面中的smtp配置覆盖
             'class' => yii\swiftmailer\Mailer::className(),
@@ -101,7 +107,7 @@ $config = [
     ],
 ];
 $install = Yii::getAlias('@common/config/conf/db.php');
-if( file_exists($install) ){
+if (file_exists($install)) {
     return yii\helpers\ArrayHelper::merge($config, (require $install));
 }
 return $config;

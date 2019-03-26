@@ -17,26 +17,22 @@ use backend\widgets\ActiveForm;
               ]
           ]); ?>
         <div class="hr-line-dashed"></div>
-        <!--                    --><? //= $form->field($model, 'hospital_id')->textInput() ?>
+          <?= $form->field($model->hospital, 'hospital_name')->textInput(['disabled'=>'disabled'])->label('所属医院')?>
 
-        <!--                        --><? //= $form->field($model, 'doctor_id')->textInput() ?>
-
-
+        <?if(!empty($model->doctor)):?>
+          <?= $form->field($model->doctor, 'name')->textInput(['disabled'=>'disabled'])->label('所属医生') ?>
+        <?else:?>
+            <?= $form->field($model, 'doctor_id')->dropDownList(\common\helpers\CommonHelpers::getDoctorByHid($model->hospital_id))?>
+        <?endif;?>
           <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
           <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
           <?= $form->field($model, 'age')->textInput() ?>
           <?= $form->field($model, 'sex')->textInput(['maxlength' => true]) ?>
-          <?= $form->field($model, 'is_transfer')->dropDownList(['否','是']) ?>
+          <?= $form->field($model, 'is_transfer')->radioList(['否', '是'],['itemOptions'=>['disabled'=>'disabled']]) ?>
 
           <?= $form->field($model, 'id_number')->textInput() ?>
 
           <?= $form->field($model, 'desc')->textarea(['rows' => 6]) ?>
-
-<!--          --><?//= $form->field($model, 'created_at')->textInput() ?>
-
-<!--          --><?//= $form->field($model, 'updated_at')->textInput() ?>
-
-
           <?= $form->defaultButtons() ?>
           <?php ActiveForm::end(); ?>
       </div>

@@ -24,7 +24,7 @@ use yii\log\Logger;
 class PatientController extends BaseController
 {
 
-    const PAGE_SIZE = 20 * 100;
+    const PAGE_SIZE = 2000;
     const GET_PAY_DETAIL = "getPayDetail";
 
     function behaviors()
@@ -71,6 +71,8 @@ class PatientController extends BaseController
     /**
      * 转移病人
      * @return array
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     function actionTransfer()
     {

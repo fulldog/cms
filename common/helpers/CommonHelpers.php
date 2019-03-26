@@ -8,6 +8,8 @@
 
 namespace common\helpers;
 
+use common\models\doctors\DoctorInfos;
+
 class CommonHelpers
 {
     /**
@@ -77,4 +79,15 @@ class CommonHelpers
         return true;
     }
 
+    static function getDoctorByHid($hid)
+    {
+        $res = [];
+        $alls = DoctorInfos::find()->select(['name', 'id'])->where(['hospital_id' => $hid])->asArray()->all();
+        if (!empty($alls)) {
+            foreach ($alls as $v) {
+                $res[$v['id']] = $v['name'];
+            }
+        }
+        return $res;
+    }
 }

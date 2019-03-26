@@ -40,6 +40,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $map[$model->is_transfer];
                 }
             ],
+            [
+                'attribute' => 'transferDoctor.name',
+                'label' => '原医生'
+            ],
+            [
+                'label' => '原医院',
+                'value' => function ($model) {
+                    if ($model->transferDoctor){
+                        return \common\models\doctors\DoctorHospitals::findOne(['id'=>$model->transferDoctor->hospital_id])->hospital_name;
+                    }
+                },
+            ],
             'created_at:datetime',
             'updated_at:datetime',
         ],

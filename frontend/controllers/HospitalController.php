@@ -32,14 +32,15 @@ class HospitalController extends BaseController
 
     /**
      * 新增医院
-        add_hospital
-        param: { hospital_name, province, city, area, address, grade}
-        result: {hospital_account}
+     * add_hospital
+     * param: { hospital_name, province, city, area, address, grade}
+     * result: {hospital_account}
      */
-    function actionAdd(){
+    function actionAdd()
+    {
         $model = new DoctorHospitals();
         $_post = \Yii::$app->request->post();
-        if ($model->load($_post,'') && $model->save()){
+        if ($model->load($_post, '') && $model->save()) {
             $data['code'] = 1;
             $data['msg'] = '新增医院成功';
             $data['data'] = $model->toArray();
@@ -55,11 +56,19 @@ class HospitalController extends BaseController
      * 医院搜索
      * @return array
      */
-    function actionSearch($search_word='',$page=0)
+    function actionSearch($search_word = '', $page = 0)
     {
         return [
-            'code'=>1,
-            'data'=>DoctorHospitals::like('hospital_name',$search_word,$page)
+            'code' => 1,
+            'data' => DoctorHospitals::like('hospital_name', $search_word, $page)
+        ];
+    }
+
+    function actionTransfer()
+    {
+        return [
+            'code' => 1,
+            'data' => DoctorHospitals::find()->where(['transfer' => 1, 'status' => 1])->asArray()->all(),
         ];
     }
 }

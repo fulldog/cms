@@ -25,7 +25,7 @@ class DoctorHospitalsSearch extends DoctorHospitals
     public function rules()
     {
         return [
-            [['status', 'recommend'], 'integer'],
+            [['status', 'recommend','transfer'], 'integer'],
             [['hospital_name', 'city', 'address','grade','province','area','invite'], 'safe'],
         ];
     }
@@ -66,7 +66,7 @@ class DoctorHospitalsSearch extends DoctorHospitals
 
         // grid filtering conditions
         $query->andFilterWhere([
-//            'id' => $this->id,
+            'transfer' => $this->transfer,
             'recommend' => $this->recommend,
             'status' => $this->status,
 //            'created_at' => $this->created_at,

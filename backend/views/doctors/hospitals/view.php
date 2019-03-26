@@ -48,6 +48,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             [
+                'attribute'=>'transfer',
+                'value'=>function($model){
+                    return $model->getTransfer();
+                },
+            ],
+            [
                 'attribute' => 'imgs',
                 'format' => 'raw',
                 'value' => function($model){

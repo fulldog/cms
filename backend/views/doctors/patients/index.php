@@ -47,18 +47,18 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Patients');
                       'filter' => ['否', '是'],
                       'headerOptions' => ['width' => '5%'],
                   ],
-                  [
-                      'attribute' => 'transferDoctor.name',
-                      'label' => '原医生'
-                  ],
-                  [
-                      'label' => '原医院',
-                      'value' => function ($model) {
-                          if ($model->transferDoctor){
-                              return \common\models\doctors\DoctorHospitals::findOne(['id'=>$model->transferDoctor->hospital_id])->hospital_name;
-                          }
-                      },
-                  ],
+//                  [
+//                      'attribute' => 'transferDoctor.name',
+//                      'label' => '原医生'
+//                  ],
+//                  [
+//                      'label' => '原医院',
+//                      'value' => function ($model) {
+//                          if ($model->transferDoctor){
+//                              return \common\models\doctors\DoctorHospitals::findOne(['id'=>$model->transferDoctor->hospital_id])->hospital_name;
+//                          }
+//                      },
+//                  ],
                   [
                       'headerOptions' => ['width' => '5%'],
                       'attribute' => 'age',

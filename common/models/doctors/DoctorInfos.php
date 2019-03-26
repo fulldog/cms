@@ -139,4 +139,5 @@ class DoctorInfos extends My
     {
         return $this->hasOne(User::className(), ['id' => 'uid']);
     }
+
 }
