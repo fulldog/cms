@@ -42,7 +42,7 @@ class Task extends Controller
 
     function curl($api)
     {
-        $client = new Client([['timeout' => 10]]);
+        $client = new Client([['timeout' => 5]]);
         $res = [];
         try {
             $response = $client->post($api, ['form_params' => $this->params]);
