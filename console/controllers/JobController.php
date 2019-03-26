@@ -59,7 +59,6 @@ class JobController extends Task
             'date'=>'2015-08-25',
             'id_card'=>'420583199408123467,422723195401170437',
         ];
-        print_r($this->curl('http://lixingss.gicp.net:24294/cbhis/admin.php/Index/findhj'));die;
     }
 
     /**
@@ -68,6 +67,8 @@ class JobController extends Task
     function actionIndex()
     {
         try {
+            $time = time();
+            echo "job begin".PHP_EOL;
             $this->date = $this->getBeforeDay(1);
             $hos = $this->getAllHospitals();
             foreach ($this->search($hos) as $result) {
@@ -133,6 +134,8 @@ class JobController extends Task
                 }
             }
             $this->logs();
+            echo 'time used:'.(time()-$time).PHP_EOL;
+            echo "job end".PHP_EOL;
         } catch (\Exception $exception) {
             echo $exception->getMessage();
             return ;

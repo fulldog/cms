@@ -26,7 +26,7 @@ class Task extends Controller
     function logs($data = [])
     {
 
-        echo $path = \Yii::getAlias('@runtime') . DIRECTORY_SEPARATOR . 'apilog' . DIRECTORY_SEPARATOR . $this->hostipal_code;
+        $path = \Yii::getAlias('@runtime') . DIRECTORY_SEPARATOR . 'apilog' . DIRECTORY_SEPARATOR . $this->hostipal_code;
 
         if (!file_exists($path)) {
             $this->createDir($path);
