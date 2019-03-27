@@ -49,6 +49,9 @@ class CommonHelpers
 
     static function base64ToImgOne($str, $path = '')
     {
+        if (is_array($str)){
+            $str = array_pop($str);
+        }
         $_path = \Yii::getAlias('@uploads');
         $www = '/uploads/';
         if (!$path && !\Yii::$app->user->isGuest) {

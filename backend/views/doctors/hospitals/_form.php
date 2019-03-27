@@ -13,14 +13,19 @@ use backend\widgets\ActiveForm;
       <div class="ibox-content">
           <?php $form = ActiveForm::begin([
               'options' => [
-                  'class' => 'form-horizontal'
+                  'class' => 'form-horizontal',
+                  'enctype' => 'multipart/form-data',
               ]
           ]); ?>
         <div class="hr-line-dashed"></div>
           <?= $form->field($model, 'hospital_name')->textInput(['maxlength' => true]) ?>
           <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
           <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
-          <?= $form->field($model, 'avatar')->imgInput() ?>
+<!--          --><?//= $form->field($model, 'avatar')->imgInput() ?>
+          <?= $form->field($model, 'avatar')->widget(\backend\widgets\webuploader\Webuploader::className())
+              ->hint('*请勿上传多张图片！！！',[
+                  'style'=>'margin-left:19%;color:red;',
+              ]) ?>
           <? if (!\Yii::$app->user->identity->hospital_id): ?>
               <?= $form->field($model, 'status')->dropDownList(\common\models\doctors\My::_getStatusAll()) ?>
               <?= $form->field($model, 'recommend')->dropDownList(\common\models\doctors\My::_getStatusAll('recommend')) ?>

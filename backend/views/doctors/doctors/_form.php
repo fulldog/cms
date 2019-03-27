@@ -13,13 +13,18 @@ use backend\widgets\ActiveForm;
             <div class="ibox-content">
                 <?php $form = ActiveForm::begin([
                     'options' => [
-                        'class' => 'form-horizontal'
+                        'class' => 'form-horizontal',
+                        'enctype' => 'multipart/form-data',
                     ]
                 ]); ?>
                 <div class="hr-line-dashed"></div>
 <!--                        --><?//= $form->field($model, 'uid')->dropDownList()->label('关联用户') ?>
                         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-                        <?= $form->field($model, 'avatar')->imgInput() ?>
+<!--                        --><?//= $form->field($model, 'avatar')->imgInput(['style' => 'max-width:200px;max-height:200px']) ?>
+                        <?= $form->field($model, 'avatar')->widget(\backend\widgets\webuploader\Webuploader::className())
+                            ->hint('*请勿上传多张图片！！！',[
+                                'style'=>'margin-left:19%;color:red;',
+                            ]) ?>
                         <?= $form->field($model, 'hospital_id')->dropDownList(\common\models\doctors\DoctorHospitals::find()->getHospitals())->label('医院')?>
                         <?= $form->field($model, 'doctor_type')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'recommend')->dropDownList(\common\models\doctors\My::_getStatusAll('recommend')) ?>
