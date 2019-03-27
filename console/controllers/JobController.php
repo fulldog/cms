@@ -102,7 +102,7 @@ class JobController extends Task
                                     ];
                                     $insert2[] = [
                                         $this->hid,
-                                        $patient->is_transfer ? $patient->transfer_doctor : $patient->doctor_id,
+                                        $patient->transfer_doctor,
                                         $patient->id,
                                         'add',
                                         $v['desc'],
@@ -155,7 +155,10 @@ class JobController extends Task
 
     function getPatients($hid)
     {
-        return DoctorPatients::find()->select(['doctor_id','is_transfer','transfer_doctor','id_number','name'])->where(['hospital_id' => $hid])->all();
+        return DoctorPatients::find()->select(['doctor_id','is_transfer','transfer_doctor','id_number','name'])
+            ->where(['hospital_id' => $hid])
+            ->andWhere(['is_transfer' => 1])
+            ->all();
     }
 
     /**

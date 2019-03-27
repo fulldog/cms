@@ -358,7 +358,7 @@ class PatientController extends BaseController
                     ];
                     $menoylog[] = [
                         $patient->hospital->id,
-                        $patient->is_transfer ? $patient->transfer_doctor : $patient->doctor_id,
+                        $patient->transfer_doctor,
                         $patient_id,
                         'add',
                         $v['desc'],
