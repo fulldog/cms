@@ -24,7 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'sex',
             'age',
             'id_number',
-            'desc:ntext',
             [
                 'label'=>'所属医院',
                 'attribute'=>'hospital.hospital_name'
@@ -52,6 +51,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 },
             ],
+            'desc:ntext',
+            'remark:ntext',
             'created_at:datetime',
             'updated_at:datetime',
         ],

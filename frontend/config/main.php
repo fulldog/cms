@@ -50,7 +50,7 @@ return [
             'errorAction' => 'index/error',
         ],
         'cache' => [
-            'class' => yii\caching\FileCache::className(),//使用文件缓存，可根据需要改成apc redis memcache等其他缓存方式
+//            'class' => yii\caching\FileCache::className(),//使用文件缓存，可根据需要改成apc redis memcache等其他缓存方式
             'keyPrefix' => 'frontend',       // 唯一键前缀
         ],
         'urlManager' => [

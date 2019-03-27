@@ -20,7 +20,7 @@ use backend\widgets\ActiveForm;
           <?= $form->field($model, 'hospital_name')->textInput(['maxlength' => true]) ?>
           <?= $form->field($model, 'tel')->textInput(['maxlength' => true]) ?>
           <?= $form->field($model, 'grade')->textInput(['maxlength' => true]) ?>
-
+          <?= $form->field($model, 'avatar')->imgInput() ?>
           <? if (!\Yii::$app->user->identity->hospital_id): ?>
               <?= $form->field($model, 'status')->dropDownList(\common\models\doctors\My::_getStatusAll()) ?>
               <?= $form->field($model, 'recommend')->dropDownList(\common\models\doctors\My::_getStatusAll('recommend')) ?>

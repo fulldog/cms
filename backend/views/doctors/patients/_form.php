@@ -33,6 +33,7 @@ use backend\widgets\ActiveForm;
           <?= $form->field($model, 'id_number')->textInput() ?>
 
           <?= $form->field($model, 'desc')->textarea(['rows' => 6]) ?>
+          <?= $form->field($model, 'remark')->textarea(['rows' => 6]) ?>
           <?= $form->defaultButtons() ?>
           <?php ActiveForm::end(); ?>
       </div>
