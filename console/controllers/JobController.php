@@ -158,6 +158,8 @@ class JobController extends Task
         return DoctorPatients::find()->select(['doctor_id','is_transfer','transfer_doctor','id_number','name'])
             ->where(['hospital_id' => $hid])
             ->andWhere(['is_transfer' => 1])
+            ->groupBy('id_number')
+            ->orderBy(['id'=>SORT_ASC])
             ->all();
     }
 
