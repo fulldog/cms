@@ -22,6 +22,7 @@ use common\models\doctors\DoctorHospitals;
 use common\models\doctors\DoctorInfos;
 use common\models\doctors\DoctorPatients;
 use frontend\models\User;
+use yii\web\Response;
 
 class IndexController extends BaseController
 {
@@ -195,6 +196,7 @@ class IndexController extends BaseController
 
 
     function actionSwoole(){
+        Yii::$app->response->format = Response::FORMAT_HTML;
         return $this->renderPartial('swoole');
     }
 }

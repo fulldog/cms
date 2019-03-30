@@ -15,10 +15,11 @@ class ChatController extends Controller
 {
 
     function actionIndex(){
-        $server = new swoole_websocket_server("0.0.0.0", 9052);
+        $server = new \swoole_websocket_server("0.0.0.0", 9052);
         $redis = \Yii::$app->cache;
         $db = \Yii::$app->db;
 
+        echo "swoole beging;".PHP_EOL;
         $server->on('open', function (swoole_websocket_server $server, $request) {
             echo "server: handshake success with fd{$request->fd}\n";//$request->fd 是客户端id
         });
@@ -75,7 +76,7 @@ class ChatController extends Controller
         $server->on('close', function ($ser, $fd) {
             echo "client {$fd} closed\n";
         });
-
+        echo "swoole start;".PHP_EOL;
         $server->start();
     }
 }
