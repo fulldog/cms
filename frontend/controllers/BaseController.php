@@ -67,11 +67,6 @@ class BaseController extends Controller
         ];
     }
 
-    function actionLogout()
-    {
-        \Yii::$app->user->logout(true);
-    }
-
     function getDoctor($uid = null)
     {
         if (!$uid) {
@@ -126,5 +121,15 @@ class BaseController extends Controller
             'msg' => 'not found!',
             'httpCode' => 404
         ];
+    }
+
+    function post($key = null, $default = null)
+    {
+        return \Yii::$app->request->post($key, $default);
+    }
+
+    function get($key = null, $default = null)
+    {
+        return \Yii::$app->request->get($key, $default);
     }
 }

@@ -8,6 +8,7 @@
 
 namespace common\helpers;
 
+use common\models\doctors\DoctorHospitals;
 use common\models\doctors\DoctorInfos;
 
 class CommonHelpers
@@ -92,5 +93,33 @@ class CommonHelpers
             }
         }
         return $res;
+    }
+
+    static function getChats(){
+        $hospital_id = \Yii::$app->user->identity->hospital_id;
+        $data['超级管理员'] = ['admin'=>'admin'];
+
+        $hospitals = DoctorHospitals::find()->all();
+
+        if (!empty($hospitals)){
+            foreach ($hospitals as $v){
+                $data['医院列表']['hp'.$v->id] = $v->hospital_name;
+                $data[$v->hospital_name] = [];
+            }
+        }
+
+        $query = DoctorInfos::find();
+        if ($hospital_id){
+            $query->andFilterWhere(['hospital_id'=>$hospital_id]);
+        }
+        $doctor = $query->with('hospital')->all();
+        if (!empty($doctor)){
+            foreach ($doctor as $vv){
+                if (!$vv->hospital['hospital_name'])continue;
+                $data[$vv->hospital['hospital_name']][$vv->id] = $vv->name;
+            }
+        }
+        return $data;
+
     }
 }

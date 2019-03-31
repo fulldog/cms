@@ -9,6 +9,8 @@
 namespace frontend\controllers;
 
 
+use common\models\doctors\DoctorChats;
+use common\models\doctors\DoctorInfos;
 use common\models\doctors\DoctorMoneylog;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -32,32 +34,87 @@ class MyController extends BaseController
         ]);
     }
 
-    function actionWallet(){
+    function actionWallet()
+    {
         $query = DoctorMoneylog::find()->select('sum(money) as money,type,status')->andFilterWhere([
-            'doctor_id' =>$this->getDoctor()->id,
+            'doctor_id' => $this->getDoctor()->id,
         ]);
-        $res = $query->groupBy(['status','type'])->asArray()->all();
+        $res = $query->groupBy(['status', 'type'])->asArray()->all();
         $json = [];
-        if (!empty($res)){
-            foreach ($res as $item){
-                if ($item['status']==1 && $item['type']=='add'){
+        if (!empty($res)) {
+            foreach ($res as $item) {
+                if ($item['status'] == 1 && $item['type'] == 'add') {
                     $json['add'] = $item['money'];
-                }elseif ($item['status']==1 && $item['type']=='reduce'){
+                } elseif ($item['status'] == 1 && $item['type'] == 'reduce') {
                     $json['reduce'] = $item['money'];
-                }else{
+                } else {
                     $json['reduce_no'] = $item['money'];
                 }
             }
         }
         return [
-            'code'=>1,
-            'msg'=>'add/收入；reduce/已提现；reduce_no/提现中',
-            'data'=>$json
+            'code' => 1,
+            'msg' => 'add/收入；reduce/已提现；reduce_no/提现中',
+            'data' => $json
         ];
     }
 
-    function actionGetme(){
-        return ArrayHelper::merge(['is_complete'=>$this->getDoctor()],Yii::$app->user->identity);
+    function actionGetme()
+    {
+        return ArrayHelper::merge(['is_complete' => $this->getDoctor()], Yii::$app->user->identity);
     }
 
+    function actionMessages($action)
+    {
+        $message = new DoctorChats();
+        $info = $this->getDoctor();
+        $content = $this->post('content');
+        if ($action == 'send') {
+            $message->from = (string)$info->id;
+            $message->to = 'hp'.$info->hospital_id;
+            $message->content = $content;
+            if ($message->save()) {
+                return [
+                    'code' => 1,
+                    'msg'=>'发送成功'
+                ];
+            } else {
+                return [
+                    'code' => 0,
+                    'msg' => $message->getFirstErrors(),
+                ];
+            }
+        } elseif ($action == 'get') {
+            $gets = $message::findAll([
+                'from' => 'hp'.$info->hospital_id,
+                'to' => $info->id,
+                'status' => 0,
+            ]);
+            $ids = [];
+            foreach ($gets as $k=>$g){
+                $ids[] = $g->id;
+                $gets[$k]['created_at'] = date('Y-m-d H:i:s',$g['created_at']);
+            }
+            if ($ids){
+                $ids = join(',',$ids);
+                $message::updateAll(['status'=>1],"id in ($ids)");
+            }
+
+            return [
+                'code'=>1,
+                'data'=>$gets
+            ];
+        }
+        return [
+            'code' => 0,
+            'msg'=>'缺少send参数'
+        ];
+    }
+
+    function actionAllDoctor(){
+        return [
+            'code'=>1,
+            'data'=>DoctorInfos::findAll(['hospital_id'=>$this->getDoctor()->hospital_id])
+        ];
+    }
 }
