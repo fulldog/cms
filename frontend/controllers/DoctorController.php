@@ -8,7 +8,9 @@
 
 namespace frontend\controllers;
 
+use Codeception\Module\Yii1;
 use common\models\doctors\DoctorInfos;
+use frontend\models\User;
 use yii\helpers\ArrayHelper;
 
 class DoctorController extends BaseController
@@ -36,12 +38,12 @@ class DoctorController extends BaseController
     {
         $_post = \Yii::$app->request->post();
         $uid = $this->uid;
-        $model = DoctorInfos::findOne(['uid'=>$uid]);
-        if (!$model){
+        $model = DoctorInfos::findOne(['uid' => $uid]);
+        if (!$model) {
             $model = new DoctorInfos();
             $model->uid = $uid;
         }
-        if ($model->load($_post,'') && $model->save()) {
+        if ($model->load($_post, '') && $model->save()) {
             return [
                 'data' => $model->toArray(),
                 'code' => 1,
@@ -51,6 +53,19 @@ class DoctorController extends BaseController
         return [
             'code' => 0,
             'msg' => $model->getErrors()
+        ];
+    }
+
+    function actionGetDoctors()
+    {
+        $id = $this->get('id');
+        $sql = "select b.username,a.name,a.hospital_id,a.id,a.doctor_type,a.role from " . DoctorInfos::tableName() . " as a left join " . User::tableName() . " as b on a.uid=b.id ";
+        if ($id) {
+            $sql .= " where a.id='{$id}'";
+        }
+        return [
+            'code' => 1,
+            'data' => \Yii::$app->db->createCommand($sql)->queryAll()
         ];
     }
 }
