@@ -65,7 +65,7 @@ class DoctorArticleSearch extends DoctorArticle
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
-        $this->SearchAddHospitalId($query,'id');
+        $this->SearchAddHospitalId($query);
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'desc', $this->desc])
             ->andFilterWhere(['like', 'keywords', $this->keywords])
