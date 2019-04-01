@@ -72,7 +72,7 @@ class DoctorHospitalsSearch extends DoctorHospitals
 //            'created_at' => $this->created_at,
 //            'updated_at' => $this->updated_at,
         ]);
-        $this->SearchAddHospitalId($query,'id');
+        $this->SearchAddHospitalId($query);
         $this->SearchAddTime($query,$params,__CLASS__);
 
         if (\Yii::$app->user->identity->job_number){

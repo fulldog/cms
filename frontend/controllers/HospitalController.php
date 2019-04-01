@@ -9,6 +9,7 @@
 namespace frontend\controllers;
 
 
+use common\models\doctors\DoctorArticle;
 use common\models\doctors\DoctorHospitals;
 use yii\helpers\ArrayHelper;
 use Yii;
@@ -69,6 +70,19 @@ class HospitalController extends BaseController
         return [
             'code' => 1,
             'data' => DoctorHospitals::find()->where(['transfer' => 1, 'status' => 1])->asArray()->all(),
+        ];
+    }
+
+    function actionArticle($id = 0)
+    {
+        if ($id) {
+            $info = DoctorArticle::findOne(['id' => $id, 'hospital_id' => $this->getDoctor()->hospital_id]);
+        } else {
+            $info = DoctorArticle::findAll(['hospital_id' => $this->getDoctor()->hospital_id]);
+        }
+        return [
+            'code' => 1,
+            'data' => $info,
         ];
     }
 }
