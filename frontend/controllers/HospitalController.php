@@ -76,9 +76,9 @@ class HospitalController extends BaseController
     function actionArticle($id = 0)
     {
         if ($id) {
-            $info = DoctorArticle::findOne(['id' => $id, 'hospital_id' => $this->getDoctor()->hospital_id]);
+            $info = DoctorArticle::findOne(['id' => $id,'status'=>1, 'hospital_id' => $this->getDoctor()->hospital_id]);
         } else {
-            $info = DoctorArticle::findAll(['hospital_id' => $this->getDoctor()->hospital_id]);
+            $info = DoctorArticle::findAll(['hospital_id' => $this->getDoctor()->hospital_id,'status'=>1]);
         }
         return [
             'code' => 1,
