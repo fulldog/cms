@@ -16,6 +16,15 @@ use backend\actions\ViewAction;
  */
 class ArticleController extends \yii\web\Controller
 {
+    /**
+     * @auth
+     * - item group=转诊平台 category=医院动态 description-get=列表 sort=0 method=get
+     * - item group=转诊平台 category=医院动态 description=创建 sort-get=0 sort-post=0 method=get,post  
+     * - item group=转诊平台 category=医院动态 description=修改 sort=0 sort-post=0 method=get,post  
+     * - item group=转诊平台 category=医院动态 description-post=删除 sort=0 method=post  
+     * - item group=转诊平台 category=医院动态 description-get=查看 sort=0 method=get  
+     * @return array
+     */
     public function actions()
     {
         return [
@@ -42,10 +51,6 @@ class ArticleController extends \yii\web\Controller
             ],
             'delete' => [
                 'class' => DeleteAction::className(),
-                'modelClass' => DoctorArticle::className(),
-            ],
-            'sort' => [
-                'class' => SortAction::className(),
                 'modelClass' => DoctorArticle::className(),
             ],
             'view-layer' => [
