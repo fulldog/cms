@@ -85,4 +85,12 @@ class HospitalController extends BaseController
             'data' => $info,
         ];
     }
+
+    function actionGetHospitals($id = null)
+    {
+        return [
+            'code' => 1,
+            'data' => DoctorHospitals::find()->andFilterWhere(['id'=>$id])->asArray()->all()
+        ];
+    }
 }

@@ -33,15 +33,15 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Infos');
 //                            'value'=>'relatedUser.username',
 //                            'filter'=>false
 //                        ],
-                        [
-                            'attribute' => 'avatar',
-                            'format' => 'raw',
-                            'value' => function($model){
-                                if ($model->avatar){
-                                    return "<img style='max-width:150px;max-height:150px' src='" . $model->avatar . "' >";
-                                }
-                            }
-                        ],
+//                        [
+//                            'attribute' => 'avatar',
+//                            'format' => 'raw',
+//                            'value' => function($model){
+//                                if ($model->avatar){
+//                                    return "<img style='max-width:150px;max-height:150px' src='" . $model->avatar . "' >";
+//                                }
+//                            }
+//                        ],
                         [
                             'label'=>'所属医院',
                             'value'=>'hospital.hospital_name',

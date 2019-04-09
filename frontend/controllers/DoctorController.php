@@ -56,10 +56,9 @@ class DoctorController extends BaseController
         ];
     }
 
-    function actionGetDoctors()
+    function actionGetDoctors($id = null)
     {
-        $id = $this->get('id');
-        $sql = "select b.id as uid,b.username,a.name,a.hospital_id,a.id as doctor_id,a.doctor_type,a.role from " . DoctorInfos::tableName() . " as a left join " . User::tableName() . " as b on a.uid=b.id ";
+        $sql = "select b.id as uid,b.username,a.name,a.hospital_id,a.id,a.avatar as doctor_id,a.doctor_type,a.role from " . DoctorInfos::tableName() . " as a left join " . User::tableName() . " as b on a.uid=b.id ";
         if ($id) {
             $sql .= " where a.id='{$id}'";
         }
