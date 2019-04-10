@@ -199,13 +199,13 @@ class PatientController extends BaseController
 //        $logId = $this->has_check($patient_id, $patient->hospital->id, $date);
 
         $config = Yii::$app->params['hospital_api'][$patient->hospital->code];
-        if (empty($config)) {
+        $api = $config['detail_api'];
+        if (empty($api)) {
             return [
                 'code' => 0,
                 'msg' => '没有查到接口配置信息'
             ];
         }
-        $api = $config['api_url'];
         $post = [
             'sign' => md5($patient->id_number . $patient->hospital->code),
             'start_time' => 0,

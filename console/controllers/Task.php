@@ -42,11 +42,14 @@ class Task extends Controller
 
     function curl($api)
     {
+        $this->stdout('connecting--api:'.$api.PHP_EOL);
         $client = new Client([['timeout' => 5]]);
         $res = [];
         try {
             $response = $client->post($api, ['form_params' => $this->params]);
-            $res = \GuzzleHttp\json_decode(trim($response->getBody()->getContents(), "\xEF\xBB\xBF"), true);
+            $result = $response->getBody()->getContents();
+            $this->stdout('result:'.$result.PHP_EOL);
+            $res = \GuzzleHttp\json_decode(trim($result, "\xEF\xBB\xBF"), true);
         } catch (\Exception $e) {
             $this->logs['Exception'] = $e->getMessage();
         }

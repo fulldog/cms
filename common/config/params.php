@@ -8,13 +8,15 @@ return [
     ],
     'article.template.directory' => Yii::getAlias("@frontend/views/article"),
     'hospital_api' => [
-        'qLTL8Acri5' => [
+        'qLTL8Acri5' => [//宜昌长航医院
             'version' => '1.0',
-            'api_url' => 'http://lixingss.gicp.net:24294/cbhis/admin.php/Index/test',
+            'task_api' => '//1k483932e8.51mypc.cn/chyy/admin.php',
+            'detail_api' => '//1k483932e8.51mypc.cn/chyy/admin.php',
         ],
-        'qLTL8Acri52' => [
+        'mbR3uW2nA9' => [
             'version' => '',
-            'api_url' => 'http://58.19.245.66:9090',
+            'task_api' => '//58.19.245.66:9090/?can=xdtj',
+            'detail_api' => '//58.19.245.66:9090',
         ],
     ],
 ];

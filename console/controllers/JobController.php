@@ -68,9 +68,12 @@ class JobController extends Task
      */
     function actionIndex()
     {
+        ini_set('memory_limit','1024M');
+        ini_set('default_socket_timeout', 1);
+        set_time_limit(0);
         try {
             $time = time();
-            echo "job begin".PHP_EOL;
+            $this->stdout("job begin".PHP_EOL);
             $this->date = $this->getBeforeDay(1);
             $hos = $this->getAllHospitals();
             foreach ($this->search($hos) as $result) {
@@ -136,8 +139,8 @@ class JobController extends Task
                 }
             }
             $this->logs();
-            echo 'time used:'.(time()-$time).PHP_EOL;
-            echo "job end".PHP_EOL;
+            $this->stdout('time used:'.(time()-$time).PHP_EOL);
+            $this->stdout("job end".PHP_EOL);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
             return ;
@@ -176,17 +179,17 @@ class JobController extends Task
                 $patient = $this->getPatients($this->hid);
                 if (!empty($patient)) {
                     $config = \Yii::$app->params['hospital_api'][$item->code];
-                    if (!empty($config)) {
+                    if (!empty($config['task_api'])) {
                         foreach ($patient as $p) {
                             $this->patients[$this->hid . '-' . $p->id_number] = $p;
                             $this->params['id_card'] = $p->id_number;
                             $this->params['sign'] = md5($p->id_number . $item->code);
                             $this->params['date_time'] = $this->date;
                             $this->params['method'] = self::GET_DAY_FLOW;
-                            yield $this->curl($config['api_url']);
+                            yield $this->curl($config['task_api']);
                         }
                     } else {
-                        echo "没有查到接口配置信息hid:{$this->hid},code:{$item->code}".PHP_EOL;
+                        $this->stdout("没有查到接口配置信息hid:{$this->hid},code:{$item->code}".PHP_EOL);
                         $this->logs(['msg' => '没有查到接口配置信息']);
                     }
                 }
