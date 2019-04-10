@@ -194,7 +194,7 @@ class JobController extends Task
                             yield $this->curl($config['task_api']);
                         }
                     } else {
-                        $this->stdout("没有查到接口配置信息hid:{$this->hid},code:{$item->code}".PHP_EOL);
+                        $this->stdout("没有查到接口配置信息hid:{$this->hid},code:{$item->code},name:{$item->hospital_name}".PHP_EOL);
                         $this->logs(['msg' => '没有查到接口配置信息']);
                     }
                 }
