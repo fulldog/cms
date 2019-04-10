@@ -81,7 +81,6 @@ class JobController extends Task
                     foreach ($result['data'] as $id_card => $info) {
                         $patient = $this->patients[$this->hid . '-' . $id_card];
                         unset($this->patients[$this->hid . '-' . $id_card]);
-                        $this->stdout("current do patient:".$patient->name.'--'.$patient->id_number.PHP_EOL);
                         if (!empty($patient)) {
                             $commission = DoctorCommission::find()->where(['patient_id' => $patient->id])->orderBy(['id' => SORT_DESC])->one();
                             if (empty($commission)) {
@@ -181,14 +180,15 @@ class JobController extends Task
             foreach ($hos as $item) {
                 $this->hid = $item->id;
                 $this->hostipal_code = $item->code;
-                $patient = $this->getPatients($this->hid);
-                if (!empty($patient)) {
+                $patients = $this->getPatients($this->hid);
+                if (!empty($patients)) {
                     $config = \Yii::$app->params['hospital_api'][$item->code];
                     if (!empty($config['task_api'])) {
-                        foreach ($patient as $p) {
-                            $this->patients[$this->hid . '-' . $p->id_number] = $p;
-                            $this->params['id_card'] = $p->id_number;
-                            $this->params['sign'] = md5($p->id_number . $item->code);
+                        foreach ($patients as $patient) {
+                            $this->stdout("current patient:".$patient->name.'--'.$patient->id_number.PHP_EOL);
+                            $this->patients[$this->hid . '-' . $patient->id_number] = $patient;
+                            $this->params['id_card'] = $patient->id_number;
+                            $this->params['sign'] = md5($patient->id_number . $item->code);
                             $this->params['date_time'] = $this->date;
                             $this->params['method'] = self::GET_DAY_FLOW;
                             yield $this->curl($config['task_api']);
