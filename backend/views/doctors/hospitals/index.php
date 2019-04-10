@@ -24,10 +24,6 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Hospitals');
                     'filterModel' => $searchModel,
                     'columns' => [
                         ['class' => CheckboxColumn::className()],
-
-//                        [
-//                            'attribute' => 'id',
-//                        ],
                         'hospital_name',
                         [
                             'attribute'=>'status',
@@ -55,7 +51,7 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Hospitals');
                             'format'=>'raw',
                             'filter'=>\common\models\doctors\My::_getStatusAll('transfer')
                         ],
-//                        'code',
+                        'code',
 //                        'province',
 //                        'city',
 //                        'area',

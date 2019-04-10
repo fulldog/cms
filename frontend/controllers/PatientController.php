@@ -208,15 +208,15 @@ class PatientController extends BaseController
         }
         $post = [
             'sign' => md5($patient->id_number . $patient->hospital->code),
-            'start_time' => 0,
-            'end_time' => date('Y-m-d', strtotime('+1 day', strtotime($date))),
             'id_card' => $patient->id_number,
             'hospital_code' => $patient->hospital->code,
             'limit' => self::PAGE_SIZE,
             'page' => 1,
             'method' => self::GET_PAY_DETAIL,
-//            'start_time' => strtotime($date),
-//            'end_time' => strtotime('+1 day', strtotime($date)) - 1,
+            'start_time' => strtotime($date),
+            'end_time' => strtotime('+1 day', strtotime($date)) - 1,
+//            'start_time' => 0,
+//            'end_time' => date('Y-m-d', strtotime('+1 day', strtotime($date))),
         ];
 
         $client = new Client(['timeout' => 5]);

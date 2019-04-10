@@ -72,7 +72,7 @@ class JobController extends Task
         ini_set('default_socket_timeout', 1);
         set_time_limit(0);
         try {
-            $time = time();
+            $time1 = microtime(true);
             $this->stdout("job begin".PHP_EOL);
             $this->date = $this->getBeforeDay(1);
             $hos = $this->getAllHospitals();
@@ -80,6 +80,8 @@ class JobController extends Task
                 if (!empty($result) && $result['code'] == 200) {
                     foreach ($result['data'] as $id_card => $info) {
                         $patient = $this->patients[$this->hid . '-' . $id_card];
+                        unset($this->patients[$this->hid . '-' . $id_card]);
+                        $this->stdout("current do patient:".$patient->name.'--'.$patient->id_number.PHP_EOL);
                         if (!empty($patient)) {
                             $commission = DoctorCommission::find()->where(['patient_id' => $patient->id])->orderBy(['id' => SORT_DESC])->one();
                             if (empty($commission)) {
@@ -129,6 +131,7 @@ class JobController extends Task
                                         $tran->rollBack();
                                         $this->logs['DoctorPatientDayMoney'] = $insert;
                                         $this->logs['DoctorMoneylog'] = $insert2;
+                                        $this->stderr("commit fail:".json_encode($this->logs,JSON_UNESCAPED_UNICODE).PHP_EOL);
                                     }
                                 }
                             } else {
@@ -139,7 +142,9 @@ class JobController extends Task
                 }
             }
             $this->logs();
-            $this->stdout('time used:'.(time()-$time).PHP_EOL);
+            $time2 = microtime(true);
+            $this->stdout('time used:'.(round($time2 - $time1,3)).'hs'.PHP_EOL);
+            $this->stdout('memory_get_usage used:'.memory_get_usage().PHP_EOL);
             $this->stdout("job end".PHP_EOL);
         } catch (\Exception $exception) {
             echo $exception->getMessage();
