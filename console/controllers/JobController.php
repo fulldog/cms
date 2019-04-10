@@ -188,6 +188,8 @@ class JobController extends Task
                             $this->stdout("current patient:".$patient->name.'--'.$patient->id_number.PHP_EOL);
                             $this->patients[$this->hid . '-' . $patient->id_number] = $patient;
                             $this->params['id_card'] = $patient->id_number;
+                            $this->params['name'] = $patient->name;
+                            $this->params['phone'] = $patient->phone;
                             $this->params['sign'] = md5($patient->id_number . $item->code);
                             $this->params['date_time'] = $this->date;
                             $this->params['method'] = self::GET_DAY_FLOW;
