@@ -171,34 +171,32 @@ class JobController extends Task
     }
 
     /**
-     * @param DoctorHospitals $hos
+     * @param DoctorHospitals $hospitals
      * @return \Generator
      */
-    function search($hos)
+    function search($hospitals)
     {
-        if (!empty($hos)) {
-            foreach ($hos as $item) {
-                $this->hid = $item->id;
-                $this->hostipal_code = $item->code;
+        if (!empty($hospitals)) {
+            foreach ($hospitals as $hospital) {
+                $this->hid = $hospital->id;
+                $this->hostipal_code = $hospital->code;
                 $patients = $this->getPatients($this->hid);
-                if (!empty($patients)) {
-                    $config = \Yii::$app->params['hospital_api'][$item->code];
-                    if (!empty($config['task_api'])) {
-                        foreach ($patients as $patient) {
-                            $this->stdout("current patient:".$patient->name.'--'.$patient->id_number.PHP_EOL);
-                            $this->patients[$this->hid . '-' . $patient->id_number] = $patient;
-                            $this->params['id_card'] = $patient->id_number;
-                            $this->params['name'] = $patient->name;
-                            $this->params['phone'] = $patient->phone;
-                            $this->params['sign'] = md5($patient->id_number . $item->code);
-                            $this->params['date_time'] = $this->date;
-                            $this->params['method'] = self::GET_DAY_FLOW;
-                            yield $this->curl($config['task_api']);
-                        }
-                    } else {
-                        $this->stdout("没有查到接口配置信息hid:{$this->hid},code:{$item->code},name:{$item->hospital_name}".PHP_EOL);
-                        $this->logs(['msg' => '没有查到接口配置信息']);
+                $this->logs['hospital_name'] = $hospital->hospital_name;
+                $this->logs['api_config'] = $config = \Yii::$app->params['hospital_api'][$hospital->code];
+                if (!empty($patients) && !empty($config['task_api'])) {
+                    foreach ($patients as $patient) {
+                        $this->stdout("current patient:".$patient->name.'--'.$patient->id_number.PHP_EOL);
+                        $this->patients[$this->hid . '-' . $patient->id_number] = $patient;
+                        $this->params['id_card'] = $patient->id_number;
+                        $this->params['name'] = $patient->name;
+                        $this->params['phone'] = $patient->phone;
+                        $this->params['sign'] = md5($patient->id_number . $hospital->code);
+                        $this->params['date_time'] = $this->date;
+                        $this->params['method'] = self::GET_DAY_FLOW;
+                        yield $this->curl($config['task_api']);
                     }
+                }else{
+                    $this->stdout("没有病人/没有查到接口配置信息hid:{$this->hid},code:{$hospital->code},name:{$hospital->hospital_name}".PHP_EOL);
                 }
             }
         }
