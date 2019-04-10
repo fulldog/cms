@@ -51,6 +51,7 @@ class Task extends Controller
             $response = $client->post($api, ['form_params' => $this->params]);
             $result = $response->getBody()->getContents();
             $this->stdout('result:'.$result.PHP_EOL);
+            $this->logs['origin-result'] = $result;
             $res = \GuzzleHttp\json_decode(trim($result, "\xEF\xBB\xBF"), true);
         } catch (\Exception $e) {
             $this->logs['Exception'] = $e->getMessage();
