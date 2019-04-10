@@ -33,9 +33,11 @@ class Task extends Controller
         }
         $path .=  DIRECTORY_SEPARATOR.date('Y-m-d') . '.log';
         @file_put_contents($path, var_export([
+                'line'=>'-----------------------------------------------------------------------------------------------------',
                 'logs' => $this->logs,
                 'params' => $this->params,
                 'user_msg' => $data,
+                'line-end'=>'-----------------------------------------------------------------------------------------------------',
             ], true) . "\r\n", FILE_APPEND | LOCK_EX);
 
     }
