@@ -146,7 +146,7 @@ class JobController extends Task
             $this->stdout('memory_get_usage used:'.memory_get_usage().PHP_EOL);
             $this->stdout("job end".PHP_EOL);
         } catch (\Exception $exception) {
-            echo $exception->getMessage();
+            $this->stderr("job error:".$exception->getMessage().PHP_EOL);
             return ;
         }
     }
@@ -160,10 +160,10 @@ class JobController extends Task
         return $query->all();
     }
 
-    function getPatients($hid)
+    function getPatients($hospital_id)
     {
-        return DoctorPatients::find()->select(['doctor_id','is_transfer','transfer_doctor','id_number','name'])
-            ->where(['hospital_id' => $hid])
+        return DoctorPatients::find()->select(['doctor_id','is_transfer','transfer_doctor','id_number','name','phone'])
+            ->where(['hospital_id' => $hospital_id])
             ->andWhere(['is_transfer' => 1])
             ->groupBy('id_number')
             ->orderBy(['id'=>SORT_ASC])
