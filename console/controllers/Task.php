@@ -40,6 +40,7 @@ class Task extends Controller
                 'line-end'=>'-----------------------------------------------------------------------------------------------------',
             ], true) . "\r\n", FILE_APPEND | LOCK_EX);
 
+        unset($this->params,$this->logs);
     }
 
     function curl($api)

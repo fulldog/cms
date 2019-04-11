@@ -75,8 +75,8 @@ class JobController extends Task
             $time1 = microtime(true);
             $this->stdout("job begin".PHP_EOL);
             $this->date = $this->getBeforeDay(1);
-            $hos = $this->getAllHospitals();
-            foreach ($this->search($hos) as $result) {
+            $hospital = $this->getAllHospitals();
+            foreach ($this->search($hospital) as $result) {
                 if (!empty($result) && $result['code'] == 200) {
                     foreach ($result['data'] as $id_card => $info) {
                         $patient = $this->patients[$this->hid . '-' . $id_card];
@@ -139,8 +139,8 @@ class JobController extends Task
                         }
                     }
                 }
+                $this->logs();
             }
-            $this->logs();
             $time2 = microtime(true);
             $this->stdout('time used:'.(round($time2 - $time1,3)).'hs'.PHP_EOL);
             $this->stdout('memory_get_usage used:'.memory_get_usage().PHP_EOL);
@@ -151,13 +151,16 @@ class JobController extends Task
         }
     }
 
-    function getAllHospitals($code = null)
+    /**
+     * 得到所有有转诊的医院
+     * @return array|DoctorPatients[]
+     */
+    function getAllHospitals()
     {
-        $query = DoctorHospitals::find()->select(['hospital_name','id','code']);
-        if ($code) {
-            $query->where(['code' => $code]);
-        }
-        return $query->all();
+        return DoctorPatients::find()->select(['hospital_id'])
+            ->where(['is_transfer' => 1])
+            ->distinct(['hospital_id'])
+            ->all();
     }
 
     function getPatients($hospital_id)
@@ -178,11 +181,12 @@ class JobController extends Task
     {
         if (!empty($hospitals)) {
             foreach ($hospitals as $hospital) {
-                $this->hid = $hospital->id;
-                $this->hostipal_code = $hospital->code;
+                $this->hid = $hospital->hospital_id;
+                $hospital_detail = DoctorHospitals::findOne(['id'=>$this->hid]);
+                $this->hostipal_code = $hospital_detail->code;
                 $patients = $this->getPatients($this->hid);
-                $this->logs['hospital_name'] = $hospital->hospital_name;
-                $this->logs['api_config'] = $config = \Yii::$app->params['hospital_api'][$hospital->code];
+                $this->logs['hospital_name'] = $hospital_detail->hospital_name;
+                $this->logs['api_config'] = $config = \Yii::$app->params['hospital_api'][$hospital_detail->code];
                 if (!empty($patients) && !empty($config['task_api'])) {
                     foreach ($patients as $patient) {
                         $this->stdout("current patient:".$patient->name.'--'.$patient->id_number.PHP_EOL);
