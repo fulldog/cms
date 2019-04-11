@@ -39,8 +39,7 @@ class Task extends Controller
                 'user_msg' => $data,
                 'line-end'=>'-----------------------------------------------------------------------------------------------------',
             ], true) . "\r\n", FILE_APPEND | LOCK_EX);
-
-        unset($this->params,$this->logs);
+        $this->params = $this->logs = [];
     }
 
     function curl($api)
@@ -56,6 +55,7 @@ class Task extends Controller
             $res = \GuzzleHttp\json_decode(trim($result, "\xEF\xBB\xBF"), true);
         } catch (\Exception $e) {
             $this->logs['Exception'] = $e->getMessage();
+            $this->stdout('result:'.$this->logs['Exception'].PHP_EOL);
         }
         $this->logs['response'] = $res;
         return $res;

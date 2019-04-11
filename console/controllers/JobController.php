@@ -130,7 +130,7 @@ class JobController extends Task
                                         $tran->rollBack();
                                         $this->logs['DoctorPatientDayMoney'] = $insert;
                                         $this->logs['DoctorMoneylog'] = $insert2;
-                                        $this->stderr("commit fail:".json_encode($this->logs,JSON_UNESCAPED_UNICODE).PHP_EOL);
+                                        $this->stdout("commit fail:".json_encode($this->logs,JSON_UNESCAPED_UNICODE).PHP_EOL);
                                     }
                                 }
                             } else {
@@ -146,7 +146,7 @@ class JobController extends Task
             $this->stdout('memory_get_usage used:'.memory_get_usage().PHP_EOL);
             $this->stdout("job end".PHP_EOL);
         } catch (\Exception $exception) {
-            $this->stderr("job error:".$exception->getMessage().PHP_EOL);
+            $this->stdout("job error:".$exception->getMessage().PHP_EOL);
             return ;
         }
     }
@@ -174,14 +174,14 @@ class JobController extends Task
     }
 
     /**
-     * @param DoctorHospitals $hospitals
+     * @param  DoctorPatients $hospital_ids
      * @return \Generator
      */
-    function search($hospitals)
+    function search($hospital_ids)
     {
-        if (!empty($hospitals)) {
-            foreach ($hospitals as $hospital) {
-                $this->hid = $hospital->hospital_id;
+        if (!empty($hospital_ids)) {
+            foreach ($hospital_ids as $hid) {
+                $this->hid = $hid->hospital_id;
                 $hospital_detail = DoctorHospitals::findOne(['id'=>$this->hid]);
                 $this->hostipal_code = $hospital_detail->code;
                 $patients = $this->getPatients($this->hid);
@@ -194,13 +194,13 @@ class JobController extends Task
                         $this->params['id_card'] = $patient->id_number;
                         $this->params['name'] = $patient->name;
                         $this->params['phone'] = $patient->phone;
-                        $this->params['sign'] = md5($patient->id_number . $hospital->code);
+                        $this->params['sign'] = md5($patient->id_number . $hospital_detail->code);
                         $this->params['date_time'] = $this->date;
                         $this->params['method'] = self::GET_DAY_FLOW;
                         yield $this->curl($config['task_api']);
                     }
                 }else{
-                    $this->stdout("没有病人/没有查到接口配置信息hid:{$this->hid},code:{$hospital->code},name:{$hospital->hospital_name}".PHP_EOL);
+                    $this->stdout("没有病人/没有查到接口配置信息hid:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}".PHP_EOL);
                 }
             }
         }
