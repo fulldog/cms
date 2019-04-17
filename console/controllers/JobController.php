@@ -82,15 +82,17 @@ class JobController extends Task
                         $patient = $this->patients[$this->hid . '-' . $id_card];
                         unset($this->patients[$this->hid . '-' . $id_card]);
                         if (!empty($patient)) {
-                            $commission = DoctorCommission::find()->where(['patient_id' => $patient->id])->orderBy(['id' => SORT_DESC])->one();
+                            $commission = DoctorCommission::find()->where(['patient_id' => $patient->id])->orderBy(['id' => SORT_DESC])->one()->toArray();
                             if (empty($commission)) {
-                                $commission = DoctorCommission::find()->where(['hospital_id' => $this->hid])->orderBy(['id' => SORT_DESC])->one();
+                                $commission = DoctorCommission::find()->where(['hospital_id' => $this->hid])->orderBy(['id' => SORT_DESC])->one()->toArray();
                             }
                             if (!empty($commission) && !empty($info)) {
+                                $this->logs['DoctorCommission'] = $commission;
                                 $insert = [];
                                 $insert2 = [];
                                 foreach ($info as $k => $v) {
-                                    if (empty($v))
+                                    //容错
+                                    if (empty($v['money']))
                                         continue;
 
                                     $insert[] = [
@@ -110,7 +112,7 @@ class JobController extends Task
                                         $patient->id,
                                         'add',
                                         $v['desc'],
-                                        round($v['money'] * $commission->point / 100, 2),
+                                        round($v['money'] * $commission['point'] / 100, 2),
                                         1,
                                         time()
                                     ];
@@ -134,7 +136,7 @@ class JobController extends Task
                                     }
                                 }
                             } else {
-                                $this->logs['DoctorCommission'] = ['还没有配置当前病人得提成率', $patient->toArray()];
+                                $this->logs['DoctorCommission'] = ['还没有配置当前病人提成率', $patient->toArray()];
                             }
                         }
                     }
