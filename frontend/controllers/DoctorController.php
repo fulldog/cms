@@ -75,8 +75,8 @@ class DoctorController extends BaseController
             'code' => 1,
             'data' => DoctorInfos::find()->where(['recommend' => 1, 'status' => 1])->with(['hospital' => function ($query) {
                 $query->select('id,hospital_name,city,address,levels,province,area,grade,recommend,status,tel');
-            }])->with(['userinfo'=>function($query){
-                $query->select('username,id');
+            }])->with(['relatedUser'=>function($query){
+                $query->select('username as phone,id');
             }])->asArray()->all(),
         ];
     }
