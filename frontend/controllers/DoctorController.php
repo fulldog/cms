@@ -59,12 +59,25 @@ class DoctorController extends BaseController
     function actionGetDoctors($id = null)
     {
         $sql = "select b.id as uid,b.username,a.name,a.hospital_id,a.id as doctor_id,a.avatar,a.doctor_type,a.role from " . DoctorInfos::tableName() . " as a left join " . User::tableName() . " as b on a.uid=b.id ";
+        $sql .=" where 1 and a.recommend=1 ";
         if ($id) {
-            $sql .= " where a.id='{$id}'";
+            $sql .= " and a.id='{$id}'";
         }
         return [
             'code' => 1,
             'data' => \Yii::$app->db->createCommand($sql)->queryAll()
+        ];
+    }
+
+    function actionRecommend()
+    {
+        return [
+            'code' => 1,
+            'data' => DoctorInfos::find()->where(['recommend' => 1, 'status' => 1])->with(['hospital' => function ($query) {
+                $query->select('id,hospital_name,city,address,levels,province,area,grade,recommend,status,tel');
+            }])->with(['userinfo'=>function($query){
+                $query->select('username,id');
+            }])->asArray()->all(),
         ];
     }
 }

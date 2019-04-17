@@ -93,4 +93,11 @@ class HospitalController extends BaseController
             'data' => DoctorHospitals::find()->andFilterWhere(['id'=>$id])->asArray()->all()
         ];
     }
+
+    function actionRecommend(){
+        return [
+            'code' => 1,
+            'data' => DoctorHospitals::findAll(['recommend' => 1, 'status' => 1]),
+        ];
+    }
 }
