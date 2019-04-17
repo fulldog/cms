@@ -36,7 +36,7 @@ class Task extends Controller
                 'line'=>'-----------------------------------------------------------------------------------------------------',
                 'logs' => $this->logs,
                 'params' => $this->params,
-                'user_msg' => $data,
+                'diy_msg' => $data,
                 'line-end'=>'-----------------------------------------------------------------------------------------------------',
             ], true) . "\r\n", FILE_APPEND | LOCK_EX);
         $this->params = $this->logs = [];
@@ -45,17 +45,17 @@ class Task extends Controller
     function curl($api)
     {
         $this->stdout('connecting--api:'.$api.PHP_EOL);
-        $client = new Client([['timeout' => 5]]);
+        $client = new Client(['timeout' => 3]);
         $res = [];
         try {
             $response = $client->post($api, ['form_params' => $this->params]);
             $result = $response->getBody()->getContents();
-            $this->stdout('result:'.$result.PHP_EOL);
-            $this->logs['origin-result'] = $result;
+//            $this->stdout('result:'.$result.PHP_EOL);
+            $this->logs['Origin-result'] = $result;
             $res = \GuzzleHttp\json_decode(trim($result, "\xEF\xBB\xBF"), true);
         } catch (\Exception $e) {
             $this->logs['Exception'] = $e->getMessage();
-            $this->stdout('result:'.$this->logs['Exception'].PHP_EOL);
+//            $this->stdout('result:'.$this->logs['Exception'].PHP_EOL);
         }
         $this->logs['response'] = $res;
         return $res;

@@ -77,6 +77,7 @@ class JobController extends Task
             $this->date = $this->getBeforeDay(1);
             $hospital = $this->getAllHospitals();
             foreach ($this->search($hospital) as $result) {
+                $this->stdout('start***************************************************************'.PHP_EOL);
                 if (!empty($result) && $result['code'] == 200) {
                     foreach ($result['data'] as $id_card => $info) {
                         $patient = $this->patients[$this->hid . '-' . $id_card];
@@ -126,13 +127,15 @@ class JobController extends Task
                                     ) {
                                         $commit = false;
                                     }
+
+                                    $this->logs['DoctorPatientDayMoney'] = $insert;
+                                    $this->logs['DoctorMoneylog'] = $insert2;
                                     if ($commit) {
                                         $tran->commit();
+                                        $this->logs['commit'] = '----Commit:Success----';
                                     } else {
                                         $tran->rollBack();
-                                        $this->logs['DoctorPatientDayMoney'] = $insert;
-                                        $this->logs['DoctorMoneylog'] = $insert2;
-                                        $this->stdout("commit fail:".json_encode($this->logs,JSON_UNESCAPED_UNICODE).PHP_EOL);
+                                        $this->logs['commit'] = '----Commit:Fail----';
                                     }
                                 }
                             } else {
@@ -141,6 +144,8 @@ class JobController extends Task
                         }
                     }
                 }
+                $this->stdout(json_encode($this->logs,JSON_UNESCAPED_UNICODE).PHP_EOL);
+                $this->stdout('end***************************************************************'.PHP_EOL);
                 $this->logs();
             }
             $time2 = microtime(true);
@@ -188,20 +193,22 @@ class JobController extends Task
                 $this->hostipal_code = $hospital_detail->code;
                 $patients = $this->getPatients($this->hid);
                 $this->logs['hospital_name'] = $hospital_detail->hospital_name;
-                $this->logs['api_config'] = $config = \Yii::$app->params['hospital_api'][$hospital_detail->code];
-                if (!empty($patients) && !empty($config['task_api'])) {
-                    foreach ($patients as $patient) {
-                        $this->stdout("current patient:".$patient->name.'--'.$patient->id_number.PHP_EOL);
-                        $this->patients[$this->hid . '-' . $patient->id_number] = $patient;
-                        $this->params['id_card'] = $patient->id_number;
-                        $this->params['name'] = $patient->name;
-                        $this->params['phone'] = $patient->phone;
-                        $this->params['sign'] = md5($patient->id_number . $hospital_detail->code);
-                        $this->params['date_time'] = $this->date;
-                        $this->params['method'] = self::GET_DAY_FLOW;
-                        yield $this->curl($config['task_api']);
+                try{
+                    $this->logs['api_config'] = $config = \Yii::$app->params['hospital_api'][$hospital_detail->code];
+                    if (!empty($patients) && !empty($config['task_api'])) {
+                        foreach ($patients as $patient) {
+                            $this->stdout("current patient:".$patient->name.'--'.$patient->id_number.PHP_EOL);
+                            $this->patients[$this->hid . '-' . $patient->id_number] = $patient;
+                            $this->params['id_card'] = $patient->id_number;
+                            $this->params['name'] = $patient->name;
+                            $this->params['phone'] = $patient->phone;
+                            $this->params['sign'] = md5($patient->id_number . $hospital_detail->code);
+                            $this->params['date_time'] = $this->date;
+                            $this->params['method'] = self::GET_DAY_FLOW;
+                            yield $this->curl($config['task_api']);
+                        }
                     }
-                }else{
+                }catch (\Exception $exception){
                     $this->stdout("没有病人/没有查到接口配置信息hid:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}".PHP_EOL);
                 }
             }
