@@ -29,6 +29,13 @@ $config = [
                 'database' => 0
             ],
         ],
+        'redis' => [
+            'class' => 'yii\redis\Connection',
+            'hostname' => '127.0.0.1',
+            'port' => 6379,
+            'database' => 6,
+//            'password' => 'yourpass',
+        ],
         'formatter' => [//格式显示配置
             'dateFormat' => 'php:Y-m-d H:i',
             'decimalSeparator' => ',',

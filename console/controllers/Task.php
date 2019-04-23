@@ -19,40 +19,49 @@ class Task extends Controller
     const POST = "POST";
     const GET = "GET";
 
-    protected $hostipal_code = 'not-found';
+    protected $hostipal_code = 'hostipal_code';
+    protected $hostipal_name = 'hostipal_name';
     protected $params = [];
     protected $logs = [];
+
+    function redisLogs($string){
+        $path = \Yii::getAlias('@runtime') . DIRECTORY_SEPARATOR . 'apilog' . DIRECTORY_SEPARATOR . 'redisKeys';
+        if (!file_exists($path)) {
+            $this->createDir($path);
+        }
+        $path .= DIRECTORY_SEPARATOR . date('Y-m') . '.log';
+        @file_put_contents($path, $string . "\r\n", FILE_APPEND | LOCK_EX);
+    }
+
 
     function logs($data = [])
     {
 
-        $path = \Yii::getAlias('@runtime') . DIRECTORY_SEPARATOR . 'apilog' . DIRECTORY_SEPARATOR . $this->hostipal_code;
+        $path = \Yii::getAlias('@runtime') . DIRECTORY_SEPARATOR . 'apilog' . DIRECTORY_SEPARATOR . $this->hostipal_name;
 
         if (!file_exists($path)) {
             $this->createDir($path);
         }
-        $path .=  DIRECTORY_SEPARATOR.date('Y-m-d') . '.log';
+        $path .= DIRECTORY_SEPARATOR . date('Y-m-d') . '.log';
         @file_put_contents($path, var_export([
-                'line'=>'-----------------------------------------------------------------------------------------------------',
+                'line' => '-----------------------------------------------------------------------------------------------------',
                 'logs' => $this->logs,
                 'params' => $this->params,
                 'diy_msg' => $data,
-                'line-end'=>'-----------------------------------------------------------------------------------------------------',
+                'line-end' => '-----------------------------------------------------------------------------------------------------',
             ], true) . "\r\n", FILE_APPEND | LOCK_EX);
         $this->params = $this->logs = [];
     }
 
     function curl($api)
     {
-        $this->stdout('connecting--api:'.$api.PHP_EOL);
-        $client = new Client(['timeout' => 3]);
+        $this->stdout('current--api:' . json_encode(['api'=>$api,'form_params'=>$this->params]) . PHP_EOL);
+        $client = new Client(['timeout' => 5]);
         $res = [];
         try {
             $response = $client->post($api, ['form_params' => $this->params]);
-            $result = $response->getBody()->getContents();
-//            $this->stdout('result:'.$result.PHP_EOL);
-            $this->logs['Origin-result'] = $result;
-            $res = \GuzzleHttp\json_decode(trim($result, "\xEF\xBB\xBF"), true);
+            $this->logs['Origin-result'] = trim($response->getBody()->getContents(), "\xEF\xBB\xBF");
+            $res = \GuzzleHttp\json_decode($this->logs['Origin-result'], true);
         } catch (\Exception $e) {
             $this->logs['Exception'] = $e->getMessage();
 //            $this->stdout('result:'.$this->logs['Exception'].PHP_EOL);
@@ -62,22 +71,24 @@ class Task extends Controller
     }
 
     /**
+     * @param string $time
      * @param int $day
      * @return false|string
      */
-    function getBeforeDay(int $day){
-        return date('Y-m-d',strtotime('-'.$day.' day',strtotime(date('Y-m-d'))));
+    function getBeforeDay(int $day, string $time = null)
+    {
+        $date = $time ?? date('Y-m-d');
+        $type = $day > 0 ? '+' : '-';
+        return date('Y-m-d', strtotime($type . abs($day) . ' day', strtotime($date)));
     }
 
     function createDir($str)
     {
         $arr = explode(DIRECTORY_SEPARATOR, $str);
-        if(!empty($arr))
-        {
+        if (!empty($arr)) {
             $path = '';
-            foreach($arr as $k=>$v)
-            {
-                $path .= $v.DIRECTORY_SEPARATOR;
+            foreach ($arr as $k => $v) {
+                $path .= $v . DIRECTORY_SEPARATOR;
                 if (!file_exists($path)) {
                     mkdir($path, 0777);
                     chmod($path, 0777);

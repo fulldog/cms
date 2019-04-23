@@ -36,3 +36,8 @@ frontend/tests/acceptance.suite.yml
 api/tests/acceptance.suite.yml
 apps/*
 common/config/conf
+
+*.jpg
+*.png
+*.jpeg
+test.*
