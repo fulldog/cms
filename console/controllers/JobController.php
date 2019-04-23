@@ -138,9 +138,6 @@ class JobController extends Task
         try {
             $time1 = microtime(true);
             $this->stdout("job begin" . PHP_EOL);
-//            $this->date = $this->getBeforeDay(-1);
-//            $hospital = $this->getAllHospitals();
-//            foreach ($this->search($hospital) as $result) {
             foreach ($this->searchRedis() as $result) {
                 if (!empty($result) && $result['code'] == 200) {
                     foreach ($result['data'] as $id_card => $info) {
@@ -195,7 +192,7 @@ class JobController extends Task
                                     $this->logs['DoctorPatientDayMoney'] = $insert;
                                     $this->logs['DoctorMoneylog'] = $insert2;
                                     if ($commit) {
-//                                        $tran->commit();
+                                        $tran->commit();
                                         $this->logs['commit'] = '----Commit:Success----';
                                     } else {
                                         $tran->rollBack();
