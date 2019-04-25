@@ -23,6 +23,8 @@ class JobController extends Task
 
     const GET_DAY_FLOW_LIST = 'getDayFlowList';
 
+    const JOB_IS_DOING = 'job-is-doing';
+
     private $hid;
     private $patients = [];
     private $date;
@@ -141,6 +143,11 @@ class JobController extends Task
     {
         try {
             $time1 = microtime(true);
+
+            if (\Yii::$app->redis->get(self::JOB_IS_DOING)){
+                return  $this->stdout("job is doing" . PHP_EOL);
+            }
+            \Yii::$app->redis->setnx(self::JOB_IS_DOING,1);
             $this->stdout("job begin" . PHP_EOL);
             foreach ($this->searchRedis() as $result) {
                 if (!empty($result) && $result['code'] == 200) {
@@ -228,8 +235,10 @@ class JobController extends Task
             $this->stdout('time used:' . (round($time2 - $time1, 3)) . 'hs' . PHP_EOL);
             $this->stdout('memory_get_usage used:' . memory_get_usage() . PHP_EOL);
             $this->stdout("job end" . PHP_EOL);
+            \Yii::$app->redis->del(self::JOB_IS_DOING);
         } catch (\Exception $exception) {
             $this->stdout("job error:" . $exception->getMessage() . PHP_EOL);
+            \Yii::$app->redis->del(self::JOB_IS_DOING);
             return;
         }
     }
