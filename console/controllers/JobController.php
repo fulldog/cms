@@ -137,7 +137,7 @@ class JobController extends Task
     /**
      * get T-1 day pays
      */
-    function actionIndex()
+    function actionDoCron()
     {
         try {
             $time1 = microtime(true);
