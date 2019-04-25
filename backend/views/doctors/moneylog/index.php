@@ -25,9 +25,9 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Moneylog');
 //                        ['class' => CheckboxColumn::className()],
 //                        'id',
 //                        'doctor_id',
-                        [
-                            'attribute'=>'hospital.hospital_name'
-                        ],
+//                        [
+//                            'attribute'=>'hospital.hospital_name'
+//                        ],
                         [
                             'attribute'=>'doctor.name'
                         ],
@@ -76,15 +76,21 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Moneylog');
                                 return $map[$model->status];
                             }
                         ],
-                        'desc',
+//                        'desc',
                         [
                             'attribute'=>'money',
                             'filter'=>false
                         ],
-                         'created_at:datetime',
+                        [
+                            'label'=>'结算日期',
+                            'filter'=>false,
+                            'value'=>'relationPdmlog.date'
+                        ],
+                        [
+                            'class' => \backend\grid\DateColumn::className(),
+                            'attribute' => 'created_at',
+                        ],
                         // 'updated_at',
-
-
                         [
                             'class' => ActionColumn::className(),
                             'template'=>'{view-layer}'

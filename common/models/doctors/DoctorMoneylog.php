@@ -17,6 +17,7 @@ use Yii;
  * @property int $created_at
  * @property int $updated_at
  * @property int $status
+ * @property int $out_key
  */
 class DoctorMoneylog extends My
 {
@@ -40,11 +41,11 @@ class DoctorMoneylog extends My
     public function rules()
     {
         return [
-            [['doctor_id', 'patient_id','hospital_id',], 'required'],
+            [['doctor_id', 'patient_id','hospital_id'], 'required'],
             [['doctor_id', 'patient_id', 'created_at', 'updated_at', 'status','hospital_id'], 'integer'],
             [['money'], 'number'],
             [['type'], 'string', 'max' => 10],
-            [['desc'], 'string', 'max' => 255],
+            [['desc','out_key'], 'string', 'max' => 255],
             [['money'],'compare','compareValue'=>0,'operator'=>'>='],
         ];
     }
@@ -64,11 +65,16 @@ class DoctorMoneylog extends My
             'created_at' => '创建时间',
             'updated_at' => '修改时间',
             'status' => '状态',
-            'hospital_id' => 'Hospital ID',
+            'hospital_id' => '医院id',
+            'out_key' => 'out_key',
         ];
     }
 
     function getType(){
         return $this->typeText[$this->type];
+    }
+
+    function getRelationPdmlog(){
+        return $this->hasOne(DoctorPatientDayMoney::className(), ['out_key' => 'out_key']);
     }
 }

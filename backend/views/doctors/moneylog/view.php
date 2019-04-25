@@ -18,17 +18,17 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'hospital.hospital_name'
             ],
-            [
-                'attribute'=>'doctor.name'
-            ],
-            [
-                'attribute'=>'patient.name',
-                'label'=>'病人名称'
-            ],
-            [
-                'attribute'=>'patient.id_number',
-                'label'=>'病人身份证'
-            ],
+//            [
+//                'attribute'=>'doctor.name'
+//            ],
+//            [
+//                'attribute'=>'patient.name',
+//                'label'=>'病人名称'
+//            ],
+//            [
+//                'attribute'=>'patient.id_number',
+//                'label'=>'病人身份证'
+//            ],
 //                        'patient_id',
             [
                 'attribute'=>'type',
@@ -54,10 +54,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $map[$model->status];
                 }
             ],
-            'desc',
+//            'desc',
             'money',
             'created_at:datetime',
             'updated_at:datetime',
+            [
+                'label'=>'其他明细',
+                'value'=>''
+            ],
+            'relationPdmlog.name',
+            'relationPdmlog.id_card',
+            'relationPdmlog.type',
+            'relationPdmlog.desc',
+            'relationPdmlog.money',
+            'relationPdmlog.date',
+            'relationPdmlog.created_at:datetime',
         ],
     ]) ?>
 

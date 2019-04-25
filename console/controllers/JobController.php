@@ -11,6 +11,7 @@ namespace console\controllers;
 
 use common\models\doctors\DoctorCommission;
 use common\models\doctors\DoctorHospitals;
+use common\models\doctors\DoctorInfos;
 use common\models\doctors\DoctorMoneylog;
 use common\models\doctors\DoctorPatientDayMoney;
 use common\models\doctors\DoctorPatients;
@@ -35,7 +36,8 @@ class JobController extends Task
         'id_card',
         'name',
         'created_at',
-        'date'
+        'date',
+        'out_key'
     ];
 
     public $menoylog_keys = [
@@ -47,6 +49,7 @@ class JobController extends Task
         'money',
         'status',
         'created_at',
+        'out_key'
     ];
 
     function __construct($id, $module, array $config = [])
@@ -61,7 +64,7 @@ class JobController extends Task
      * @param $date
      * api test
      */
-    function actionTest($date)
+    function actionTest($date = null)
     {
         echo $date . PHP_EOL;
         $this->params = [
@@ -69,6 +72,7 @@ class JobController extends Task
             'date' => $date,//'2019-04-18',
             'id_card' => '420500194611141325',
         ];
+        echo $this->getPatients(280);die;
 //        $this->curl('//58.19.245.66:9090/?can=xdtj');
 //        print_r($this->logs);
     }
@@ -152,11 +156,15 @@ class JobController extends Task
                                 $this->logs['DoctorCommission'] = $commission;
                                 $insert = [];
                                 $insert2 = [];
+                                $_money = 0;
                                 foreach ($info as $k => $v) {
                                     //容错
                                     if (empty($v['money']))
                                         continue;
 
+
+                                    $rate = round($v['money'] * $commission['point'] / 100, 2);
+                                    $out_key = md5($this->date . $patient->id . $id_card . $patient->transfer_doctor . $v['money'] . $k);
                                     $insert[] = [
                                         $patient->id,
                                         $k,
@@ -167,24 +175,32 @@ class JobController extends Task
                                         $v['name'],
                                         time(),
                                         $this->date,
+                                        $out_key
                                     ];
+
+
                                     $insert2[] = [
                                         $this->hid,
                                         $patient->transfer_doctor,
                                         $patient->id,
                                         'add',
                                         $v['desc'],
-                                        round($v['money'] * $commission['point'] / 100, 2),
+                                        $rate,
                                         1,
-                                        time()
+                                        time(),
+                                        $out_key
                                     ];
+                                    $_money += $rate;
                                 }
+
                                 if (!empty($insert) && !empty($insert2)) {
                                     $db = \Yii::$app->db;
                                     $tran = $db->beginTransaction();
                                     $commit = true;
+
                                     if (!$db->createCommand()->batchInsert(DoctorPatientDayMoney::tableName(), $this->day_log_keys, $insert)->execute()
                                         || !$db->createCommand()->batchInsert(DoctorMoneylog::tableName(), $this->menoylog_keys, $insert2)->execute()
+                                        || !DoctorInfos::updateAllCounters(['money' => $_money], ['id' => $patient->transfer_doctor])
                                     ) {
                                         $commit = false;
                                     }
@@ -193,10 +209,10 @@ class JobController extends Task
                                     $this->logs['DoctorMoneylog'] = $insert2;
                                     if ($commit) {
                                         $tran->commit();
-                                        $this->logs['commit'] = '----Commit:Success----';
+                                        $this->logs['commit'] = '-----------------------------Commit:Success----------------------------------';
                                     } else {
                                         $tran->rollBack();
-                                        $this->logs['commit'] = '----Commit:Fail----';
+                                        $this->logs['rollBack'] = '-------------------------------Commit:Fail------------------------------------';
                                     }
                                 }
                             } else {
@@ -237,8 +253,9 @@ class JobController extends Task
         return DoctorPatients::find()->select(['doctor_id', 'is_transfer', 'transfer_doctor', 'id_number', 'name', 'phone', 'id'])
             ->where(['hospital_id' => $hospital_id])
             ->andWhere(['is_transfer' => 1])
-            ->groupBy('id_number')
+            ->andWhere(['>','transfer_doctor',0])
             ->orderBy(['id' => SORT_ASC])
+            ->groupBy('id_number')
             ->all();
     }
 

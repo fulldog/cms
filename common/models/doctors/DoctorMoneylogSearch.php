@@ -18,7 +18,7 @@ class DoctorMoneylogSearch extends DoctorMoneylog
     public function rules()
     {
         return [
-            [['id', 'doctor_id', 'patient_id', 'created_at', 'updated_at', 'status'], 'integer'],
+            [['id', 'doctor_id', 'patient_id', 'status'], 'integer'],
             [['type', 'desc'], 'safe'],
             [['money'], 'number'],
         ];
@@ -67,7 +67,7 @@ class DoctorMoneylogSearch extends DoctorMoneylog
             'status' => $this->status,
         ]);
         $this->SearchAddHospitalId($query);
-        $this->SearchAddTime($query,$params,__CLASS__);
+        $this->SearchAddTime($query, $params, __CLASS__);
         $query->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'desc', $this->desc]);
 

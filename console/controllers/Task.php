@@ -43,13 +43,11 @@ class Task extends Controller
             $this->createDir($path);
         }
         $path .= DIRECTORY_SEPARATOR . date('Y-m-d') . '.log';
-        @file_put_contents($path, var_export([
-                'line' => '-----------------------------------------------------------------------------------------------------',
+        @file_put_contents($path, json_encode([
                 'logs' => $this->logs,
                 'params' => $this->params,
                 'diy_msg' => $data,
-                'line-end' => '-----------------------------------------------------------------------------------------------------',
-            ], true) . "\r\n", FILE_APPEND | LOCK_EX);
+            ],JSON_UNESCAPED_UNICODE) . "\r\n", FILE_APPEND | LOCK_EX);
         $this->params = $this->logs = [];
     }
 

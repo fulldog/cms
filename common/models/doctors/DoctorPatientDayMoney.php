@@ -18,6 +18,7 @@ use Yii;
  * @property string $date
  * @property int $created_at
  * @property int $updated_at
+ * @property int $out_key
  */
 class DoctorPatientDayMoney extends My
 {
@@ -39,7 +40,7 @@ class DoctorPatientDayMoney extends My
             [['patient_id', 'hospital_name', 'created_at', 'updated_at'], 'integer'],
             [['money'], 'number'],
             [['type'], 'string', 'max' => 20],
-            [['desc', 'id_card', 'name', 'date'], 'string', 'max' => 255],
+            [['desc', 'id_card', 'name', 'date','out_key'], 'string', 'max' => 255],
         ];
     }
 
@@ -51,15 +52,16 @@ class DoctorPatientDayMoney extends My
         return [
             'id' => 'ID',
             'patient_id' => 'Patient ID',
-            'type' => 'Type',
-            'desc' => 'Desc',
-            'money' => 'Money',
-            'hospital_name' => 'Hospital Name',
-            'id_card' => 'Id Card',
-            'name' => 'Name',
-            'date' => 'Date',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'type' => '类型',
+            'desc' => '描述',
+            'money' => '金额',
+            'hospital_name' => '医院名称',
+            'id_card' => '身份证',
+            'name' => '姓名',
+            'date' => '结算日期',
+            'created_at' => '创建日期',
+            'updated_at' => '修改日期',
+            'out_key' => 'out_key',
         ];
     }
 }

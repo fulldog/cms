@@ -8,16 +8,16 @@ return [
     ],
     'article.template.directory' => Yii::getAlias("@frontend/views/article"),
     'hospital_api' => [
-        'qLTL8Acri5' => [//宜昌长航医院
-            'version' => '1.0',
-            'task_api' => '//1k483932e8.51mypc.cn/chyy/admin.php',
-            'detail_api' => '//1k483932e8.51mypc.cn/chyy/admin.php',
-        ],
-        'ygyy' => [//阳光医院
-            'version' => '',
-            'task_api' => '//lixingss.gicp.net/ygyy/admin.php',
-            'detail_api' => '//lixingss.gicp.net/ygyy/admin.php',
-        ],
+//        'qLTL8Acri5' => [//宜昌长航医院
+//            'version' => '1.0',
+//            'task_api' => '//1k483932e8.51mypc.cn/chyy/admin.php',
+//            'detail_api' => '//1k483932e8.51mypc.cn/chyy/admin.php',
+//        ],
+//        'ygyy' => [//阳光医院
+//            'version' => '',
+//            'task_api' => '//lixingss.gicp.net/ygyy/admin.php',
+//            'detail_api' => '//lixingss.gicp.net/ygyy/admin.php',
+//        ],
         'hx' => [
             'version' => '',
             'task_api' => '//58.19.245.66:9090/?can=xdtj',
