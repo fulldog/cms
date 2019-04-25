@@ -68,13 +68,13 @@ class JobController extends Task
      */
     function actionTest($date = null)
     {
-        echo $date . PHP_EOL;
         $this->params = [
             'sign' => md5('42272219520826124234eIPM74Tj'),
             'date' => $date,//'2019-04-18',
             'id_card' => '420500194611141325',
         ];
-        echo $this->getPatients(280);die;
+        print_r($this->getPatients(280));
+        echo \Yii::$app->redis->setex('test',200,'test');
 //        $this->curl('//58.19.245.66:9090/?can=xdtj');
 //        print_r($this->logs);
     }
