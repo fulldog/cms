@@ -26,7 +26,8 @@ $config = [
             'redis' => [//配置redis
                 'hostname' => '127.0.0.1',
                 'port' => '6379',
-                'database' => 0
+                'database' => 0,
+                'password' => 'hospital',
             ],
         ],
         'redis' => [
@@ -34,7 +35,7 @@ $config = [
             'hostname' => '127.0.0.1',
             'port' => 6379,
             'database' => 6,
-//            'password' => 'yourpass',
+            'password' => 'hospital',
         ],
         'formatter' => [//格式显示配置
             'dateFormat' => 'php:Y-m-d H:i',
