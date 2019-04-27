@@ -126,15 +126,15 @@ class JobController extends Task
             ->one();
 
         if (!empty($this->patient) && !empty($this->date) && !empty($this->patient->hospital)) {
-            $this->stdout("current patient:" . $this->patient->name . '--' . $this->patient->id_number . '--' . $this->date . PHP_EOL);
 
             if (!isset(\Yii::$app->params['hospital_api'][$this->patient->hospital->code]['task_api'])) {
-                $this->stderr("没有病人/没有查到接口配置信息hid:{$this->hid},code:{$this->patient->hospital->code},name:{$this->patient->hospital->hospital_name}" . PHP_EOL);
+                $this->stdout("没有查到接口配置信息hid:{$this->hid},code:{$this->patient->hospital->code},name:{$this->patient->hospital->hospital_name}" . PHP_EOL);
+                return;
             }
-
+            $this->hostipal_name = $this->patient->hospital->hospital_name;
+            $this->stdout("current patient:" . $this->hostipal_name . $this->patient->name . '-' . $this->patient->id_number . '-' . $this->date . PHP_EOL);
             $this->hid = $this->patient->hospital->id;
             $this->logs['api_config'] = \Yii::$app->params['hospital_api'][$this->patient->hospital->code];
-            $this->hostipal_name = $this->patient->hospital->hospital_name;
             $this->params['id_card'] = $this->patient->id_number;
             $this->params['name'] = $this->patient->name;
             $this->params['phone'] = $this->patient->phone;
@@ -202,6 +202,10 @@ class JobController extends Task
     }
 
 
+    /**
+     * @param $result
+     * @throws \yii\db\Exception
+     */
     function resultDo($result)
     {
         if (!empty($result) && $result['code'] == 200) {
@@ -220,7 +224,7 @@ class JobController extends Task
                         $_money = 0;
                         foreach ($info as $k => $v) {
                             //容错
-                            if (empty($v['money'])){
+                            if (empty($v['money'])) {
                                 continue;
                             }
 
@@ -264,7 +268,7 @@ class JobController extends Task
                                 $tran->rollBack();
                                 $this->hasException = true;
                                 $this->logs['rollBack'] = '-------------------------------Commit:Fail------------------------------------';
-                            }else{
+                            } else {
                                 $tran->commit();
                                 $this->logs['commit'] = '-----------------------------Commit:Success----------------------------------';
                             }
@@ -331,14 +335,14 @@ class JobController extends Task
                         throw new \Exception("没有查到接口配置信息-hospital_id:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
                     }
                     $patients = $this->getPatients($this->hid);
-                    if (!empty($patients)){
+                    if (!empty($patients)) {
                         throw new \Exception("没有满足条件的数据-hospital_id:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
                     }
                     $this->hostipal_code = $hospital_detail->code;
                     $this->logs['hospital_name'] = $this->hostipal_name = $hospital_detail->hospital_name;
                     $this->logs['api_config'] = \Yii::$app->params['hospital_api'][$hospital_detail->code];
                     foreach ($patients as $patient) {
-                        $this->stdout("current patient:" . $patient->name . '--' . $patient->id_number . PHP_EOL);
+                        $this->stdout("current patient:" . $this->hostipal_name . $patient->name . '--' . $patient->id_number . PHP_EOL);
                         $this->patient = $patient;
                         $this->params['id_card'] = $patient->id_number;
                         $this->params['name'] = $patient->name;
