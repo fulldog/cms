@@ -23,6 +23,7 @@ class Task extends Controller
     protected $hostipal_name = 'hostipal_name';
     protected $params = [];
     protected $logs = [];
+    protected $hasException = false;
 
     function redisLogs($string){
         $path = \Yii::getAlias('@runtime') . DIRECTORY_SEPARATOR . 'apilog' . DIRECTORY_SEPARATOR . 'redisKeys';
@@ -36,24 +37,25 @@ class Task extends Controller
 
     function logs($data = [])
     {
-
         $path = \Yii::getAlias('@runtime') . DIRECTORY_SEPARATOR . 'apilog' . DIRECTORY_SEPARATOR . $this->hostipal_name;
-
         if (!file_exists($path)) {
             $this->createDir($path);
         }
-        $path .= DIRECTORY_SEPARATOR . date('Y-m-d') . '.log';
+        if ($this->hasException){
+            $fileName = date('Y-m-d') . 'error.log';
+        }else{
+            $fileName = date('Y-m-d') . 'success.log';
+        }
+        $path .= DIRECTORY_SEPARATOR . $fileName;
         @file_put_contents($path, json_encode([
                 'logs' => $this->logs,
                 'params' => $this->params,
                 'diy_msg' => $data,
             ],JSON_UNESCAPED_UNICODE) . "\r\n", FILE_APPEND | LOCK_EX);
-        $this->params = $this->logs = [];
     }
 
     function curl($api)
     {
-        $this->stdout('current--api:' . json_encode(['api'=>$api,'form_params'=>$this->params]) . PHP_EOL);
         $client = new Client(['timeout' => 5]);
         $res = [];
         try {

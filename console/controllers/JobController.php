@@ -22,12 +22,13 @@ class JobController extends Task
     const GET_DAY_FLOW = "getDayFlow";
 
     const GET_DAY_FLOW_LIST = 'getDayFlowList';
+    const GET_DAY_FLOW_LIST_FAIL = 'getDayFlowListFail';
 
     const JOB_IS_DOING = 'job-is-doing';
 
     private $hid;
-    private $patients = [];
     private $date;
+    protected $patient;
 
     public $day_log_keys = [
         'patient_id',
@@ -74,7 +75,7 @@ class JobController extends Task
             'id_card' => '420500194611141325',
         ];
         print_r($this->getPatients(280));
-        echo \Yii::$app->redis->setex('test',200,'test');
+        echo \Yii::$app->redis->setex('test', 200, 'test');
 //        $this->curl('//58.19.245.66:9090/?can=xdtj');
 //        print_r($this->logs);
     }
@@ -113,6 +114,40 @@ class JobController extends Task
     }
 
 
+    function actionPatientDay($pid, $date)
+    {
+        $this->date = $date;
+        $this->patient = DoctorPatients::find()->select(['doctor_id', 'is_transfer', 'transfer_doctor', 'id_number', 'name', 'phone', 'id', 'hospital_id'])
+            ->where(['id' => $pid])
+            ->andWhere(['is_transfer' => 1])
+            ->andWhere(['>', 'transfer_doctor', 0])
+            ->orderBy(['id' => SORT_ASC])
+            ->groupBy('id_number')
+            ->one();
+
+        if (!empty($this->patient) && !empty($this->date) && !empty($this->patient->hospital)) {
+            $this->stdout("current patient:" . $this->patient->name . '--' . $this->patient->id_number . '--' . $this->date . PHP_EOL);
+
+            if (!isset(\Yii::$app->params['hospital_api'][$this->patient->hospital->code]['task_api'])) {
+                $this->stderr("没有病人/没有查到接口配置信息hid:{$this->hid},code:{$this->patient->hospital->code},name:{$this->patient->hospital->hospital_name}" . PHP_EOL);
+            }
+
+            $this->hid = $this->patient->hospital->id;
+            $this->logs['api_config'] = \Yii::$app->params['hospital_api'][$this->patient->hospital->code];
+            $this->hostipal_name = $this->patient->hospital->hospital_name;
+            $this->params['id_card'] = $this->patient->id_number;
+            $this->params['name'] = $this->patient->name;
+            $this->params['phone'] = $this->patient->phone;
+            $this->params['sign'] = md5($this->patient->id_number . $this->patient->hospital->code);
+            $this->params['date_time'] = $this->date;
+            $this->params['method'] = self::GET_DAY_FLOW;
+            $this->resultDo($this->curl($this->logs['api_config']['task_api']));
+            $this->stdout(json_encode($this->logs, JSON_UNESCAPED_UNICODE) . PHP_EOL);
+            $this->logs();
+        }
+    }
+
+
     /**
      * 计划任务
      */
@@ -143,91 +178,13 @@ class JobController extends Task
     {
         try {
             $time1 = microtime(true);
-
-            if (\Yii::$app->redis->get(self::JOB_IS_DOING)){
-                return  $this->stdout("job is doing" . PHP_EOL);
+            if (\Yii::$app->redis->get(self::JOB_IS_DOING)) {
+                return $this->stdout("job is doing" . PHP_EOL);
             }
-            \Yii::$app->redis->setnx(self::JOB_IS_DOING,1);
+            \Yii::$app->redis->setnx(self::JOB_IS_DOING, 1);
             $this->stdout("job begin" . PHP_EOL);
             foreach ($this->searchRedis() as $result) {
-                if (!empty($result) && $result['code'] == 200) {
-                    foreach ($result['data'] as $id_card => $info) {
-                        $patient = $this->patients[$this->hid . '-' . $id_card];
-                        unset($this->patients[$this->hid . '-' . $id_card]);
-                        if (!empty($patient)) {
-                            $commission = DoctorCommission::find()->where(['patient_id' => $patient->id])->orderBy(['id' => SORT_DESC])->asArray()->one();
-                            if (empty($commission)) {
-                                $commission = DoctorCommission::find()->where(['hospital_id' => $this->hid])->orderBy(['id' => SORT_DESC])->asArray()->one();
-                            }
-                            if (!empty($commission) && !empty($info)) {
-                                $this->logs['DoctorCommission'] = $commission;
-                                $insert = [];
-                                $insert2 = [];
-                                $_money = 0;
-                                foreach ($info as $k => $v) {
-                                    //容错
-                                    if (empty($v['money']))
-                                        continue;
-
-
-                                    $rate = round($v['money'] * $commission['point'] / 100, 2);
-                                    $out_key = md5($this->date . $patient->id . $id_card . $patient->transfer_doctor . $v['money'] . $k);
-                                    $insert[] = [
-                                        $patient->id,
-                                        $k,
-                                        $v['desc'],
-                                        $v['money'],
-                                        $v['hospital_name'],
-                                        $id_card,
-                                        $v['name'],
-                                        time(),
-                                        $this->date,
-                                        $out_key
-                                    ];
-
-
-                                    $insert2[] = [
-                                        $this->hid,
-                                        $patient->transfer_doctor,
-                                        $patient->id,
-                                        'add',
-                                        $v['desc'],
-                                        $rate,
-                                        1,
-                                        time(),
-                                        $out_key
-                                    ];
-                                    $_money += $rate;
-                                }
-
-                                if (!empty($insert) && !empty($insert2)) {
-                                    $db = \Yii::$app->db;
-                                    $tran = $db->beginTransaction();
-                                    $commit = true;
-
-                                    if (!$db->createCommand()->batchInsert(DoctorPatientDayMoney::tableName(), $this->day_log_keys, $insert)->execute()
-                                        || !$db->createCommand()->batchInsert(DoctorMoneylog::tableName(), $this->menoylog_keys, $insert2)->execute()
-                                        || !DoctorInfos::updateAllCounters(['money' => $_money], ['id' => $patient->transfer_doctor])
-                                    ) {
-                                        $commit = false;
-                                    }
-
-                                    $this->logs['DoctorPatientDayMoney'] = $insert;
-                                    $this->logs['DoctorMoneylog'] = $insert2;
-                                    if ($commit) {
-                                        $tran->commit();
-                                        $this->logs['commit'] = '-----------------------------Commit:Success----------------------------------';
-                                    } else {
-                                        $tran->rollBack();
-                                        $this->logs['rollBack'] = '-------------------------------Commit:Fail------------------------------------';
-                                    }
-                                }
-                            } else {
-                                $this->logs['DoctorCommission'] = ['还没有配置当前病人提成率', $patient->toArray()];
-                            }
-                        }
-                    }
-                }
+                $this->resultDo($result);
                 $this->stdout(json_encode($this->logs, JSON_UNESCAPED_UNICODE) . PHP_EOL);
                 $this->logs();
             }
@@ -239,9 +196,87 @@ class JobController extends Task
         } catch (\Exception $exception) {
             $this->stdout("job error:" . $exception->getMessage() . PHP_EOL);
             \Yii::$app->redis->del(self::JOB_IS_DOING);
-            return;
+            $this->hasException = true;
+            $this->logs();
         }
     }
+
+
+    function resultDo($result)
+    {
+        if (!empty($result) && $result['code'] == 200) {
+            $db = \Yii::$app->db;
+            foreach ($result['data'] as $id_card => $info) {
+                $patient = $this->patient;
+                if (!empty($patient)) {
+                    $commission = DoctorCommission::find()->where(['patient_id' => $patient->id])->orderBy(['id' => SORT_DESC])->asArray()->one();
+                    if (empty($commission)) {
+                        $commission = DoctorCommission::find()->where(['hospital_id' => $this->hid])->orderBy(['id' => SORT_DESC])->asArray()->one();
+                    }
+                    if (!empty($commission) && !empty($info)) {
+                        $this->logs['DoctorCommission'] = $commission;
+                        $insert = [];
+                        $insert2 = [];
+                        $_money = 0;
+                        foreach ($info as $k => $v) {
+                            //容错
+                            if (empty($v['money'])){
+                                continue;
+                            }
+
+                            $rate = round($v['money'] * $commission['point'] / 100, 2);
+                            $out_key = md5($this->date . $patient->id . $id_card . $patient->transfer_doctor . $v['money'] . $k);
+                            $insert[] = [
+                                $patient->id,
+                                $k,
+                                $v['desc'],
+                                $v['money'],
+                                $v['hospital_name'],
+                                $id_card,
+                                $v['name'],
+                                time(),
+                                $this->date,
+                                $out_key
+                            ];
+
+                            $insert2[] = [
+                                $this->hid,
+                                $patient->transfer_doctor,
+                                $patient->id,
+                                'add',
+                                $v['desc'],
+                                $rate,
+                                1,
+                                time(),
+                                $out_key
+                            ];
+                            $_money += $rate;
+                        }
+
+                        if (!empty($insert) && !empty($insert2)) {
+                            $this->logs['DoctorPatientDayMoney'] = $insert;
+                            $this->logs['DoctorMoneylog'] = $insert2;
+                            $tran = $db->beginTransaction();
+                            if (!$db->createCommand()->batchInsert(DoctorPatientDayMoney::tableName(), $this->day_log_keys, $insert)->execute()
+                                || !$db->createCommand()->batchInsert(DoctorMoneylog::tableName(), $this->menoylog_keys, $insert2)->execute()
+                                || !DoctorInfos::updateAllCounters(['money' => $_money], ['id' => $patient->transfer_doctor])
+                            ) {
+                                $tran->rollBack();
+                                $this->hasException = true;
+                                $this->logs['rollBack'] = '-------------------------------Commit:Fail------------------------------------';
+                            }else{
+                                $tran->commit();
+                                $this->logs['commit'] = '-----------------------------Commit:Success----------------------------------';
+                            }
+                        }
+                    } else {
+                        $this->logs['DoctorCommission'] = '还没有配置当前病人提成率';
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * 得到所有有转诊的医院
@@ -257,50 +292,19 @@ class JobController extends Task
             ->all();
     }
 
+    /**
+     * @param $hospital_id
+     * @return array|DoctorPatients[]
+     */
     function getPatients($hospital_id)
     {
         return DoctorPatients::find()->select(['doctor_id', 'is_transfer', 'transfer_doctor', 'id_number', 'name', 'phone', 'id'])
             ->where(['hospital_id' => $hospital_id])
             ->andWhere(['is_transfer' => 1])
-            ->andWhere(['>','transfer_doctor',0])
+            ->andWhere(['>', 'transfer_doctor', 0])
             ->orderBy(['id' => SORT_ASC])
             ->groupBy('id_number')
             ->all();
-    }
-
-    /**
-     * @param  DoctorPatients $hospital_ids
-     * @return \Generator
-     */
-    function search($hospital_ids)
-    {
-        if (!empty($hospital_ids)) {
-            foreach ($hospital_ids as $hid) {
-                $this->hid = $hid->hospital_id;
-                $hospital_detail = DoctorHospitals::findOne(['id' => $this->hid]);
-                $this->hostipal_code = $hospital_detail->code;
-                $patients = $this->getPatients($this->hid);
-                $this->logs['hospital_name'] = $hospital_detail->hospital_name;
-                try {
-                    $this->logs['api_config'] = $config = \Yii::$app->params['hospital_api'][$hospital_detail->code];
-                    if (!empty($patients) && !empty($config['task_api'])) {
-                        foreach ($patients as $patient) {
-                            $this->stdout("current patient:" . $patient->name . '--' . $patient->id_number . PHP_EOL);
-                            $this->patients[$this->hid . '-' . $patient->id_number] = $patient;
-                            $this->params['id_card'] = $patient->id_number;
-                            $this->params['name'] = $patient->name;
-                            $this->params['phone'] = $patient->phone;
-                            $this->params['sign'] = md5($patient->id_number . $hospital_detail->code);
-                            $this->params['date_time'] = $this->date;
-                            $this->params['method'] = self::GET_DAY_FLOW;
-                            yield $this->curl($config['task_api']);
-                        }
-                    }
-                } catch (\Exception $exception) {
-                    $this->stdout("没有病人/没有查到接口配置信息hid:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
-                }
-            }
-        }
     }
 
     /**
@@ -312,38 +316,46 @@ class JobController extends Task
         $redis = \Yii::$app->redis;
         if ($redis->exists(self::GET_DAY_FLOW_LIST)) {
             while ($string = $redis->lpop(self::GET_DAY_FLOW_LIST)) {
-                $this->stdout('START******************************' . $string . '*********************************START' . PHP_EOL);
+                $this->hid = $this->patient = $this->date = $this->hostipal_code = '';
+                $this->params = $this->logs = [];
+                $this->stdout('START***************************' . $string . '********************************START' . PHP_EOL);
                 $data = explode(':', $string);
-                if (!empty($data)) {
+                try {
+                    if (empty($data)) {
+                        throw new \Exception("data数据错误" . PHP_EOL);
+                    }
                     $this->hid = $data[0];
                     $this->date = $data[1];
                     $hospital_detail = DoctorHospitals::findOne(['id' => $this->hid]);
+                    if (!isset(\Yii::$app->params['hospital_api'][$hospital_detail->code]['task_api'])) {
+                        throw new \Exception("没有查到接口配置信息-hospital_id:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
+                    }
+                    $patients = $this->getPatients($this->hid);
+                    if (!empty($patients)){
+                        throw new \Exception("没有满足条件的数据-hospital_id:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
+                    }
                     $this->hostipal_code = $hospital_detail->code;
                     $this->logs['hospital_name'] = $this->hostipal_name = $hospital_detail->hospital_name;
-                    $patients = $this->getPatients($this->hid);
-                    try {
-
-                        if (empty($patients) || !isset(\Yii::$app->params['hospital_api'][$hospital_detail->code]['task_api'])) {
-                            throw new \Exception("没有病人/没有查到接口配置信息hid:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
-                        }
-                        $this->logs['api_config'] = $config = \Yii::$app->params['hospital_api'][$hospital_detail->code];
-                        foreach ($patients as $patient) {
-                            $this->stdout("current patient:" . $patient->name . '--' . $patient->id_number . PHP_EOL);
-                            $this->patients[$this->hid . '-' . $patient->id_number] = $patient;
-                            $this->params['id_card'] = $patient->id_number;
-                            $this->params['name'] = $patient->name;
-                            $this->params['phone'] = $patient->phone;
-                            $this->params['sign'] = md5($patient->id_number . $hospital_detail->code);
-                            $this->params['date_time'] = $this->date;
-                            $this->params['method'] = self::GET_DAY_FLOW;
-                            yield $this->curl($config['task_api']);
-                        }
-                    } catch (\Exception $exception) {
-                        $this->stdout($exception->getMessage());
-                        yield [];
+                    $this->logs['api_config'] = \Yii::$app->params['hospital_api'][$hospital_detail->code];
+                    foreach ($patients as $patient) {
+                        $this->stdout("current patient:" . $patient->name . '--' . $patient->id_number . PHP_EOL);
+                        $this->patient = $patient;
+                        $this->params['id_card'] = $patient->id_number;
+                        $this->params['name'] = $patient->name;
+                        $this->params['phone'] = $patient->phone;
+                        $this->params['sign'] = md5($patient->id_number . $hospital_detail->code);
+                        $this->params['date_time'] = $this->date;
+                        $this->params['method'] = self::GET_DAY_FLOW;
+                        yield $this->curl($this->logs['api_config']['task_api']);
                     }
+                } catch (\Exception $exception) {
+                    $this->hasException = true;
+                    $this->logs['searchRedis_Exception'] = $exception->getMessage();
+                    $this->stdout($this->logs['searchRedis_Exception']);
+                    yield [];
                 }
                 $this->stdout('END*****************************' . $string . '**********************************END' . PHP_EOL);
+                $this->stdout('' . PHP_EOL);
             }
         }
     }
