@@ -12,6 +12,7 @@ use common\models\doctors\DoctorMoneylog;
  */
 class DoctorMoneylogSearch extends DoctorMoneylog
 {
+    public $date;
     /**
      * @inheritdoc
      */
@@ -21,6 +22,7 @@ class DoctorMoneylogSearch extends DoctorMoneylog
             [['id', 'doctor_id', 'patient_id', 'status'], 'integer'],
             [['type', 'desc'], 'safe'],
             [['money'], 'number'],
+            [['date'], 'string'],
         ];
     }
 
@@ -42,12 +44,13 @@ class DoctorMoneylogSearch extends DoctorMoneylog
      */
     public function search($params)
     {
-        $query = DoctorMoneylog::find();
-
+        $query = DoctorMoneylog::find()->alias('a');
+        $query->joinWith('relationPdmlog');
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
         ]);
 
         $this->load($params);
@@ -68,9 +71,13 @@ class DoctorMoneylogSearch extends DoctorMoneylog
         ]);
         $this->SearchAddHospitalId($query);
         $this->SearchAddTime($query, $params, __CLASS__);
-        $query->andFilterWhere(['like', 'type', $this->type])
-            ->andFilterWhere(['like', 'desc', $this->desc]);
+        $query->andFilterWhere(['like', 'a.type', $this->type])
+            ->andFilterWhere(['like', 'a.desc', $this->desc]);
 
+        if ($this->date){
+            $tmp = explode('~',str_replace(' ','',$this->date));
+            $query->andFilterWhere(['between', 'pdm.date', $tmp[0], $tmp[1]]);
+        }
         return $dataProvider;
     }
 }

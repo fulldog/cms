@@ -64,31 +64,35 @@ class JobController extends Task
     }
 
     /**
-     * @param $date
-     * api test
+     * test
+     * @param null $date
+     * @throws \yii\db\Exception
      */
     function actionTest($date = null)
     {
-        $this->params = [
-            'sign' => md5('42272219520826124234eIPM74Tj'),
-            'date' => $date,//'2019-04-18',
-            'id_card' => '420500194611141325',
-        ];
-        print_r($this->getPatients(280));
-        echo \Yii::$app->redis->setex('test', 200, 'test');
-//        $this->curl('//58.19.245.66:9090/?can=xdtj');
-//        print_r($this->logs);
+        $res = $this->getPatients(145);
+        $this->date = $date ?? $this->getBeforeDay(-1);
+        foreach ($res as $v) {
+            echo uniqid().PHP_EOL;
+            continue;
+            $this->actionPatientDay($v->id, $this->date);
+        }
     }
 
     /**
      * 手动添加数据
-     * @param $s
-     * @param $e
-     * @param int $hid
+     * @param string $s 开始时间
+     * @param string $e 结束时间
+     * @param int $hospital_id
+     * @param int $out_hospital_id 排除在外的id
+     * @return void
      */
-    function actionAddToRedis($s, $e, $hid = null)
+    function actionAddToRedis($s, $e, $hospital_id = null, $out_hospital_id = null)
     {
-        $hospitals = $this->getAllHospitals($hid);
+        $hospitals = $this->getAllHospitals($hospital_id);
+        if ($out_hospital_id) {
+            $out_hospital_id = explode(',', $out_hospital_id);
+        }
         if (!empty($hospitals)) {
             $cache = \Yii::$app->redis;
             $cache->select(6);
@@ -96,10 +100,12 @@ class JobController extends Task
                 $days = (strtotime($e) - strtotime($s)) / 24 / 3600;
                 $string = "起{$s}止{$e}日期相差天{$days}" . PHP_EOL;
                 foreach ($hospitals as $hospital) {
-                    for ($i = 0; $i <= $days; $i++) {
-                        $value = $hospital->hospital_id . ':' . $this->getBeforeDay($i, $s);
-                        $string .= "成功添加任务：hospital_id：date|{$value}" . PHP_EOL;
-                        $cache->rpush(self::GET_DAY_FLOW_LIST, $value);
+                    if (!in_array($hospital->hospital_id, $out_hospital_id)) {
+                        for ($i = 0; $i <= $days; $i++) {
+                            $value = $hospital->hospital_id . ':' . $this->getBeforeDay($i, $s);
+                            $string .= "成功添加任务：hospital_id：date|{$value}" . PHP_EOL;
+                            $cache->rpush(self::GET_DAY_FLOW_LIST, $value);
+                        }
                     }
                 }
                 $this->stdout($string);
@@ -114,6 +120,12 @@ class JobController extends Task
     }
 
 
+    /**
+     * 单独拉某个人的指定时间的数据
+     * @param $pid
+     * @param $date
+     * @throws \yii\db\Exception
+     */
     function actionPatientDay($pid, $date)
     {
         $this->date = $date;
@@ -149,7 +161,7 @@ class JobController extends Task
 
 
     /**
-     * 计划任务
+     * 后台计划任务
      */
     function actionAutoRedis()
     {
@@ -172,6 +184,7 @@ class JobController extends Task
     }
 
     /**
+     * 后台计划任务  拉取前一天的his数据
      * get T-1 day pays
      */
     function actionDoCron()
@@ -203,6 +216,7 @@ class JobController extends Task
 
 
     /**
+     * 结果集处理
      * @param $result
      * @throws \yii\db\Exception
      */
@@ -229,7 +243,7 @@ class JobController extends Task
                             }
 
                             $rate = round($v['money'] * $commission['point'] / 100, 2);
-                            $out_key = md5($this->date . $patient->id . $id_card . $patient->transfer_doctor . $v['money'] . $k);
+                            $out_key = md5($this->date . $patient->id . $id_card . $patient->transfer_doctor . $v['money'] . $k . uniqid());
                             $insert[] = [
                                 $patient->id,
                                 $k,
@@ -284,14 +298,14 @@ class JobController extends Task
 
     /**
      * 得到所有有转诊的医院
-     * @param $hid
+     * @param $hospital_id
      * @return array|DoctorPatients[]
      */
-    function getAllHospitals($hid = null)
+    function getAllHospitals($hospital_id = null)
     {
         return DoctorPatients::find()->select(['hospital_id'])
             ->where(['is_transfer' => 1])
-            ->andFilterWhere(['=', 'hospital_id', $hid])
+            ->andFilterWhere(['=', 'hospital_id', $hospital_id])
             ->distinct(['hospital_id'])
             ->all();
     }
@@ -312,6 +326,7 @@ class JobController extends Task
     }
 
     /**
+     * 已弃用
      * 2019年4月23日22:54:32
      * @return \Generator
      */

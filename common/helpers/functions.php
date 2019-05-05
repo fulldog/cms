@@ -126,46 +126,48 @@ if (!function_exists('dd')) {
         return empty($uid) ? 0 : $uid;
     }
 
-    function getUsername(){
+    function getUsername()
+    {
         return Yii::$app->user->isGuest;
     }
 }
 
 /**
  * @desc 数据导出到excel(csv文件)
- * @param $filename 导出的csv/xsl文件名称 如date("Y年m月j日")
+ * @param string $filename 导出的csv/xsl文件名称 如date("Y年m月j日")
  * @param array $tileArray 所有列名称
  * @param array $dataArray 所有列数据
  */
-function exportToExcel($tileArray=[], $dataArray=[],$filename=''){
-    ini_set('memory_limit','512M');
-    ini_set('max_execution_time',0);
+function exportToExcel($tileArray = [], $dataArray = [], $filename = '')
+{
+    ini_set('memory_limit', '512M');
+    ini_set('max_execution_time', 0);
     ob_end_clean();
     ob_start();
 
-    if (!$filename){
-        $filename = date('Y-m-d').'.xls';
+    if (!$filename) {
+        $filename = date('Y-m-d') . '.xls';
     }
     $filename_arr = pathinfo($filename);
-    if ($filename_arr['extension']=='csv'){
+    if ($filename_arr['extension'] == 'csv') {
         header("Content-Type: text/csv");
-    }else{
-        header( "Content-Type: application/vnd.ms-excel; name='excel'" );
+    } else {
+        header("Content-Type: application/vnd.ms-excel; name='excel'");
     }
-    header( "Content-type: application/octet-stream" );
-    header("Content-Disposition:filename=".$filename);
-    $fp=fopen('php://output','w');
-    fwrite($fp, chr(0xEF).chr(0xBB).chr(0xBF));//转码 防止乱码(比如微信昵称(乱七八糟的))
-    fputcsv($fp,$tileArray);
+    header("Content-type: application/octet-stream");
+    header("Content-Disposition:filename=" . $filename);
+    $fp = fopen('php://output', 'w');
+    fwrite($fp, chr(0xEF) . chr(0xBB) . chr(0xBF));//转码 防止乱码(比如微信昵称(乱七八糟的))
+    fputcsv($fp, $tileArray);
     $index = 0;
     foreach ($dataArray as $item) {
-        if($index==1000){
-            $index=0;
+        if ($index == 1000) {
+            $index = 0;
             ob_flush();
             flush();
         }
         $index++;
-        fputcsv($fp,$item);
+        fputcsv($fp, $item);
     }
 
     ob_flush();

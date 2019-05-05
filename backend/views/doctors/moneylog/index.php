@@ -82,14 +82,18 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Moneylog');
                             'filter'=>false
                         ],
                         [
-                            'label'=>'结算日期',
-                            'filter'=>false,
-                            'value'=>'relationPdmlog.date'
-                        ],
-                        [
+                            'label'=>'HIS结算日期',
+                            'attribute' => 'date',
+                            'value'=>'relationPdmlog.date',
                             'class' => \backend\grid\DateColumn::className(),
-                            'attribute' => 'created_at',
+                            'format'=>['datetime', 'php:Y-m-d'],
+                            'filterInputOptions'=>[
+                                'type'=>'date',
+                                'class'=>'form-control',
+                                'format'=>'yyyy-MM-dd',
+                            ],
                         ],
+                        'created_at:datetime',
                         // 'updated_at',
                         [
                             'class' => ActionColumn::className(),

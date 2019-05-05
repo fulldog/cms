@@ -32,18 +32,29 @@ class DoctorHospitalsQuery extends \yii\db\ActiveQuery
         return parent::one($db);
     }
 
-    function getHospitals($hospital_id=0): array {
+    /**
+     * @param int $hospital_id
+     * @param bool $recommend
+     * @return array
+     */
+    function getHospitals($hospital_id = 0, $recommend = false): array
+    {
         $data = [];
-        if (\Yii::$app->user->identity->hospital_id){
-            $this->andFilterWhere(['id'=>\Yii::$app->user->identity->hospital_id]);
-        }else{
-            if ($hospital_id){
-                $this->andFilterWhere(['id'=>$hospital_id]);
+        if (\Yii::$app->user->identity->hospital_id) {
+            $this->andFilterWhere(['id' => \Yii::$app->user->identity->hospital_id]);
+        } else {
+            if ($hospital_id) {
+                $this->andFilterWhere(['id' => $hospital_id]);
             }
         }
-        $temp = $this->select(['id','hospital_name'])->asArray()->all();
-        if (!empty($temp)){
-            foreach ($temp as $v){
+
+        if ($recommend) {
+            $this->andFilterWhere(['recommend' => 1]);
+        }
+
+        $temp = $this->select(['id', 'hospital_name'])->asArray()->all();
+        if (!empty($temp)) {
+            foreach ($temp as $v) {
                 $data[$v['id']] = $v['hospital_name'];
             }
         }

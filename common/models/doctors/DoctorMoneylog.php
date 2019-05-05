@@ -75,6 +75,6 @@ class DoctorMoneylog extends My
     }
 
     function getRelationPdmlog(){
-        return $this->hasOne(DoctorPatientDayMoney::className(), ['out_key' => 'out_key']);
+        return $this->hasOne(DoctorPatientDayMoney::className(), ['out_key' => 'out_key'])->alias('pdm');
     }
 }
