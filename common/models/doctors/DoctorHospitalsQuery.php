@@ -35,9 +35,10 @@ class DoctorHospitalsQuery extends \yii\db\ActiveQuery
     /**
      * @param int $hospital_id
      * @param bool $recommend
+     * @param bool $transfer
      * @return array
      */
-    function getHospitals($hospital_id = 0, $recommend = false): array
+    function getHospitals($hospital_id = 0, $recommend = false, $transfer = false): array
     {
         $data = [];
         if (\Yii::$app->user->identity->hospital_id) {
@@ -50,6 +51,9 @@ class DoctorHospitalsQuery extends \yii\db\ActiveQuery
 
         if ($recommend) {
             $this->andFilterWhere(['recommend' => 1]);
+        }
+        if ($transfer) {
+            $this->andFilterWhere(['transfer' => 1]);
         }
 
         $temp = $this->select(['id', 'hospital_name'])->asArray()->all();

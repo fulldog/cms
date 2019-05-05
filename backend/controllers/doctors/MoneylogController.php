@@ -126,7 +126,7 @@ class MoneylogController extends \yii\web\Controller
             }
         }
         return $this->render($this->action->id, [
-            'hospital' => DoctorHospitals::find()->getHospitals(0, true),
+            'hospital' => DoctorHospitals::find()->getHospitals(0, false, true),
             'post' => $data,
             'json' => $json,
         ]);
