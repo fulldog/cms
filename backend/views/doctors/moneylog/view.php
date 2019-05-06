@@ -54,12 +54,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $map[$model->status];
                 }
             ],
-//            'desc',
+            'desc',
             'money',
             'created_at:datetime',
             'updated_at:datetime',
             [
-                'label'=>'其他明细',
+                'label'=>'',
+                'value'=>''
+            ],
+            [
+                'label'=>'病人数据明细',
                 'value'=>''
             ],
             'relationPdmlog.name',

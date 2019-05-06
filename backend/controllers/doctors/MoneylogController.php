@@ -75,6 +75,12 @@ class MoneylogController extends \yii\web\Controller
             $tran = Yii::$app->db->beginTransaction();
             $model->status = 1;
             $doctor->money = $doctor->money - $model->money;
+
+            if ($doctor->money < 0) {
+                $tran->rollBack();
+                Yii::$app->getSession()->setFlash('error', '超出可提现余额');
+            }
+
             if ($model->save() && $doctor->save()) {
                 $tran->commit();
                 Yii::$app->getSession()->setFlash('success', '成功');
@@ -107,7 +113,6 @@ class MoneylogController extends \yii\web\Controller
             $time = explode('~', $data['time']);
             $query->andFilterWhere(['between', 'created_at', strtotime($time[0]), strtotime($time[1])]);
         }
-//        echo $query->createCommand()->getRawSql();
         $json['title'] = '全平台收益';
         if ($hospital_id) {
             $hospital = DoctorHospitals::findOne(['id' => $hospital_id]);
@@ -137,8 +142,7 @@ class MoneylogController extends \yii\web\Controller
      */
     function actionExport()
     {
-//        $title = ['医院名称', '医生姓名', '病人名称', '病人身份证', '类型', '状态', '描述', '金额', '创建时间'];
-        $title = ['医院名称', '医生姓名', '病人名称', '病人身份证', '金额类型', '金额', '比例', '提成金额', '转诊日期', 'HIS时间', '状态'];
+        $title = ['医院名称', '医生姓名', '病人名称', '病人身份证', '金额类型', '金额', '比例', '提成(提现)金额', '转诊日期', 'HIS时间', '状态', '创建时间'];
         $get = \yii::$app->getRequest()->get('data');
         $query = DoctorMoneylog::find()
             ->with('hospital')->with('doctor')->with('patient')
@@ -151,17 +155,22 @@ class MoneylogController extends \yii\web\Controller
         $ptypeMap = [
             'menzhen' => '门诊',
             'zhuyuan' => '住院',
+            'reduce' => '提现',
         ];
 
-
-        if (!empty($get[$inputName]) && is_array($get[$inputName])){
-            foreach ($get[$inputName] as $k=>$v){
-                if (!empty($v)){
-                    if ($k=='date'){
+        //是否自动计算提现数据
+        $search_add = false;
+        if (!empty($get[$inputName]) && is_array($get[$inputName])) {
+            foreach ($get[$inputName] as $k => $v) {
+                if (!empty($v)) {
+                    if ($k == 'type' && $v == 'add') {
+                        $search_add = true;
+                    }
+                    if ($k == 'date') {
                         $tmp = explode('~', str_replace(' ', '', $v));
                         $query->andFilterWhere(['between', 'pdm.date', $tmp[0], $tmp[1]]);
-                    }else{
-                        $query->andFilterWhere(["m.{$k}"=>$v]);
+                    } else {
+                        $query->andFilterWhere(["m.{$k}" => $v]);
                     }
                 }
             }
@@ -183,30 +192,46 @@ class MoneylogController extends \yii\web\Controller
         $lists = $query->all();
         foreach ($lists as $item) {
             if ($item->type == 'add') {
-                if (isset($insert[$item->doctor->id])) {
-                    $insert[$item->doctor->id]['money'] += $item->money;
-                } else {
-                    $insert[$item->doctor->id] = [
-                        'money' => $item->money,
-                        'hospital_id' => $item->hospital->id,
-                    ];
+                if ($search_add) {
+                    if (isset($insert[$item->doctor->id])) {
+                        $insert[$item->doctor->id]['money'] += $item->money;
+                    } else {
+                        $insert[$item->doctor->id] = [
+                            'money' => $item->money,
+                            'hospital_id' => $item->hospital->id,
+                        ];
+                    }
                 }
+                $data[] = [
+                    $item->hospital->hospital_name,
+                    $item->doctor->name,
+                    $item->patient->name,
+                    $item->patient->id_number . "\t",
+                    $ptypeMap[$item->relationPdmlog->type],
+                    $item->relationPdmlog->money,
+                    ($commissiongArr[$item->hospital->id . $item->patient->id . $item->relationPdmlog->type] ?? $commissiongArr[$item->hospital->id]) . '%',
+                    $item->money,
+                    Yii::$app->formatter->asDatetime($item->patient->created_at),
+                    $item->relationPdmlog->date,
+                    $item->getStatus(),
+                    Yii::$app->formatter->asDatetime($item->created_at),
+                ];
+            } else {
+                $data[] = [
+                    $item->hospital->hospital_name,
+                    $item->doctor->name,
+                    '-',
+                    '-',
+                    $ptypeMap['reduce'],
+                    '-',
+                    '-',
+                    $item->money,
+                    '-',
+                    '-',
+                    $item->getStatus(),
+                    Yii::$app->formatter->asDatetime($item->created_at),
+                ];
             }
-            $data[] = [
-                $item->hospital->hospital_name,
-                $item->doctor->name,
-                $item->patient->name,
-                $item->patient->id_number . "\t",
-                $ptypeMap[$item->relationPdmlog->type],
-                $item->relationPdmlog->money,
-                ($commissiongArr[$item->hospital->id . $item->patient->id . $item->relationPdmlog->type] ?? $commissiongArr[$item->hospital->id]) . '%',
-                $item->money,
-//                $item->getType(),
-                Yii::$app->formatter->asDatetime($item->patient->created_at),
-                $item->relationPdmlog->date,
-                $item->getStatus(),
-//                Yii::$app->formatter->asDatetime($item->created_at),
-            ];
         }
 //        if (!empty($insert)) {
 //            $tran = Yii::$app->db->beginTransaction();
@@ -221,22 +246,21 @@ class MoneylogController extends \yii\web\Controller
 //                        'type' => 'reduce',
 //                        'money' => $arr['money'],
 //                        'status' => 1,
-//                        'desc' => '提现',
+//                        'desc' => date('Y-m-d').'提现',
 //                        'out_key' => md5($doctorId . $arr['hospital_id'] . $arr['money'] . uniqid()),
 //                        'created_at' => time(),
 //                    ])->execute();
 //                }
 //                $tran->commit();
 //                echo '自动结算提现成功';
-//                if (!empty($data)) {
-//                    exportToExcel($title, $data);
-//                }
 //            } catch (\Exception $e) {
 //                $tran->rollBack();
 //                echo '自动结算提现失败' . $e->getMessage();
 //                exit();
 //            }
 //        }
-        exportToExcel($title, $data);
+        if (!empty($data)) {
+            exportToExcel($title, $data);
+        }
     }
 }

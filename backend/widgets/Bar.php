@@ -94,7 +94,7 @@ class Bar extends Widget
                     'title' => Yii::t('app', 'Export'),
                     'data-pjax' => '1',
                     'target'=>'_blank',
-//                    'data-confirm' => '确定要导出当前查询条件的数据吗？',
+//                    'data-confirm' => '当且仅当筛选类型为【抽成】时，导出文件后会自动削减对应用户余额，并插入一条提现成功的数据？',
                     'class' => 'btn btn-white btn-sm ',
                 ]);
             };
