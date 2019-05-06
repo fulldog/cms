@@ -93,6 +93,8 @@ class JobController extends Task
         $hospitals = $this->getAllHospitals($hospital_id);
         if ($out_hospital_id) {
             $out_hospital_id = explode(',', $out_hospital_id);
+        }else{
+            $out_hospital_id = [];
         }
         if (!empty($hospitals)) {
             $cache = \Yii::$app->redis;
