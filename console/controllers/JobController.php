@@ -74,7 +74,7 @@ class JobController extends Task
         $this->date = $date ?? $this->getBeforeDay(-1);
 
         foreach ($res as $v) {
-            echo uniqid().PHP_EOL;
+            echo uniqid() . PHP_EOL;
             continue;
             $this->actionPatientDay($v->id, $this->date);
         }
@@ -93,7 +93,7 @@ class JobController extends Task
         $hospitals = $this->getAllHospitals($hospital_id);
         if ($out_hospital_id) {
             $out_hospital_id = explode(',', $out_hospital_id);
-        }else{
+        } else {
             $out_hospital_id = [];
         }
         if (!empty($hospitals)) {
@@ -323,7 +323,7 @@ class JobController extends Task
                         $_money = 0;
                         foreach ($info as $k => $v) {
                             //容错
-                            if (empty($v['money'])) {
+                            if (empty($v['money']) || floatval($v['money']) == 0) {
                                 continue;
                             }
                             $v['money'] = floatval($v['money']);
