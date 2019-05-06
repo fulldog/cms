@@ -271,7 +271,7 @@ class JobController extends Task
                         throw new \Exception("没有查到接口配置信息-hospital_id:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
                     }
                     $patients = $this->getPatients($this->hid);
-                    if (!empty($patients)) {
+                    if (empty($patients)) {
                         throw new \Exception("没有满足条件的数据-hospital_id:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
                     }
                     $this->hostipal_code = $hospital_detail->code;
