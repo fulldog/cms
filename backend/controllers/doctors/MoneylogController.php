@@ -152,15 +152,19 @@ class MoneylogController extends \yii\web\Controller
             'menzhen' => '门诊',
             'zhuyuan' => '住院',
         ];
-        if ($get[$inputName]['date']) {
-            $tmp = $get[$inputName]['date'];
-            unset($get[$inputName]['date']);
-            $tmp = explode('~', str_replace(' ', '', $tmp));
-            $query->andFilterWhere(['between', 'pdm.date', $tmp[0], $tmp[1]]);
-        }
 
-        if (isset($get[$inputName])) {
-            $query->andFilterWhere($get[$inputName]);
+
+        if (!empty($get[$inputName]) && is_array($get[$inputName])){
+            foreach ($get[$inputName] as $k=>$v){
+                if (!empty($v)){
+                    if ($k=='date'){
+                        $tmp = explode('~', str_replace(' ', '', $v));
+                        $query->andFilterWhere(['between', 'pdm.date', $tmp[0], $tmp[1]]);
+                    }else{
+                        $query->andFilterWhere(["m.{$k}"=>$v]);
+                    }
+                }
+            }
         }
 
         if (\Yii::$app->user->identity->hospital_id) {
@@ -168,7 +172,6 @@ class MoneylogController extends \yii\web\Controller
                 $keyId => \Yii::$app->user->identity->hospital_id,
             ]);
         }
-//        echo $query->createCommand()->getRawSql();
         //提成比例
         $commissiong = DoctorCommission::find()->all();
         $commissiongArr = [];
