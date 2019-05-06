@@ -72,6 +72,7 @@ class JobController extends Task
     {
         $res = $this->getPatients(145);
         $this->date = $date ?? $this->getBeforeDay(-1);
+
         foreach ($res as $v) {
             echo uniqid().PHP_EOL;
             continue;
@@ -151,7 +152,7 @@ class JobController extends Task
             $this->params['name'] = $this->patient->name;
             $this->params['phone'] = $this->patient->phone;
             $this->params['sign'] = md5($this->patient->id_number . $this->patient->hospital->code);
-            $this->params['date_time'] = $this->date;
+            $this->params['date'] = $this->date;
             $this->params['method'] = self::GET_DAY_FLOW;
             $this->resultDo($this->curl($this->logs['api_config']['task_api']));
             $this->stdout(json_encode($this->logs, JSON_UNESCAPED_UNICODE) . PHP_EOL);
@@ -214,6 +215,88 @@ class JobController extends Task
         }
     }
 
+    /**
+     * 得到所有有转诊的医院
+     * @param $hospital_id
+     * @return array|DoctorPatients[]
+     */
+    function getAllHospitals($hospital_id = null)
+    {
+        return DoctorPatients::find()->select(['hospital_id'])
+            ->where(['is_transfer' => 1])
+            ->andFilterWhere(['=', 'hospital_id', $hospital_id])
+            ->distinct(['hospital_id'])
+            ->all();
+    }
+
+    /**
+     * @param $hospital_id
+     * @return array|DoctorPatients[]
+     */
+    function getPatients($hospital_id)
+    {
+        return DoctorPatients::find()->select(['doctor_id', 'is_transfer', 'transfer_doctor', 'id_number', 'name', 'phone', 'id'])
+            ->where(['hospital_id' => $hospital_id])
+            ->andWhere(['is_transfer' => 1])
+            ->andWhere(['>', 'transfer_doctor', 0])
+            ->orderBy(['id' => SORT_ASC])
+            ->groupBy('id_number')
+            ->all();
+    }
+
+    /**
+     *
+     * 2019年4月23日22:54:32
+     * @return \Generator
+     */
+    function searchRedis()
+    {
+        $redis = \Yii::$app->redis;
+        if ($redis->exists(self::GET_DAY_FLOW_LIST)) {
+            while ($string = $redis->lpop(self::GET_DAY_FLOW_LIST)) {
+                $this->hid = $this->patient = $this->date = $this->hostipal_code = '';
+                $this->params = $this->logs = [];
+                $this->stdout('START***************************' . $string . '********************************START' . PHP_EOL);
+                $data = explode(':', $string);
+                try {
+                    if (empty($data)) {
+                        throw new \Exception("data数据错误" . PHP_EOL);
+                    }
+                    $this->hid = $data[0];
+                    $this->date = $data[1];
+                    $hospital_detail = DoctorHospitals::findOne(['id' => $this->hid]);
+                    if (!isset(\Yii::$app->params['hospital_api'][$hospital_detail->code]['task_api'])) {
+                        throw new \Exception("没有查到接口配置信息-hospital_id:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
+                    }
+                    $patients = $this->getPatients($this->hid);
+                    if (!empty($patients)) {
+                        throw new \Exception("没有满足条件的数据-hospital_id:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
+                    }
+                    $this->hostipal_code = $hospital_detail->code;
+                    $this->logs['hospital_name'] = $this->hostipal_name = $hospital_detail->hospital_name;
+                    $this->logs['api_config'] = \Yii::$app->params['hospital_api'][$hospital_detail->code];
+                    foreach ($patients as $patient) {
+                        $this->stdout("current patient:" . $this->hostipal_name . $patient->name . '--' . $patient->id_number . PHP_EOL);
+                        $this->patient = $patient;
+                        $this->params['id_card'] = $patient->id_number;
+                        $this->params['name'] = $patient->name;
+                        $this->params['phone'] = $patient->phone;
+                        $this->params['sign'] = md5($patient->id_number . $hospital_detail->code);
+                        $this->params['date'] = $this->date;
+                        $this->params['method'] = self::GET_DAY_FLOW;
+                        yield $this->curl($this->logs['api_config']['task_api']);
+                    }
+                } catch (\Exception $exception) {
+                    $this->hasException = true;
+                    $this->logs['searchRedis_Exception'] = $exception->getMessage();
+                    $this->stdout($this->logs['searchRedis_Exception']);
+                    yield [];
+                }
+                $this->stdout('END*****************************' . $string . '**********************************END' . PHP_EOL);
+                $this->stdout('' . PHP_EOL);
+            }
+        }
+    }
 
     /**
      * 结果集处理
@@ -241,7 +324,7 @@ class JobController extends Task
                             if (empty($v['money'])) {
                                 continue;
                             }
-
+                            $v['money'] = floatval($v['money']);
                             $rate = round($v['money'] * $commission['point'] / 100, 2);
                             $out_key = md5($this->date . $patient->id . $id_card . $patient->transfer_doctor . $v['money'] . $k . uniqid());
                             $insert[] = [
@@ -291,90 +374,6 @@ class JobController extends Task
                         $this->logs['DoctorCommission'] = '还没有配置当前病人提成率';
                     }
                 }
-            }
-        }
-    }
-
-
-    /**
-     * 得到所有有转诊的医院
-     * @param $hospital_id
-     * @return array|DoctorPatients[]
-     */
-    function getAllHospitals($hospital_id = null)
-    {
-        return DoctorPatients::find()->select(['hospital_id'])
-            ->where(['is_transfer' => 1])
-            ->andFilterWhere(['=', 'hospital_id', $hospital_id])
-            ->distinct(['hospital_id'])
-            ->all();
-    }
-
-    /**
-     * @param $hospital_id
-     * @return array|DoctorPatients[]
-     */
-    function getPatients($hospital_id)
-    {
-        return DoctorPatients::find()->select(['doctor_id', 'is_transfer', 'transfer_doctor', 'id_number', 'name', 'phone', 'id'])
-            ->where(['hospital_id' => $hospital_id])
-            ->andWhere(['is_transfer' => 1])
-            ->andWhere(['>', 'transfer_doctor', 0])
-            ->orderBy(['id' => SORT_ASC])
-            ->groupBy('id_number')
-            ->all();
-    }
-
-    /**
-     * 已弃用
-     * 2019年4月23日22:54:32
-     * @return \Generator
-     */
-    function searchRedis()
-    {
-        $redis = \Yii::$app->redis;
-        if ($redis->exists(self::GET_DAY_FLOW_LIST)) {
-            while ($string = $redis->lpop(self::GET_DAY_FLOW_LIST)) {
-                $this->hid = $this->patient = $this->date = $this->hostipal_code = '';
-                $this->params = $this->logs = [];
-                $this->stdout('START***************************' . $string . '********************************START' . PHP_EOL);
-                $data = explode(':', $string);
-                try {
-                    if (empty($data)) {
-                        throw new \Exception("data数据错误" . PHP_EOL);
-                    }
-                    $this->hid = $data[0];
-                    $this->date = $data[1];
-                    $hospital_detail = DoctorHospitals::findOne(['id' => $this->hid]);
-                    if (!isset(\Yii::$app->params['hospital_api'][$hospital_detail->code]['task_api'])) {
-                        throw new \Exception("没有查到接口配置信息-hospital_id:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
-                    }
-                    $patients = $this->getPatients($this->hid);
-                    if (!empty($patients)) {
-                        throw new \Exception("没有满足条件的数据-hospital_id:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
-                    }
-                    $this->hostipal_code = $hospital_detail->code;
-                    $this->logs['hospital_name'] = $this->hostipal_name = $hospital_detail->hospital_name;
-                    $this->logs['api_config'] = \Yii::$app->params['hospital_api'][$hospital_detail->code];
-                    foreach ($patients as $patient) {
-                        $this->stdout("current patient:" . $this->hostipal_name . $patient->name . '--' . $patient->id_number . PHP_EOL);
-                        $this->patient = $patient;
-                        $this->params['id_card'] = $patient->id_number;
-                        $this->params['name'] = $patient->name;
-                        $this->params['phone'] = $patient->phone;
-                        $this->params['sign'] = md5($patient->id_number . $hospital_detail->code);
-                        $this->params['date_time'] = $this->date;
-                        $this->params['method'] = self::GET_DAY_FLOW;
-                        yield $this->curl($this->logs['api_config']['task_api']);
-                    }
-                } catch (\Exception $exception) {
-                    $this->hasException = true;
-                    $this->logs['searchRedis_Exception'] = $exception->getMessage();
-                    $this->stdout($this->logs['searchRedis_Exception']);
-                    yield [];
-                }
-                $this->stdout('END*****************************' . $string . '**********************************END' . PHP_EOL);
-                $this->stdout('' . PHP_EOL);
             }
         }
     }
