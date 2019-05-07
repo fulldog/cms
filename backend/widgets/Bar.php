@@ -92,12 +92,25 @@ class Bar extends Widget
             $this->buttons['export'] = function () {
                 return Html::a('<i class="fa fa-download"></i> ' . Yii::t('app', 'Export'), Url::to(['export','data'=>Yii::$app->request->get()]), [
                     'title' => Yii::t('app', 'Export'),
-                    'data-pjax' => '1',
+                    'data-pjax' => '0',
                     'target'=>'_blank',
 //                    'data-confirm' => '当且仅当筛选类型为【抽成】时，导出文件后会自动削减对应用户余额，并插入一条提现成功的数据？',
                     'class' => 'btn btn-white btn-sm ',
                 ]);
             };
         }
+
+        if (! isset($this->buttons['export_reduce'])) {
+            $this->buttons['export_reduce'] = function () {
+                return Html::a('<i class="fa fa-download"></i>导出并计算提现', Url::to(['export','data'=>Yii::$app->request->get(),'reduce'=>'reduce']), [
+                    'title' => "当且仅当筛选条件包含类型=抽成时，导出文件后会自动计算提现数据",
+                    'data-pjax' => '0',
+                    'target'=>'_blank',
+//                    'data-confirm' => '',
+                    'class' => 'btn btn-white btn-sm ',
+                ]);
+            };
+        }
+
     }
 }

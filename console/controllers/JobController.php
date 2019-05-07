@@ -30,6 +30,8 @@ class JobController extends Task
     private $date;
     protected $patient;
 
+    public $commission = null;
+
     public $day_log_keys = [
         'patient_id',
         'type',
@@ -74,11 +76,39 @@ class JobController extends Task
         $this->date = $date ?? $this->getBeforeDay(-1);
 
         foreach ($res as $v) {
-            echo uniqid() . PHP_EOL;
-            continue;
             $this->actionPatientDay($v->id, $this->date);
         }
     }
+
+    /**
+     * 得到所有有转诊的医院
+     * @param $hospital_id
+     * @return array|DoctorPatients[]
+     */
+    function getAllHospitals($hospital_id = null)
+    {
+        return DoctorPatients::find()->select(['hospital_id'])
+            ->where(['is_transfer' => 1])
+            ->andFilterWhere(['=', 'hospital_id', $hospital_id])
+            ->distinct(['hospital_id'])
+            ->all();
+    }
+
+    /**
+     * @param $hospital_id
+     * @return array|DoctorPatients[]
+     */
+    function getPatients($hospital_id)
+    {
+        return DoctorPatients::find()->select(['doctor_id', 'is_transfer', 'transfer_doctor', 'id_number', 'name', 'phone', 'id'])
+            ->where(['hospital_id' => $hospital_id])
+            ->andWhere(['is_transfer' => 1])
+            ->andWhere(['>', 'transfer_doctor', 0])
+            ->orderBy(['id' => SORT_ASC])
+            ->groupBy('id_number')
+            ->all();
+    }
+
 
     /**
      * 手动添加数据
@@ -218,35 +248,6 @@ class JobController extends Task
     }
 
     /**
-     * 得到所有有转诊的医院
-     * @param $hospital_id
-     * @return array|DoctorPatients[]
-     */
-    function getAllHospitals($hospital_id = null)
-    {
-        return DoctorPatients::find()->select(['hospital_id'])
-            ->where(['is_transfer' => 1])
-            ->andFilterWhere(['=', 'hospital_id', $hospital_id])
-            ->distinct(['hospital_id'])
-            ->all();
-    }
-
-    /**
-     * @param $hospital_id
-     * @return array|DoctorPatients[]
-     */
-    function getPatients($hospital_id)
-    {
-        return DoctorPatients::find()->select(['doctor_id', 'is_transfer', 'transfer_doctor', 'id_number', 'name', 'phone', 'id'])
-            ->where(['hospital_id' => $hospital_id])
-            ->andWhere(['is_transfer' => 1])
-            ->andWhere(['>', 'transfer_doctor', 0])
-            ->orderBy(['id' => SORT_ASC])
-            ->groupBy('id_number')
-            ->all();
-    }
-
-    /**
      *
      * 2019年4月23日22:54:32
      * @return \Generator
@@ -271,6 +272,7 @@ class JobController extends Task
                         throw new \Exception("没有查到接口配置信息-hospital_id:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
                     }
                     $patients = $this->getPatients($this->hid);
+                    $this->commission = DoctorCommission::find()->where(['hospital_id' => $this->hid])->orderBy(['id' => SORT_DESC])->asArray()->one();
                     if (empty($patients)) {
                         throw new \Exception("没有满足条件的数据-hospital_id:{$this->hid},code:{$hospital_detail->code},name:{$hospital_detail->hospital_name}" . PHP_EOL);
                     }
@@ -307,15 +309,13 @@ class JobController extends Task
      */
     function resultDo($result)
     {
+        $this->logs['DoctorCommission'] = $this->logs['DoctorPatientDayMoney'] = $this->logs['DoctorMoneylog'] = $this->logs['rollBack'] = $this->logs['commit'] = '';
         if (!empty($result) && $result['code'] == 200) {
             $db = \Yii::$app->db;
             foreach ($result['data'] as $id_card => $info) {
                 $patient = $this->patient;
                 if (!empty($patient)) {
-                    $commission = DoctorCommission::find()->where(['patient_id' => $patient->id])->orderBy(['id' => SORT_DESC])->asArray()->one();
-                    if (empty($commission)) {
-                        $commission = DoctorCommission::find()->where(['hospital_id' => $this->hid])->orderBy(['id' => SORT_DESC])->asArray()->one();
-                    }
+                    $commission = DoctorCommission::find()->where(['patient_id' => $patient->id])->orderBy(['id' => SORT_DESC])->asArray()->one() ?? $this->commission;
                     if (!empty($commission) && !empty($info)) {
                         $this->logs['DoctorCommission'] = $commission;
                         $insert = [];

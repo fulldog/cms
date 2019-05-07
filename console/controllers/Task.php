@@ -56,8 +56,9 @@ class Task extends Controller
 
     function curl($api)
     {
-        $client = new Client(['timeout' => 5]);
+        $client = new Client(['timeout' => 10]);
         $res = [];
+        $this->logs['Origin-result'] = $this->logs['Exception'] = '';
         try {
             $response = $client->post($api, ['form_params' => $this->params]);
             $this->logs['Origin-result'] = trim($response->getBody()->getContents(), "\xEF\xBB\xBF");

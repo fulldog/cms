@@ -15,6 +15,7 @@ use backend\actions\IndexAction;
 use backend\actions\DeleteAction;
 use backend\actions\SortAction;
 use backend\actions\ViewAction;
+use yii\web\Session;
 
 /**
  * MoneylogController implements the CRUD actions for DoctorMoneylog model.
@@ -144,6 +145,7 @@ class MoneylogController extends \yii\web\Controller
     {
         $title = ['医院名称', '医生姓名', '病人名称', '病人身份证', '金额类型', '金额', '比例', '提成(提现)金额', '转诊日期', 'HIS时间', '状态', '创建时间'];
         $get = \yii::$app->getRequest()->get('data');
+        $reduce = \yii::$app->getRequest()->get('reduce');
         $query = DoctorMoneylog::find()
             ->with('hospital')->with('doctor')->with('patient')
             ->alias('m')
@@ -160,22 +162,30 @@ class MoneylogController extends \yii\web\Controller
 
         //是否自动计算提现数据
         $search_add = false;
+        if ($reduce == 'reduce') {
+            if (@$get[$inputName]['type'] == 'add' && @$get[$inputName]['date']) {
+                if (Yii::$app->db->createCommand("select count(*) from doctor_reduce_log where month='{$get[$inputName]['date']}'")->queryScalar()){
+                    exit("该时间：[{$get[$inputName]['date']}]的提现数据已处理！");
+                }
+                $search_add = true;
+            } else {
+                exit("筛选条件必须包含 [类型=抽成] 和 [时间]");
+            }
+        }
+
         if (!empty($get[$inputName]) && is_array($get[$inputName])) {
             foreach ($get[$inputName] as $k => $v) {
                 if (!empty($v)) {
-                    if ($k == 'type' && $v == 'add') {
-                        $search_add = true;
-                    }
                     if ($k == 'date') {
-                        $tmp = explode('~', str_replace(' ', '', $v));
-                        $query->andFilterWhere(['between', 'pdm.date', $tmp[0], $tmp[1]]);
+                        $s_time = date('Y-m-d', strtotime($v));
+                        $e_time = date('Y-m-d', strtotime('+1 month', strtotime($s_time)) - 1);
+                        $query->andFilterWhere(['between', 'pdm.date', $s_time, $e_time]);
                     } else {
                         $query->andFilterWhere(["m.{$k}" => $v]);
                     }
                 }
             }
         }
-
         if (\Yii::$app->user->identity->hospital_id) {
             $query->andWhere([
                 $keyId => \Yii::$app->user->identity->hospital_id,
@@ -220,45 +230,50 @@ class MoneylogController extends \yii\web\Controller
                 $data[] = [
                     $item->hospital->hospital_name,
                     $item->doctor->name,
-                    '-',
-                    '-',
+                    '',
+                    '',
                     $ptypeMap['reduce'],
-                    '-',
-                    '-',
+                    '',
+                    '',
                     $item->money,
-                    '-',
-                    '-',
+                    '',
+                    '',
                     $item->getStatus(),
                     Yii::$app->formatter->asDatetime($item->created_at),
                 ];
             }
         }
-//        if (!empty($insert)) {
-//            $tran = Yii::$app->db->beginTransaction();
-//            try {
-//                foreach ($insert as $doctorId => $arr) {
-//                    if (!DoctorInfos::updateAllCounters(['money' => -$arr['money']], "id={$doctorId} and money>={$arr['money']}")) {
-//                        throw new \Exception("削减医生金额失败/金额不足：doctor_id={$doctorId} and money>={$arr['money']}");
-//                    }
-//                    Yii::$app->db->createCommand()->insert(DoctorMoneylog::tableName(), [
-//                        'doctor_id' => $doctorId,
-//                        'hospital_id' => $arr['hospital_id'],
-//                        'type' => 'reduce',
-//                        'money' => $arr['money'],
-//                        'status' => 1,
-//                        'desc' => date('Y-m-d').'提现',
-//                        'out_key' => md5($doctorId . $arr['hospital_id'] . $arr['money'] . uniqid()),
-//                        'created_at' => time(),
-//                    ])->execute();
-//                }
-//                $tran->commit();
+        if (!empty($insert)) {
+            $tran = Yii::$app->db->beginTransaction();
+            try {
+                foreach ($insert as $doctorId => $arr) {
+                    if (!DoctorInfos::updateAllCounters(['money' => -$arr['money']], "id={$doctorId} and money>={$arr['money']}")) {
+                        throw new \Exception("医生金额不足：doctor_id:{$doctorId}");
+                    }
+                    Yii::$app->db->createCommand()->insert(DoctorMoneylog::tableName(), [
+                        'doctor_id' => $doctorId,
+                        'hospital_id' => $arr['hospital_id'],
+                        'type' => 'reduce',
+                        'money' => $arr['money'],
+                        'status' => 1,
+                        'desc' => date('Y-m-d').'提现',
+                        'out_key' => md5($doctorId . $arr['hospital_id'] . $arr['money'] . uniqid()),
+                        'created_at' => time(),
+                    ])->execute();
+                    Yii::$app->db->createCommand()->insert('doctor_reduce_log', [
+                        'month'=>$get[$inputName]['date'],
+                        'args'=>json_encode($get),
+                        'created_at' => time(),
+                    ])->execute();
+                }
+                $tran->commit();
 //                echo '自动结算提现成功';
-//            } catch (\Exception $e) {
-//                $tran->rollBack();
-//                echo '自动结算提现失败' . $e->getMessage();
-//                exit();
-//            }
-//        }
+            } catch (\Exception $e) {
+                $tran->rollBack();
+                echo '自动结算提现失败：' . $e->getMessage();
+                exit();
+            }
+        }
         if (!empty($data)) {
             exportToExcel($title, $data);
         }

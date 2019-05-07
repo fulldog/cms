@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Moneylog');
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-                <?= Bar::widget(['template'=>" {refresh} {export}"]) ?>
+                <?= Bar::widget(['template'=>" {refresh} {export} {export_reduce}"]) ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
@@ -88,9 +88,10 @@ $this->params['breadcrumbs'][] = yii::t('app_doctor', 'Doctor Moneylog');
                             'class' => \backend\grid\DateColumn::className(),
                             'format'=>['datetime', 'php:Y-m-d'],
                             'filterInputOptions'=>[
-                                'type'=>'date',
+                                'type'=>'month',
                                 'class'=>'form-control',
-                                'format'=>'yyyy-MM-dd',
+                                'format'=>'yyyy-MM',
+                                'range'=>'false',
                             ],
                         ],
                         'created_at:datetime',

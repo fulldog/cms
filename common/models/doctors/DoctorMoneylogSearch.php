@@ -13,6 +13,7 @@ use common\models\doctors\DoctorMoneylog;
 class DoctorMoneylogSearch extends DoctorMoneylog
 {
     public $date;
+
     /**
      * @inheritdoc
      */
@@ -74,9 +75,10 @@ class DoctorMoneylogSearch extends DoctorMoneylog
         $query->andFilterWhere(['like', 'a.type', $this->type])
             ->andFilterWhere(['like', 'a.desc', $this->desc]);
 
-        if ($this->date){
-            $tmp = explode('~',str_replace(' ','',$this->date));
-            $query->andFilterWhere(['between', 'pdm.date', $tmp[0], $tmp[1]]);
+        if ($this->date) {
+            $s_time = date('Y-m-d',strtotime($this->date));
+            $e_time = date('Y-m-d',strtotime('+1 month',strtotime($s_time))-1);
+            $query->andFilterWhere(['between', 'pdm.date', $s_time, $e_time]);
         }
         return $dataProvider;
     }
