@@ -41,6 +41,14 @@ class HospitalController extends BaseController
     {
         $model = new DoctorHospitals();
         $_post = \Yii::$app->request->post();
+
+        if ($model::findOne(['hospital_name' => $_post['hospital_name']])) {
+            return [
+                'code' => 0,
+                'msg' => $_post['hospital_name'] . "已存在，请勿重复添加"
+            ];
+        }
+
         if ($model->load($_post, '') && $model->save()) {
             $data['code'] = 1;
             $data['msg'] = '新增医院成功';
@@ -55,6 +63,8 @@ class HospitalController extends BaseController
 
     /**
      * 医院搜索
+     * @param string $search_word
+     * @param int $page
      * @return array
      */
     function actionSearch($search_word = '', $page = 0)
@@ -76,9 +86,9 @@ class HospitalController extends BaseController
     function actionArticle($id = 0)
     {
         if ($id) {
-            $info = DoctorArticle::findOne(['id' => $id,'status'=>1, 'hospital_id' => $this->getDoctor()->hospital_id]);
+            $info = DoctorArticle::findOne(['id' => $id, 'status' => 1, 'hospital_id' => $this->getDoctor()->hospital_id]);
         } else {
-            $info = DoctorArticle::findAll(['hospital_id' => $this->getDoctor()->hospital_id,'status'=>1]);
+            $info = DoctorArticle::findAll(['hospital_id' => $this->getDoctor()->hospital_id, 'status' => 1]);
         }
         return [
             'code' => 1,
@@ -90,11 +100,12 @@ class HospitalController extends BaseController
     {
         return [
             'code' => 1,
-            'data' => DoctorHospitals::find()->andFilterWhere(['id'=>$id])->asArray()->all()
+            'data' => DoctorHospitals::find()->andFilterWhere(['id' => $id])->asArray()->all()
         ];
     }
 
-    function actionRecommend(){
+    function actionRecommend()
+    {
         return [
             'code' => 1,
             'data' => DoctorHospitals::findAll(['recommend' => 1, 'status' => 1]),

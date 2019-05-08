@@ -260,12 +260,12 @@ class MoneylogController extends \yii\web\Controller
                         'out_key' => md5($doctorId . $arr['hospital_id'] . $arr['money'] . uniqid()),
                         'created_at' => time(),
                     ])->execute();
-                    Yii::$app->db->createCommand()->insert('doctor_reduce_log', [
-                        'month'=>$get[$inputName]['date'],
-                        'args'=>json_encode($get),
-                        'created_at' => time(),
-                    ])->execute();
                 }
+                Yii::$app->db->createCommand()->insert('doctor_reduce_log', [
+                    'month'=>$get[$inputName]['date'],
+                    'args'=>json_encode($get),
+                    'created_at' => time(),
+                ])->execute();
                 $tran->commit();
 //                echo '自动结算提现成功';
             } catch (\Exception $e) {
