@@ -64,7 +64,7 @@ class PatientController extends BaseController
         }
         return [
             'code' => 0,
-            'msg' => $model->getErrors()
+            'msg' => $model->getFirstError()
         ];
     }
 
