@@ -8,75 +8,75 @@
 
 namespace console\controllers;
 
-
 use yii\console\Controller;
+use \swoole_websocket_server;
 
 class ChatController extends Controller
 {
 
-    function actionIndex(){
-        $server = new \swoole_websocket_server("0.0.0.0", 9052);
-        $redis = \Yii::$app->cache;
-        $db = \Yii::$app->db;
+    const HOST = '0.0.0.0';//ip地址 0.0.0.0代表接受所有ip的访问
+    const PORT = 9052;//端口号
+    private $server = null;//单例存放websocket_server对象
+    private $connectList = [];//客户端的id集合
 
-        echo "swoole beging;".PHP_EOL;
-        $server->on('open', function (swoole_websocket_server $server, $request) {
-            echo "server: handshake success with fd{$request->fd}\n";//$request->fd 是客户端id
-        });
-        $server->on('message', function (swoole_websocket_server $server, $frame) {
-            $data = json_decode($frame->data,true);
-            if($data['flag'] == 'init'){
-                //用户刚连接的时候初始化，每个用户登录时记录该用户对应的fd
-                $GLOBALS['redis']->set($data['from'], $frame->fd);
-                //处理发给该用户的离线消息
-                $sql = "SELECT `from`,content FROM doctor_chats WHERE `to`='{$data['from']}' AND `from`='{$data['to']}' AND `status`='0' ORDER BY created_at ASC;";
-                if ($result = $GLOBALS['db']->query($sql)) {
-                    $re = array();
-                    while ($row = $result->fetch_assoc()) {
-                        array_push($re, $row);
-                    }
-                    $result->free();
-                    foreach($re as $content){
-                        $content = json_encode($content);
-                        $server->push($frame->fd , $content);
-                    }
-                    //设置消息池中的消息为已发送
-                    $sql = "UPDATE doctor_chats SET `status`=1 WHERE `to`='{$data['from']}' AND `from`='{$data['to']}';";
-                    $GLOBALS['db']->query($sql);
-                }
-            }else if($data['flag'] == 'msg'){
-                //非初始化的信息发送，一对一聊天，根据每个用户对应的fd发给特定用户
-                $tofd = $GLOBALS['redis']->get($data['to']); //消息要发给谁
-                $fds = []; //所有在线的用户(打开聊天窗口的用户)
-                foreach($server->connections as $fd){
-                    array_push($fds, $fd);
-                }
-                if(in_array($tofd,$fds)){
-                    $tmp['from'] = $data['from']; //消息来自于谁
-                    $tmp['content']  = $data['content']; //消息内容
-                    $re = json_encode($tmp);
-                    $server->push($tofd , $re);
-                }else{
-                    //该玩家不在线(不在聊天室内)，将信息发送到离线消息池
-                    $time = time();
-                    $sql = "INSERT INTO doctor_chats (`to`,`from`,`content`,`status`,`created_at`) VALUES ('{$data['to']}','{$data['from']}','{$data['content']}','0','{$time}');";
-                    $GLOBALS['db']->query($sql);
-                }
-            }else if($data['flag'] == 'group'){
-                //todo 群聊
+    function actionIndex()
+    {
+        //实例化swoole_websocket_server并存储在我们Chat类中的属性上，达到单例的设计
+        $this->server = new swoole_websocket_server(self::HOST, self::PORT);
+        //监听连接事件
+        $this->server->on('open', [$this, 'onOpen']);
+        //监听接收消息事件
+        $this->server->on('message', [$this, 'onMessage']);
+        //监听关闭事件
+        $this->server->on('close', [$this, 'onClose']);
+        //设置允许访问静态文件
+        $this->server->set([
+            'document_root' => '/grx/swoole/public',//这里传入静态文件的目录
+            'enable_static_handler' => true//允许访问静态文件
+        ]);
+        //开启服务
+        $this->server->start();
+    }
 
-            }else if($data['flag'] == 'all'){
-                //全站广播
-                foreach($server->connections as $fd){
-                    $server->push($fd , $data);
-                }
-            }
-        });
+    /**
+     * 连接成功回调函数
+     * @param $server
+     * @param $request
+     */
+    public function onOpen($server, $request)
+    {
+        echo $request->fd . '连接了' . PHP_EOL;//打印到我们终端
+        $this->connectList[] = $request->fd;//将请求对象上的fd，也就是客户端的唯一标识，可以把它理解为客户端id，存入集合中
+    }
 
-        $server->on('close', function ($ser, $fd) {
-            echo "client {$fd} closed\n";
-        });
-        echo "swoole start;".PHP_EOL;
-        $server->start();
+    /**
+     * 接收到信息的回调函数
+     * @param $server
+     * @param $frame
+     */
+    public function onMessage($server, $frame)
+    {
+        $data = json_decode($frame->data, true);
+        if ($data) {
+            print_r($data);
+        }
+
+        echo $frame->fd . '来了，说：' . $frame->data . PHP_EOL;//打印到我们终端
+        //将这个用户的信息存入集合
+        foreach ($this->connectList as $fd) {//遍历客户端的集合，拿到每个在线的客户端id
+            //将客户端发来的消息，推送给所有用户，也可以叫广播给所有在线客户端
+            $server->push($fd, json_encode(['no' => $frame->fd, 'msg' => $frame->data]));
+        }
+    }
+
+    /**
+     * 断开连接回调函数
+     * @param $server
+     * @param $fd
+     */
+    public function onClose($server, $fd)
+    {
+        echo $fd . '走了' . PHP_EOL;//打印到我们终端
+        $this->connectList = array_diff($this->connectList, [$fd]);//将断开了的客户端id，清除出集合
     }
 }
