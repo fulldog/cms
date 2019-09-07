@@ -57,9 +57,6 @@ class ChatController extends Controller
     public function onMessage($server, $frame)
     {
         $data = json_decode($frame->data, true);
-        if ($data) {
-            print_r($data);
-        }
 
         echo $frame->fd . '来了，说：' . $frame->data . PHP_EOL;//打印到我们终端
         //将这个用户的信息存入集合
