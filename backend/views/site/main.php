@@ -76,38 +76,6 @@ $this->registerCss("
 <div class="row">
     <div class="col-sm-6">
         <div>
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5><?= Yii::t('app', 'Notify') ?></h5>
-                    <div class="ibox-tools">
-                        <a target="_blank" href="http://api.feehi.com/cms"><?= Yii::t('app', 'More')?></a>
-                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        <a class="close-link"><i class="fa fa-times"></i></a>
-                    </div>
-                </div>
-                <div class="ibox-content no-padding">
-                    <ul class="list-group" id="notify">
-                        <li class="list-group-item">
-                            <div class="sk-spinner sk-spinner-fading-circle">
-                                <div class="sk-circle1 sk-circle"></div>
-                                <div class="sk-circle2 sk-circle"></div>
-                                <div class="sk-circle3 sk-circle"></div>
-                                <div class="sk-circle4 sk-circle"></div>
-                                <div class="sk-circle5 sk-circle"></div>
-                                <div class="sk-circle6 sk-circle"></div>
-                                <div class="sk-circle7 sk-circle"></div>
-                                <div class="sk-circle8 sk-circle"></div>
-                                <div class="sk-circle9 sk-circle"></div>
-                                <div class="sk-circle10 sk-circle"></div>
-                                <div class="sk-circle11 sk-circle"></div>
-                                <div class="sk-circle12 sk-circle"></div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div>
             <div class="ibox float-e-margins environment">
                 <div class="ibox-title">
                     <h5><?= Yii::t('app', 'Environment') ?></h5>
@@ -118,9 +86,6 @@ $this->registerCss("
                 </div>
                 <div class="ibox-content no-padding">
                     <ul class="list-group">
-                        <li class="list-group-item">
-                            <span class="badge badge-primary">&nbsp;&nbsp;</span><strong>Feehi CMS</strong>: <?= Yii::$app->getVersion() ?>
-                        </li>
                         <li class="list-group-item ">
                             <span class="badge badge-info">&nbsp;&nbsp;</span> <strong>Web Server</strong>: <?= $info['OPERATING_ENVIRONMENT'] ?>
                         </li>
