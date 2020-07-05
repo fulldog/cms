@@ -50,12 +50,12 @@ if ($parent_id != '') {
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'alias')->textInput(['maxlength' => 64]) ?>
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'sort')->textInput(['maxlength' => 512]) ?>
-                <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'template')->chosenSelect(Util::getViewTemplate("category")) ?>
-                <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'article_template')->chosenSelect(Util::getViewTemplate()) ?>
-                <div class="hr-line-dashed"></div>
+<!--                --><?//= $form->field($model, 'sort')->textInput(['maxlength' => 512]) ?>
+<!--                <div class="hr-line-dashed"></div>-->
+<!--                --><?//= $form->field($model, 'template')->chosenSelect(Util::getViewTemplate("category")) ?>
+<!--                <div class="hr-line-dashed"></div>-->
+<!--                --><?//= $form->field($model, 'article_template')->chosenSelect(Util::getViewTemplate()) ?>
+<!--                <div class="hr-line-dashed"></div>-->
                 <?= $form->field($model, 'remark')->textInput(['maxlength' => 64]) ?>
                 <?= $form->defaultButtons() ?>
                 <?php ActiveForm::end(); ?>

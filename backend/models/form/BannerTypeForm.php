@@ -34,7 +34,7 @@ class BannerTypeForm extends \common\models\Options
     public function beforeSave($insert)
     {
         $this->type = Options::TYPE_BANNER;
-        if( $this->value === null ){
+        if ($this->value === null) {
             $this->value = "[]";
         }
         return parent::beforeSave($insert);
@@ -50,7 +50,7 @@ class BannerTypeForm extends \common\models\Options
 
     public function beforeDelete()
     {
-        if( !empty($this->value) ) {
+        if (!empty($this->value) && $this->value != '[]') {
             $this->addError("id", Yii::t('app', 'Delete failed, banner existed'));
             return false;
         }

@@ -20,25 +20,26 @@ use common\libs\Constants;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
-    ]); ?>
+    ]);
+    ?>
 
     <?= $form->field($model, 'title', ['labelOptions'=>['class'=>'col-sm-4 control-label'], 'size'=>8, 'options'=>['class'=>'col-sm-3']]) ?>
 
     <?= $form->field($model, 'content', ['labelOptions'=>['class'=>'col-sm-4 control-label'], 'size'=>8, 'options'=>['class'=>'col-sm-3']]) ?>
 
-    <?= $form->field($model, 'sub_title', ['labelOptions'=>['class'=>'col-sm-4 control-label'], 'size'=>8, 'options'=>['class'=>'col-sm-3']]) ?>
+<!--    --><?//= $form->field($model, 'sub_title', ['labelOptions'=>['class'=>'col-sm-4 control-label'], 'size'=>8, 'options'=>['class'=>'col-sm-3']]) ?>
 
-    <?= $form->field($model, 'seo_keywords', ['labelOptions'=>['class'=>'col-sm-5 control-label'], 'size'=>7, 'options'=>['class'=>'col-sm-3']]) ?>
+<!--    --><?//= $form->field($model, 'seo_keywords', ['labelOptions'=>['class'=>'col-sm-5 control-label'], 'size'=>7, 'options'=>['class'=>'col-sm-3']]) ?>
 
-    <?= $form->field($model, 'visibility', ['labelOptions'=>['class'=>'col-sm-4 control-label'], 'size'=>8, 'options'=>['class'=>'col-sm-3']])->dropDownList(Constants::getYesNoItems()) ?>
+<!--    --><?//= $form->field($model, 'visibility', ['labelOptions'=>['class'=>'col-sm-4 control-label'], 'size'=>8, 'options'=>['class'=>'col-sm-3']])->dropDownList(Constants::getYesNoItems()) ?>
 
-    <?= $form->field($model, 'can_comment', ['labelOptions'=>['class'=>'col-sm-4 control-label'], 'size'=>8, 'options'=>['class'=>'col-sm-3']])->dropDownList(Constants::getYesNoItems()) ?>
+<!--    --><?//= $form->field($model, 'can_comment', ['labelOptions'=>['class'=>'col-sm-4 control-label'], 'size'=>8, 'options'=>['class'=>'col-sm-3']])->dropDownList(Constants::getYesNoItems()) ?>
 
-    <?= $form->field($model, 'password', ['labelOptions'=>['class'=>'col-sm-4 control-label'], 'size'=>8, 'options'=>['class'=>'col-sm-3']])->dropDownList(Constants::getYesNoItems()) ?>
+<!--    --><?//= $form->field($model, 'password', ['labelOptions'=>['class'=>'col-sm-4 control-label'], 'size'=>8, 'options'=>['class'=>'col-sm-3']])->dropDownList(Constants::getYesNoItems()) ?>
 
     <?= $form->field($model, 'summary', ['labelOptions'=>['class'=>'col-sm-4 control-label'], 'size'=>8, 'options'=>['class'=>'col-sm-3']]) ?>
 
-    <?= $form->field($model, 'seo_title', ['labelOptions'=>['class'=>'col-sm-4 control-label'], 'size'=>8, 'options'=>['class'=>'col-sm-3']]) ?>
+<!--    --><?//= $form->field($model, 'seo_title', ['labelOptions'=>['class'=>'col-sm-4 control-label'], 'size'=>8, 'options'=>['class'=>'col-sm-3']]) ?>
 
     <div class="col-sm-3">
         <div class="col-sm-6">

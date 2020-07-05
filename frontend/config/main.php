@@ -9,7 +9,7 @@ $params = array_merge(
 return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
-    'defaultRoute' => 'article/index',
+    'defaultRoute' => 'site/index',
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
@@ -55,27 +55,27 @@ return [
             'keyPrefix' => 'frontend',       // 唯一键前缀
         ],
         'urlManager' => [
-            'enablePrettyUrl' => false,//true 美化路由(注:需要配合web服务器配置伪静态，详见http://doc.feehi.com/install.html), false 不美化路由
-            'showScriptName' => false,//隐藏index.php
+            'enablePrettyUrl' => true,//true 美化路由(注:需要配合web服务器配置伪静态，详见http://doc.feehi.com/install.html), false 不美化路由
+            'showScriptName' => true,//隐藏index.php
             'enableStrictParsing' => false,
             //'suffix' => '.html',//后缀，如果设置了此项，那么浏览器地址栏就必须带上.html后缀，否则会报404错误
             'rules' => [
-                //'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+                '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
                 //'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>?id=<id>'
                 //'detail/<id:\d+>' => 'site/detail?id=$id',
                 //'post/22'=>'site/detail',
                 //'<controller:detail>/<id:\d+>' => '<controller>/index',
-                '' => 'article/index',
-                '<page:\d+>' => 'article/index',
-                'login' => 'site/login',
-                'signup' => 'site/signup',
-                'view/<id:\d+>' => 'article/view',
-                'page/<name:\w+>' => 'page/view',
-                'comment' => 'article/comment',
-                'search' => 'search/index',
-                'tag/<tag:[- \w]+>' => 'search/tag',
-                'rss' => 'article/rss',
-                'list/<page:\d+>' => 'site/index',
+//                '' => 'news/index',
+//                '<page:\d+>' => 'article/index',
+//                'login' => 'site/login',
+//                'signup' => 'site/signup',
+//                'view/<id:\d+>' => 'article/view',
+//                'page/<name:\w+>' => 'page/view',
+//                'comment' => 'article/comment',
+//                'search' => 'search/index',
+//                'tag/<tag:[- \w]+>' => 'search/tag',
+//                'rss' => 'article/rss',
+//                'list/<page:\d+>' => 'site/index',
             ],
         ],
         'i18n' => [

@@ -61,14 +61,14 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                         [
                             'attribute' => 'id',
                         ],
-                        [
-                            'attribute' => 'cid',
-                            'label' => Yii::t('app', 'Category'),
-                            'value' => function ($model) {
-                                return $model->category ? $model->category->name : Yii::t('app', 'uncategoried');
-                            },
-                            'filter' => $categories,
-                        ],
+//                        [
+//                            'attribute' => 'cid',
+//                            'label' => Yii::t('app', 'Category'),
+//                            'value' => function ($model) {
+//                                return $model->category ? $model->category->name : Yii::t('app', 'uncategoried');
+//                            },
+//                            'filter' => $categories,
+//                        ],
                         [
                             'attribute' => 'title',
                             'width' => '170',
@@ -104,41 +104,41 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                            },
                             'filter' => Constants::getYesNoItems(),
                         ],
-                        [
-                            'class' => StatusColumn::className(),
-                            'attribute' => 'flag_headline',
-                            'filter' => Constants::getYesNoItems(),
-                        ],
-                        [
-                            'class' =>StatusColumn::className(),
-                            'attribute' => 'flag_recommend',
-                            'filter' => Constants::getYesNoItems(),
-                        ],
-                        [
-                            'class' =>StatusColumn::className(),
-                            'attribute' => 'flag_slide_show',
-                            'filter' => Constants::getYesNoItems(),
-                        ],
-                        [
-                            'class' =>StatusColumn::className(),
-                            'attribute' => 'flag_special_recommend',
-                            'filter' => Constants::getYesNoItems(),
-                        ],
-                        [
-                            'class' =>StatusColumn::className(),
-                            'attribute' => 'flag_roll',
-                            'filter' => Constants::getYesNoItems(),
-                        ],
-                        [
-                            'class' =>StatusColumn::className(),
-                            'attribute' => 'flag_bold',
-                            'filter' => Constants::getYesNoItems(),
-                        ],
-                        [
-                            'class' =>StatusColumn::className(),
-                            'attribute' => 'flag_picture',
-                            'filter' => Constants::getYesNoItems(),
-                        ],
+//                        [
+//                            'class' => StatusColumn::className(),
+//                            'attribute' => 'flag_headline',
+//                            'filter' => Constants::getYesNoItems(),
+//                        ],
+//                        [
+//                            'class' =>StatusColumn::className(),
+//                            'attribute' => 'flag_recommend',
+//                            'filter' => Constants::getYesNoItems(),
+//                        ],
+//                        [
+//                            'class' =>StatusColumn::className(),
+//                            'attribute' => 'flag_slide_show',
+//                            'filter' => Constants::getYesNoItems(),
+//                        ],
+//                        [
+//                            'class' =>StatusColumn::className(),
+//                            'attribute' => 'flag_special_recommend',
+//                            'filter' => Constants::getYesNoItems(),
+//                        ],
+//                        [
+//                            'class' =>StatusColumn::className(),
+//                            'attribute' => 'flag_roll',
+//                            'filter' => Constants::getYesNoItems(),
+//                        ],
+//                        [
+//                            'class' =>StatusColumn::className(),
+//                            'attribute' => 'flag_bold',
+//                            'filter' => Constants::getYesNoItems(),
+//                        ],
+//                        [
+//                            'class' =>StatusColumn::className(),
+//                            'attribute' => 'flag_picture',
+//                            'filter' => Constants::getYesNoItems(),
+//                        ],
                         [
                             'attribute' => 'status',
                             'format' => 'raw',
