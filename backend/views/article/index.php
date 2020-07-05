@@ -49,7 +49,7 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <?= Bar::widget() ?>
-                <?=$this->render('_search', ['model' => $searchModel]); ?>
+<!--                --><?//=$this->render('_search', ['model' => $searchModel]); ?>
                 <?php Pjax::begin(['id' => 'pjax']); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,

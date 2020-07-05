@@ -48,7 +48,10 @@ return [
     \common\services\CourseChildServiceInterface::ServiceName=>[
         'class' => \common\services\CourseChildService::className(),
     ],
-    \common\services\CourseServiceInterface::ServiceName=>[
-        'class' => \common\services\CourseService::className(),
+    \common\services\CoursePasswordServiceInterface::ServiceName=>[
+        'class' => \common\services\CoursePasswordService::className(),
+    ],
+    \common\services\CourseCategoryServiceInterface::ServiceName=>[
+        'class' => \common\services\CourseCategoryService::className(),
     ],
 ];
