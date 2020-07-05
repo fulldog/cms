@@ -145,7 +145,7 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                                 'entry' => function ($url, $model, $key) {
                                     return Html::a('课时', Url::to([
                                         'course-child/index',
-                                        'pid' => $model['id']
+                                        'CourseChildSearch[pid]' => $model['id']
                                     ]), [
                                         'title' => '课时列表',
                                         'data-pjax' => '0',
@@ -157,7 +157,7 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                                     if ($model->password){
                                         return Html::a('密码', Url::to([
                                             'course-password/index',
-                                            'pid' => $model['id']
+                                            'CoursePasswordSearch[pid]' => $model['id']
                                         ]), [
                                             'title' => '密码列表',
                                             'data-pjax' => '0',

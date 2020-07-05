@@ -2,10 +2,10 @@
 
 namespace backend\controllers;
 
-use app\models\Course;
+use app\models\Vote;
 use Yii;
-use common\services\CourseChildServiceInterface;
-use common\services\CourseChildService;
+use common\services\VoteChildServiceInterface;
+use common\services\VoteChildService;
 use backend\actions\CreateAction;
 use backend\actions\UpdateAction;
 use backend\actions\IndexAction;
@@ -14,34 +14,34 @@ use backend\actions\SortAction;
 use backend\actions\ViewAction;
 
 /**
- * CourseChildController implements the CRUD actions for CourseChild model.
+ * VoteChildController implements the CRUD actions for VoteChild model.
  */
-class CourseChildController extends \yii\web\Controller
+class VoteChildController extends \yii\web\Controller
 {
     /**
      * @auth
-     * - item group=未分类 category=Course Children description-get=列表 sort=000 method=get
-     * - item group=未分类 category=Course Children description=创建 sort-get=001 sort-post=002 method=get,post  
-     * - item group=未分类 category=Course Children description=修改 sort=003 sort-post=004 method=get,post  
-     * - item group=未分类 category=Course Children description-post=删除 sort=005 method=post  
-     * - item group=未分类 category=Course Children description-post=排序 sort=006 method=post  
-     * - item group=未分类 category=Course Children description-get=查看 sort=007 method=get  
+     * - item group=未分类 category=Vote Children description-get=列表 sort=000 method=get
+     * - item group=未分类 category=Vote Children description=创建 sort-get=001 sort-post=002 method=get,post  
+     * - item group=未分类 category=Vote Children description=修改 sort=003 sort-post=004 method=get,post  
+     * - item group=未分类 category=Vote Children description-post=删除 sort=005 method=post  
+     * - item group=未分类 category=Vote Children description-post=排序 sort=006 method=post  
+     * - item group=未分类 category=Vote Children description-get=查看 sort=007 method=get  
      * @return array
      */
     public function actions()
     {
-        /** @var CourseChildServiceInterface $service */
-        $service = Yii::$app->get(CourseChildServiceInterface::ServiceName);
+        /** @var VoteChildServiceInterface $service */
+        $service = Yii::$app->get(VoteChildServiceInterface::ServiceName);
         return [
             'index' => [
                 'class' => IndexAction::className(),
                 'data' => function ($query, $indexAction) use ($service) {
-                    $query['CourseChildSearch']['pid'] = Yii::$app->request->get('CourseChildSearch')['pid'];
+                    $query['VoteChildSearch']['vid'] = Yii::$app->request->get('VoteChildSearch')['vid'];
                     $result = $service->getList($query);
                     return [
                         'dataProvider' => $result['dataProvider'],
                         'searchModel' => $result['searchModel'],
-                        'parent' => Course::findOne(['id' => $query['CourseChildSearch']['pid']]),
+                        'parent' => Vote::findOne(['id' => $query['VoteChildSearch']['vid']]),
                     ];
                 }
             ],
@@ -54,7 +54,7 @@ class CourseChildController extends \yii\web\Controller
                     $model = $createResultModel === null ? $service->newModel() : $createResultModel;
                     return [
                         'model' => $model,
-                        'parent' => Course::findOne(['id' =>  Yii::$app->request->get('CourseChildSearch')['pid']]),
+                        'parent' => Vote::findOne(['id' => Yii::$app->request->get('VoteChildSearch')['vid']]),
                     ];
                 }
             ],
@@ -67,7 +67,7 @@ class CourseChildController extends \yii\web\Controller
                     $model = $updateResultModel === null ? $service->getDetail($id) : $updateResultModel;
                     return [
                         'model' => $model,
-                        'parent' => Course::findOne(['id' =>  Yii::$app->request->get('CourseChildSearch')['pid']]),
+                        'parent' => Vote::findOne(['id' => Yii::$app->request->get('VoteChildSearch')['vid']]),
                     ];
                 }
             ],

@@ -5,23 +5,14 @@ use backend\grid\CheckboxColumn;
 use backend\grid\ActionColumn;
 use backend\grid\GridView;
 use backend\grid\DateColumn;
-use backend\grid\SortColumn;
-use backend\widgets\ActiveForm;
-use common\widgets\JsBlock;
-use yii\helpers\Url;
-use common\models\Category;
-use common\libs\Constants;
-use yii\helpers\Html;
-use yii\widgets\Pjax;
-use backend\grid\StatusColumn;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\CourseChildSearch */
+/* @var $searchModel app\models\VoteChildSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '课时列表';
-$this->params['breadcrumbs'][] = yii::t('app',  '课时列表');
-$this->params['breadcrumbs'][] = $parent->title;
+$this->title = '投票详情';
+$this->params['breadcrumbs'][] = yii::t('app', '投票详情');
+$this->params['breadcrumbs'][] =$parent->title;
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -32,7 +23,7 @@ $this->params['breadcrumbs'][] = $parent->title;
                     [
                         'buttons' => [
                             'create' => function () use($parent) {
-                                return Html::a('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Create'), Url::to(['course-child/create', 'CourseChildSearch[pid]' => $parent->id]), [
+                                return \yii\helpers\Html::a('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Create'), \yii\helpers\Url::to(['vote-child/create', 'VoteChildSearch[vid]' => $parent->id]), [
                                     'title' => Yii::t('app', 'Create'),
                                     'data-pjax' => '0',
                                     'class' => 'btn btn-white btn-sm',
@@ -44,31 +35,25 @@ $this->params['breadcrumbs'][] = $parent->title;
 <!--                --><?//=$this->render('_search', ['model' => $searchModel]); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-//                    'filterModel' => $searchModel,
+                    'filterModel' => $searchModel,
                     'columns' => [
                         ['class' => CheckboxColumn::className()],
-
 //                        'id',
-//                        'pid',
-                        [
-                            'filter'=>false,
-                            'header'=>'所属课程',
-                            'headerOptions'=>['width'=>'100'],
-                            'value'=>'course.title'
-                        ],
+//                        'vid',
+//                        'vote.title',
                         'title',
-                        'desc',
+//                        'desc',
                         [
-                            'attribute' => 'thumb',
+                            'attribute' => 'img',
                             'format' => 'raw',
                             'value' => function ($model, $key, $index, $column) {
-                                if ($model->thumb == '') {
-                                    $num = Constants::YesNo_No;
+                                if ($model->img == '') {
+                                    $num = \common\libs\Constants::YesNo_No;
                                 } else {
-                                    $num = Constants::YesNo_Yes;
+                                    $num = \common\libs\Constants::YesNo_Yes;
                                 }
-                                return Html::a(Constants::getYesNoItems($num), $model->thumb ? $model->thumb : 'javascript:void(0)', [
-                                    'img' => $model->thumb ? $model->thumb : '',
+                                return \yii\helpers\Html::a(\common\libs\Constants::getYesNoItems($num), $model->img ? $model->img : 'javascript:void(0)', [
+                                    'img' => $model->img ? $model->img : '',
                                     'class' => 'thumbImg',
                                     'target' => '_blank',
                                     'data-pjax' => 0
@@ -77,21 +62,21 @@ $this->params['breadcrumbs'][] = $parent->title;
                             'filter' => false,
                         ],
                         [
-                            'attribute' => 'video',
-                            'format' => 'raw',
-                            'value' => function($model){
-                                return "<video style='max-width:200px;max-height:200px' src='" . $model->video . "'  controls=\"controls\"></video>";
-                            },
                             'filter' => false,
+                            'attribute' => 'pv',
                         ],
                         [
-                            'class' => DateColumn::className(),
-                            'attribute' => 'created_at',
+                            'filter' => false,
+                            'attribute' => 'vote_count',
                         ],
-                        [
-                            'class' => DateColumn::className(),
-                            'attribute' => 'updated_at',
-                        ],
+//                        [
+//                            'class' => DateColumn::className(),
+//                            'attribute' => 'created_at',
+//                        ],
+//                        [
+//                            'class' => DateColumn::className(),
+//                            'attribute' => 'updated_at',
+//                        ],
 
                         ['class' => ActionColumn::className(),],
                     ],

@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\CoursePassword;
+use app\models\Vote;
 
 /**
- * CoursePasswordSearch represents the model behind the search form about `app\models\CoursePassword`.
+ * VoteSearch represents the model behind the search form about `app\models\Vote`.
  */
-class CoursePasswordSearch extends CoursePassword implements \backend\models\search\SearchInterface
+class VoteSearch extends Vote implements \backend\models\search\SearchInterface
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class CoursePasswordSearch extends CoursePassword implements \backend\models\sea
     public function rules()
     {
         return [
-            [['id', 'pid', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['password'], 'safe'],
+            [['id', 'start_time', 'end_time', 'vote_count', 'pv', 'updated_at', 'created_at'], 'integer'],
+            [['title', 'desc', 'img'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class CoursePasswordSearch extends CoursePassword implements \backend\models\sea
      */
     public function search(array $params = [], array $options = [])
     {
-        $query = CoursePassword::find();
+        $query = Vote::find();
 
         // add conditions that should always apply here
 
@@ -60,13 +60,17 @@ class CoursePasswordSearch extends CoursePassword implements \backend\models\sea
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'pid' => $this->pid,
-            'status' => $this->status,
-            'created_at' => $this->created_at,
+            'start_time' => $this->start_time,
+            'end_time' => $this->end_time,
+            'vote_count' => $this->vote_count,
+            'pv' => $this->pv,
             'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'password', $this->password]);
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'desc', $this->desc])
+            ->andFilterWhere(['like', 'img', $this->img]);
 
         return $dataProvider;
     }

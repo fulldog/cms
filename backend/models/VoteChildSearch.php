@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\CoursePassword;
+use app\models\VoteChild;
 
 /**
- * CoursePasswordSearch represents the model behind the search form about `app\models\CoursePassword`.
+ * VoteChildSearch represents the model behind the search form about `app\models\VoteChild`.
  */
-class CoursePasswordSearch extends CoursePassword implements \backend\models\search\SearchInterface
+class VoteChildSearch extends VoteChild implements \backend\models\search\SearchInterface
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class CoursePasswordSearch extends CoursePassword implements \backend\models\sea
     public function rules()
     {
         return [
-            [['id', 'pid', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['password'], 'safe'],
+            [['id', 'vid', 'pv', 'vote_count', 'created_at', 'updated_at'], 'integer'],
+            [['title', 'desc', 'img'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class CoursePasswordSearch extends CoursePassword implements \backend\models\sea
      */
     public function search(array $params = [], array $options = [])
     {
-        $query = CoursePassword::find();
+        $query = VoteChild::find();
 
         // add conditions that should always apply here
 
@@ -60,13 +60,16 @@ class CoursePasswordSearch extends CoursePassword implements \backend\models\sea
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'pid' => $this->pid,
-            'status' => $this->status,
+            'vid' => $this->vid,
+            'pv' => $this->pv,
+            'vote_count' => $this->vote_count,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'password', $this->password]);
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'desc', $this->desc])
+            ->andFilterWhere(['like', 'img', $this->img]);
 
         return $dataProvider;
     }

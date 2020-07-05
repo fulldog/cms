@@ -39,11 +39,11 @@ class CoursePasswordController extends \yii\web\Controller
             'index' => [
                 'class' => IndexAction::className(),
                 'data' => function ($query, $indexAction) use ($service) {
-                    $query['pid'] = Yii::$app->request->get('pid');
+                    $query['CoursePasswordSearch']['pid'] = Yii::$app->request->get('CoursePasswordSearch')['pid'];
                     $result = $service->getList($query);
                     return [
                         'dataProvider' => $result['dataProvider'],
-                        'parent' => Course::findOne(['id' => $query['pid']]),
+                        'parent' => Course::findOne(['id' => $query['CoursePasswordSearch']['pid']]),
                     ];
                 }
             ],
@@ -97,7 +97,7 @@ class CoursePasswordController extends \yii\web\Controller
 
     public function actionCreate()
     {
-        $pid = Yii::$app->request->get('pid');
+        $pid = Yii::$app->request->get('CoursePasswordSearch')['pid'];
         if ($pid) {
             $pwd = uniqid() . $this->makePassword();
             while (CoursePassword::findOne(['password' => $pwd])) {
@@ -114,7 +114,7 @@ class CoursePasswordController extends \yii\web\Controller
         } else {
             Yii::$app->getSession()->setFlash('error', '缺少pid参数');
         }
-        return $this->redirect(['course-password/index', 'pid' => $pid]);
+        return $this->redirect(['course-password/index', 'CoursePasswordSearch[pid]' => $pid]);
     }
 
     public static function makePassword($length = 8)

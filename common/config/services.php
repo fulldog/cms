@@ -54,4 +54,10 @@ return [
     \common\services\CourseCateServiceInterface::ServiceName=>[
         'class' => \common\services\CourseCateService::className(),
     ],
+    \common\services\VoteServiceInterface::ServiceName=>[
+        'class' => \common\services\VoteService::className(),
+    ],
+    \common\services\VoteChildServiceInterface::ServiceName=>[
+        'class' => \common\services\VoteChildService::className(),
+    ],
 ];

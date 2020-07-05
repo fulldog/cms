@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $model app\models\CoursePassword */
 
 $this->params['breadcrumbs'] = [
-    ['label' => '密码列表', 'url' => Url::to(['index'])],
+    ['label' => '密码列表', 'url' => Url::to(['index','CoursePasswordSearch[pid]'=>$parent->id])],
     ['label' => $parent->title],
     ['label' => yii::t('app', 'Create') . '密码'],
 ];
