@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use app\models\CourseCate;
 use Yii;
 use common\services\CourseServiceInterface;
 use common\services\CourseService;
@@ -33,16 +34,14 @@ class CourseController extends \yii\web\Controller
     {
         /** @var CourseServiceInterface $service */
         $service = Yii::$app->get(CourseServiceInterface::ServiceName);
-        $categoryService = Yii::$app->get(CategoryServiceInterface::ServiceName);
         return [
             'index' => [
                 'class' => IndexAction::className(),
-                'data' => function ($query, $indexAction) use ($service,$categoryService) {
+                'data' => function ($query, $indexAction) use ($service) {
                     $result = $service->getList($query);
                     return [
                         'dataProvider' => $result['dataProvider'],
                         'searchModel' => $result['searchModel'],
-                        'categories' => ArrayHelper::getColumn($categoryService->getLevelCategoriesWithPrefixLevelCharacters(), "prefix_level_name"),
                     ];
                 }
             ],

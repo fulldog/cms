@@ -51,7 +51,7 @@ return [
     \common\services\CoursePasswordServiceInterface::ServiceName=>[
         'class' => \common\services\CoursePasswordService::className(),
     ],
-    \common\services\CourseCategoryServiceInterface::ServiceName=>[
-        'class' => \common\services\CourseCategoryService::className(),
+    \common\services\CourseCateServiceInterface::ServiceName=>[
+        'class' => \common\services\CourseCateService::className(),
     ],
 ];

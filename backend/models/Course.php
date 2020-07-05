@@ -152,6 +152,6 @@ class Course extends \yii\db\ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'cid']);
+        return $this->hasOne(CourseCate::className(), ['id' => 'cid']);
     }
 }

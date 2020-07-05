@@ -58,7 +58,7 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                             'value' => function ($model) {
                                 return $model->category ? $model->category->name : Yii::t('app', 'uncategoried');
                             },
-                            'filter' => $categories,
+                            'filter' => \app\models\CourseCate::getAllCates(),
                         ],
                         [
                             'attribute' => 'thumb',
