@@ -85,7 +85,7 @@ $this->params['breadcrumbs'][] = yii::t('app', '投票活动');
                                         'vote-child/index',
                                         'VoteChildSearch[vid]' => $model['id']
                                     ]), [
-                                        'title' => '投票列表',
+                                        'title' => $model['title'].'详情',
                                         'data-pjax' => '0',
                                         'class' => 'btn-sm J_menuItem openContab',
                                         'target' => '_blank',

@@ -147,7 +147,7 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                                         'course-child/index',
                                         'CourseChildSearch[pid]' => $model['id']
                                     ]), [
-                                        'title' => '课时列表',
+                                        'title' => $model['title'].'课时',
                                         'data-pjax' => '0',
                                         'class' => 'btn-sm J_menuItem openContab',
                                         'target' => '_blank',
@@ -159,7 +159,7 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                                             'course-password/index',
                                             'CoursePasswordSearch[pid]' => $model['id']
                                         ]), [
-                                            'title' => '密码列表',
+                                            'title' => $model['title'].'密码',
                                             'data-pjax' => '0',
                                             'class' => 'btn-sm J_menuItem openContab',
                                             'target' => '_blank',

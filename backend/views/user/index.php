@@ -37,15 +37,15 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Users');
                         [
                             'class' => CheckboxColumn::className(),
                         ],
-                        [
-                            'attribute' => 'id',
-                        ],
+//                        [
+//                            'attribute' => 'id',
+//                        ],
                         [
                             'attribute' => 'username',
                         ],
-                        [
-                            'attribute' => 'email',
-                        ],
+//                        [
+//                            'attribute' => 'email',
+//                        ],
                         [
                             'attribute' => 'status',
                             'label' => Yii::t('app', 'Status'),

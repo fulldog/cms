@@ -23,9 +23,9 @@ class User extends \common\models\User implements IdentityInterface
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        if( !self::accessTokenIsValid($token) ){
-            throw new UnauthorizedHttpException("token格式错误或已过期");
-        }
+//        if( !self::accessTokenIsValid($token) ){
+//            throw new UnauthorizedHttpException("token格式错误或已过期");
+//        }
         return static::findOne(['access_token' => $token]);
     }
 

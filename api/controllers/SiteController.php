@@ -5,14 +5,18 @@
  * Email: job@feehi.com
  * Created at: 2017-08-30 18:10
  */
+
 namespace api\controllers;
 
+use api\service\Output;
+use api\service\WechatApi;
 use Yii;
 use api\models\form\SignupForm;
 use common\models\User;
 use api\models\form\LoginForm;
 use yii\web\IdentityInterface;
 use yii\web\Response;
+use common\models\Options;
 
 class SiteController extends \yii\rest\ActiveController
 {
@@ -39,11 +43,41 @@ class SiteController extends \yii\rest\ActiveController
         ];
     }
 
+    /**
+     * 首页
+     */
     public function actionIndex()
     {
-        return [
-            "feehi api service"
-        ];
+
+    }
+
+    /**
+     * 登录授权
+     * @return array
+     */
+    public function actionLogin()
+    {
+        $code = Yii::$app->request->get('code');
+        if (!$code) {
+            return Output::out([], 0, 'code not found');
+        } else {
+            $info = (new WechatApi())->getOpenByCode($code);
+            $info['openid'] = 'xxxxxxxxxxx';
+            if ($info['openid'] ?? '') {
+                $user = \api\models\User::findIdentityByAccessToken($info['openid']);
+                if (!$user) {
+                    $signupForm = new SignupForm();
+                    $signupForm->setAttributes([
+                        'username' => $info['openid'],
+                        'password' => $info['openid'],
+                        'access_token' => $info['openid']
+                    ]);
+                    $signupForm->signup();
+                }
+                return Output::out(['openid' => $info['openid']]);
+            }
+            return Output::out([], $info['errcode'] ?? 0, $info['errmsg'] ?? 'fail');
+        }
     }
 
     /**
@@ -54,10 +88,10 @@ class SiteController extends \yii\rest\ActiveController
      *
      * @return array
      */
-    public function actionLogin()
+    public function Login()
     {
         $loginForm = new LoginForm();
-        $loginForm->setAttributes( Yii::$app->getRequest()->post() );
+        $loginForm->setAttributes(Yii::$app->getRequest()->post());
         if ($user = $loginForm->login()) {
             if ($user instanceof IdentityInterface) {
                 return [
@@ -81,17 +115,17 @@ class SiteController extends \yii\rest\ActiveController
      *
      * @return array
      */
-    public function actionRegister()
+    public function Register()
     {
         $signupForm = new SignupForm();
-        $signupForm->setAttributes( Yii::$app->getRequest()->post() );
-        if( ($user = $signupForm->signup()) instanceof User){
+        $signupForm->setAttributes(Yii::$app->getRequest()->post());
+        if (($user = $signupForm->signup()) instanceof User) {
             return [
                 "success" => true,
                 "username" => $user->username,
                 "email" => $user->email
             ];
-        }else{
+        } else {
             return [
                 "success" => false,
                 "error" => $signupForm->getErrors()

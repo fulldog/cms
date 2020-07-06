@@ -19,6 +19,8 @@ class SignupForm extends \yii\base\Model
 
     public $password;
 
+    public $access_token;
+
     public function rules()
     {
         return [
@@ -33,17 +35,18 @@ class SignupForm extends \yii\base\Model
             ['username', 'string', 'min' => 2, 'max' => 255],
 
             ['email', 'filter', 'filter' => 'trim'],
-            ['email', 'required'],
+//            ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            [
-                'email',
-                'unique',
-                'targetClass' => User::className(),
-                'message' => Yii::t('app', 'This email address has already been taken')
-            ],
+//            [
+//                'email',
+//                'unique',
+//                'targetClass' => User::className(),
+//                'message' => Yii::t('app', 'This email address has already been taken')
+//            ],
 
             ['password', 'required'],
+            ['access_token', 'required'],
             ['password', 'string', 'min' => 6],
         ];
     }
@@ -59,7 +62,7 @@ class SignupForm extends \yii\base\Model
 
     public function signup()
     {
-        if (! $this->validate()) {
+        if (!$this->validate()) {
             return null;
         }
 
@@ -68,6 +71,7 @@ class SignupForm extends \yii\base\Model
         $user->email = $this->email;
         $user->setPassword($this->password);
         $user->generateAuthKey();
+        $user->access_token = $this->access_token;
 
         return $user->save() ? $user : null;
     }

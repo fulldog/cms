@@ -27,6 +27,7 @@ use yii\web\UploadedFile;
  * @property string $auth_key
  * @property string $avatar
  * @property integer $status
+ * @property string $access_token
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
@@ -64,12 +65,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return [
             [['username', 'password', 'repassword'], 'string'],
             [['avatar'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
-            [['username', 'email'], 'unique'],
+            [['username'], 'unique'],
             ['email', 'email'],
             [['repassword'], 'compare', 'compareAttribute' => 'password'],
             [['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-            [['username', 'email', 'password', 'repassword'], 'required', 'on' => ['create']],
-            [['username', 'email'], 'required', 'on' => ['update']],
+            [['username', 'password', 'repassword'], 'required', 'on' => ['create']],
+            [['username'], 'required', 'on' => ['update']],
         ];
     }
 
