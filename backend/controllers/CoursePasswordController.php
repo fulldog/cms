@@ -2,8 +2,8 @@
 
 namespace backend\controllers;
 
-use app\models\Course;
-use app\models\CoursePassword;
+use common\models\Course;
+use common\models\CoursePassword;
 use Yii;
 use common\services\CoursePasswordServiceInterface;
 use common\services\CoursePasswordService;

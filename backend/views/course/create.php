@@ -4,7 +4,7 @@ use yii\helpers\Url;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Course */
+/* @var $model common\models\Course */
 
 $this->params['breadcrumbs'] = [
     ['label' => yii::t('app', '课程列表'), 'url' => Url::to(['index'])],

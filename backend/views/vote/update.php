@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Vote */
+/* @var $model common\models\Vote */
 
 $this->params['breadcrumbs'] = [
     ['label' => yii::t('app', '投票活动'), 'url' => Url::to(['index'])],

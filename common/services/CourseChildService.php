@@ -4,8 +4,8 @@ namespace common\services;
 * This is the template for generating CRUD service class of the specified model.
 */
 
-use app\models\CourseChildSearch;
-use app\models\CourseChild;
+use common\models\CourseChildSearch;
+use common\models\CourseChild;
 
 class CourseChildService extends Service implements CourseChildServiceInterface{
     public function getSearchModel(array $query=[], array $options=[])

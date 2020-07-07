@@ -9,7 +9,7 @@ use backend\widgets\webuploader\Webuploader;
 use common\helpers\Util;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Course */
+/* @var $model common\models\Course */
 /* @var $form backend\widgets\ActiveForm */
 ?>
 <div class="row">
@@ -27,7 +27,7 @@ use common\helpers\Util;
                     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                <?= $form->field($model, 'cid', ['size'=>10])->dropDownList(\app\models\CourseCate::getAllCates())?>
+                <?= $form->field($model, 'cid', ['size'=>10])->dropDownList(\common\models\CourseCate::getAllCates())?>
               <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'price', ['size'=>10])->textInput(['maxlength' => true])?>
               <div class="hr-line-dashed"></div>

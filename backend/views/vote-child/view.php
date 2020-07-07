@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\VoteChild */
+/* @var $model common\models\VoteChild */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => '投票详情', 'url' => ['index']];

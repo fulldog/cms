@@ -1,16 +1,16 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\CoursePassword;
+use common\models\CourseChild;
 
 /**
- * CoursePasswordSearch represents the model behind the search form about `app\models\CoursePassword`.
+ * CourseChildSearch represents the model behind the search form about `common\models\CourseChild`.
  */
-class CoursePasswordSearch extends CoursePassword implements \backend\models\search\SearchInterface
+class CourseChildSearch extends CourseChild implements \backend\models\search\SearchInterface
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class CoursePasswordSearch extends CoursePassword implements \backend\models\sea
     public function rules()
     {
         return [
-            [['id', 'course_id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['password'], 'safe'],
+            [['id', 'pid', 'created_at', 'updated_at'], 'integer'],
+            [['title', 'desc', 'thumb', 'video'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class CoursePasswordSearch extends CoursePassword implements \backend\models\sea
      */
     public function search(array $params = [], array $options = [])
     {
-        $query = CoursePassword::find();
+        $query = CourseChild::find();
 
         // add conditions that should always apply here
 
@@ -59,14 +59,17 @@ class CoursePasswordSearch extends CoursePassword implements \backend\models\sea
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'course_id' => $this->course_id,
-            'status' => $this->status,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+//            'id' => $this->id,
+//            'pid' => $this->pid,
+            'pid' => $this->pid,
+//            'created_at' => $this->created_at,
+//            'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'password', $this->password]);
+//        $query->andFilterWhere(['like', 'title', $this->title])
+//            ->andFilterWhere(['like', 'desc', $this->desc])
+//            ->andFilterWhere(['like', 'thumb', $this->thumb])
+//            ->andFilterWhere(['like', 'video', $this->video]);
 
         return $dataProvider;
     }

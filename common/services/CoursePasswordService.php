@@ -4,8 +4,8 @@ namespace common\services;
 * This is the template for generating CRUD service class of the specified model.
 */
 
-use app\models\CoursePasswordSearch;
-use app\models\CoursePassword;
+use common\models\CoursePasswordSearch;
+use common\models\CoursePassword;
 
 class CoursePasswordService extends Service implements CoursePasswordServiceInterface{
     public function getSearchModel(array $query=[], array $options=[])

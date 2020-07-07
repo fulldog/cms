@@ -16,7 +16,7 @@ use yii\widgets\Pjax;
 use backend\grid\StatusColumn;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\CourseChildSearch */
+/* @var $searchModel common\models\CourseChildSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = '课时列表';

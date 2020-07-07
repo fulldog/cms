@@ -15,7 +15,7 @@ use yii\helpers\Html;
 use yii\widgets\Pjax;
 use backend\grid\StatusColumn;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\VoteSearch */
+/* @var $searchModel common\models\VoteSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = '投票活动';

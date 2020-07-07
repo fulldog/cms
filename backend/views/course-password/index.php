@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = $parent->title;
                       'value' => function ($model) {
                           return $model->user ? $model->user->username : '';
                       },
-                      'filter' => \app\models\CourseCate::getAllCates(),
+                      'filter' => \common\models\CourseCate::getAllCates(),
                   ],
                   [
                       'class' => DateColumn::className(),

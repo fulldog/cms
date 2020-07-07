@@ -1,14 +1,14 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Vote;
+use common\models\Vote;
 
 /**
- * VoteSearch represents the model behind the search form about `app\models\Vote`.
+ * VoteSearch represents the model behind the search form about `common\models\Vote`.
  */
 class VoteSearch extends Vote implements \backend\models\search\SearchInterface
 {

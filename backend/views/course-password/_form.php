@@ -3,7 +3,7 @@
 use backend\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\CoursePassword */
+/* @var $model common\models\CoursePassword */
 /* @var $form backend\widgets\ActiveForm */
 ?>
 <div class="row">

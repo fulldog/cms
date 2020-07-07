@@ -2,7 +2,7 @@
 
 namespace backend\controllers;
 
-use app\models\CourseCate;
+use common\models\CourseCate;
 use Yii;
 use common\services\CourseServiceInterface;
 use common\services\CourseService;

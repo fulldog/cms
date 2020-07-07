@@ -16,7 +16,7 @@ use yii\widgets\Pjax;
 use backend\grid\StatusColumn;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\CourseSearch */
+/* @var $searchModel common\models\CourseSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = '课程列表';
@@ -58,7 +58,7 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                             'value' => function ($model) {
                                 return $model->category ? $model->category->name : Yii::t('app', 'uncategoried');
                             },
-                            'filter' => \app\models\CourseCate::getAllCates(),
+                            'filter' => \common\models\CourseCate::getAllCates(),
                         ],
                         [
                             'attribute' => 'thumb',

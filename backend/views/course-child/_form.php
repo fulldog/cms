@@ -3,7 +3,7 @@
 use backend\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\CourseChild */
+/* @var $model common\models\CourseChild */
 /* @var $form backend\widgets\ActiveForm */
 ?>
 <div class="row">

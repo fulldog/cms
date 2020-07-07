@@ -5,7 +5,7 @@ use backend\widgets\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\CourseChildSearch */
+/* @var $model common\models\CourseChildSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

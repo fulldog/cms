@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\CourseCate */
+/* @var $model common\models\CourseCate */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => '课程分类', 'url' => ['index']];

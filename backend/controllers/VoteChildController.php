@@ -2,7 +2,7 @@
 
 namespace backend\controllers;
 
-use app\models\Vote;
+use common\models\Vote;
 use Yii;
 use common\services\VoteChildServiceInterface;
 use common\services\VoteChildService;

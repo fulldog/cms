@@ -3,7 +3,7 @@
 use backend\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Vote */
+/* @var $model common\models\Vote */
 /* @var $form backend\widgets\ActiveForm */
 ?>
 <div class="row">

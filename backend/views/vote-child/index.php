@@ -7,7 +7,7 @@ use backend\grid\GridView;
 use backend\grid\DateColumn;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\VoteChildSearch */
+/* @var $searchModel common\models\VoteChildSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = '投票详情';

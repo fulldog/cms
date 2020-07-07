@@ -4,7 +4,7 @@ namespace common\services;
 * This is the template for generating CRUD service class of the specified model.
 */
 
-use app\models\CourseCate;
+use common\models\CourseCate;
 
 class CourseCateService extends Service implements CourseCateServiceInterface{
     public function getSearchModel(array $query=[], array $options=[])

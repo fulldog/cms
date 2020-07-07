@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\VoteChild */
+/* @var $model common\models\VoteChild */
 
 $this->params['breadcrumbs'] = [
     ['label' => yii::t('app', '投票详情'), 'url' => Url::to(['index','VoteChildSearch[vid]'=>$parent->id])],

@@ -5,7 +5,7 @@ use backend\widgets\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\VoteChildSearch */
+/* @var $model common\models\VoteChildSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
