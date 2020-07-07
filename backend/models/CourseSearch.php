@@ -18,7 +18,7 @@ class CourseSearch extends Course implements \backend\models\search\SearchInterf
     public function rules()
     {
         return [
-            [['id', 'status', 'recommend','password','cid'], 'integer'],
+            [['id', 'status', 'recommend','price','cid'], 'integer'],
             [['title', 'desc', 'wechat_img', 'thumb', 'video'], 'safe'],
             [['created_at', 'updated_at'], 'string'],
             [['thumb'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
@@ -67,7 +67,7 @@ class CourseSearch extends Course implements \backend\models\search\SearchInterf
             'recommend' => $this->recommend,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'password' => $this->password,
+            'price' => $this->price,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])

@@ -121,9 +121,8 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                             'filter' => Constants::getArticleStatus(),
                         ],
                         [
-                            'class' =>StatusColumn::className(),
-                            'attribute' => 'password',
-                            'filter' => Constants::getYesNoItems(),
+                            'attribute' => 'price',
+                            'filter' => false,
                         ],
                         [
                             'class' =>StatusColumn::className(),
@@ -154,10 +153,10 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                                     ]);
                                 },
                                 'password' => function ($url, $model, $key) {
-                                    if ($model->password){
+                                    if ($model->price > 0){
                                         return Html::a('密码', Url::to([
                                             'course-password/index',
-                                            'CoursePasswordSearch[pid]' => $model['id']
+                                            'CoursePasswordSearch[course_id]' => $model['id']
                                         ]), [
                                             'title' => $model['title'].'密码',
                                             'data-pjax' => '0',

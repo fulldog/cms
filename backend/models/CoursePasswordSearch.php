@@ -18,7 +18,7 @@ class CoursePasswordSearch extends CoursePassword implements \backend\models\sea
     public function rules()
     {
         return [
-            [['id', 'pid', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'course_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['password'], 'safe'],
         ];
     }
@@ -60,7 +60,7 @@ class CoursePasswordSearch extends CoursePassword implements \backend\models\sea
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'pid' => $this->pid,
+            'course_id' => $this->course_id,
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

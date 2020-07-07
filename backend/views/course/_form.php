@@ -27,11 +27,14 @@ use common\helpers\Util;
                     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
+                <?= $form->field($model, 'cid', ['size'=>10])->dropDownList(\app\models\CourseCate::getAllCates())?>
+              <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'price', ['size'=>10])->textInput(['maxlength' => true])?>
+              <div class="hr-line-dashed"></div>
+
                         <?= $form->field($model, 'desc')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                <?= $form->field($model, 'cid', ['size'=>10])->dropDownList(\app\models\CourseCate::getAllCates())?>
-              <div class="hr-line-dashed"></div>
 
               <?= $form->field($model, 'wechat_img')->imgInput(['style' => 'max-width:200px;max-height:200px']); ?>
 

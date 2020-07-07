@@ -39,11 +39,11 @@ class CoursePasswordController extends \yii\web\Controller
             'index' => [
                 'class' => IndexAction::className(),
                 'data' => function ($query, $indexAction) use ($service) {
-                    $query['CoursePasswordSearch']['pid'] = Yii::$app->request->get('CoursePasswordSearch')['pid'];
+                    $query['CoursePasswordSearch']['course_id'] = Yii::$app->request->get('CoursePasswordSearch')['course_id'];
                     $result = $service->getList($query);
                     return [
                         'dataProvider' => $result['dataProvider'],
-                        'parent' => Course::findOne(['id' => $query['CoursePasswordSearch']['pid']]),
+                        'parent' => Course::findOne(['id' => $query['CoursePasswordSearch']['course_id']]),
                     ];
                 }
             ],
@@ -56,7 +56,7 @@ class CoursePasswordController extends \yii\web\Controller
 //                    $model = $createResultModel === null ? $service->newModel() : $createResultModel;
 //                    return [
 //                        'model' => $model,
-//                        'parent' => Course::findOne(['id' => Yii::$app->request->get('pid')]),
+//                        'parent' => Course::findOne(['id' => Yii::$app->request->get('course_id')]),
 //                    ];
 //                }
 //            ],
@@ -97,24 +97,24 @@ class CoursePasswordController extends \yii\web\Controller
 
     public function actionCreate()
     {
-        $pid = Yii::$app->request->get('CoursePasswordSearch')['pid'];
-        if ($pid) {
+        $course_id = Yii::$app->request->get('CoursePasswordSearch')['course_id'];
+        if ($course_id) {
             $pwd = uniqid() . $this->makePassword();
             while (CoursePassword::findOne(['password' => $pwd])) {
                 $pwd = uniqid() . $this->makePassword();
             }
             $model = new CoursePassword();
             $model->password = $pwd;
-            $model->pid = $pid;
+            $model->course_id = $course_id;
             if ($model->save()) {
                 Yii::$app->getSession()->setFlash('success', '创建成功:');
             } else {
                 Yii::$app->getSession()->setFlash('error', '创建失败，请重试');
             }
         } else {
-            Yii::$app->getSession()->setFlash('error', '缺少pid参数');
+            Yii::$app->getSession()->setFlash('error', '缺少course_id参数');
         }
-        return $this->redirect(['course-password/index', 'CoursePasswordSearch[pid]' => $pid]);
+        return $this->redirect(['course-password/index', 'CoursePasswordSearch[course_id]' => $course_id]);
     }
 
     public static function makePassword($length = 8)

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use common\models\User;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -9,9 +10,9 @@ use yii\behaviors\TimestampBehavior;
  * This is the model class for table "course_password".
  *
  * @property int $id
- * @property int $pid 课表ID
+ * @property int $course_id 课表ID
  * @property string $password 密码
- * @property string $used_by 密码
+ * @property string $user_id 使用者ID
  * @property int $status 是否使用
  * @property int $created_at
  * @property int $updated_at
@@ -38,10 +39,10 @@ class CoursePassword extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pid', 'password'], 'required'],
-            [['pid', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['password', 'used_by'], 'string', 'max' => 255],
-            [['pid', 'password'], 'unique', 'targetAttribute' => ['pid', 'password']],
+            [['course_id', 'password'], 'required'],
+            [['course_id', 'status', 'created_at', 'updated_at','user_id'], 'integer'],
+            [['password'], 'string', 'max' => 255],
+            [['course_id', 'password'], 'unique', 'targetAttribute' => ['course_id', 'password']],
         ];
     }
 
@@ -52,16 +53,20 @@ class CoursePassword extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'pid' => '课程ID',
+            'course_id' => '课程ID',
             'password' => '密码',
             'status' => '是否使用',
-            'used_by' => '使用者',
+            'user_id' => '使用者',
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
         ];
     }
 
     public function getCourse(){
-        return $this->hasOne(Course::className(),['id'=>'pid']);
+        return $this->hasOne(Course::className(),['id'=>'course_id']);
+    }
+
+    public function getUser(){
+        return $this->hasOne(User::className(),['id'=>'user_id']);
     }
 }

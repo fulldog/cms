@@ -65,7 +65,13 @@ $this->params['breadcrumbs'][] = $parent->title;
                       },
                       'filter' => false,
                   ],
-                  'used_by',
+                  [
+                      'attribute' => 'user_id',
+                      'value' => function ($model) {
+                          return $model->user ? $model->user->username : '';
+                      },
+                      'filter' => \app\models\CourseCate::getAllCates(),
+                  ],
                   [
                       'class' => DateColumn::className(),
                       'attribute' => 'created_at',

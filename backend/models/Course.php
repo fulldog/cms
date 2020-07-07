@@ -19,7 +19,7 @@ use yii\web\UploadedFile;
  * @property string $video 介绍视频
  * @property int $status 状态
  * @property int $cid 分类
- * @property int $password 状态
+ * @property int $price 价格
  * @property int $recommend 是否推荐
  * @property int $created_at
  * @property int $updated_at
@@ -57,8 +57,8 @@ class Course extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title','cid'], 'required'],
-            [['status', 'recommend', 'created_at', 'updated_at', 'password','cid'], 'integer'],
+            [['title','cid','price'], 'required'],
+            [['status', 'recommend', 'created_at', 'updated_at', 'price','cid'], 'integer'],
             [['title', 'desc',], 'string', 'max' => 255],
             [['thumb','wechat_img'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
             [['video'], 'file', 'skipOnEmpty' => true, 'extensions' => 'mp4'],
@@ -80,7 +80,7 @@ class Course extends \yii\db\ActiveRecord
             'video' => '介绍视频',
             'status' => '状态',
             'recommend' => '是否推荐',
-            'password' => '是否收费',
+            'price' => '价格(元)',
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
         ];
