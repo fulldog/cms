@@ -67,12 +67,12 @@ use yii\widgets\DetailView;
 //                return Constants::getYesNoItems($model->flag_headline);
 //            }
 //        ],
-//        [
-//            'attribute' => 'flag_recommend',
-//            'value' => function($model){
-//                return Constants::getYesNoItems($model->flag_recommend);
-//            }
-//        ],
+        [
+            'attribute' => 'flag_recommend',
+            'value' => function($model){
+                return Constants::getYesNoItems($model->flag_recommend);
+            }
+        ],
 //        [
 //            'attribute' => 'flag_slide_show',
 //            'value' => function($model){

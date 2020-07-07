@@ -109,11 +109,11 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
 //                            'attribute' => 'flag_headline',
 //                            'filter' => Constants::getYesNoItems(),
 //                        ],
-//                        [
-//                            'class' =>StatusColumn::className(),
-//                            'attribute' => 'flag_recommend',
-//                            'filter' => Constants::getYesNoItems(),
-//                        ],
+                        [
+                            'class' =>StatusColumn::className(),
+                            'attribute' => 'flag_recommend',
+                            'filter' => Constants::getYesNoItems(),
+                        ],
 //                        [
 //                            'class' =>StatusColumn::className(),
 //                            'attribute' => 'flag_slide_show',
@@ -178,7 +178,7 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                                     ]);
                                 }
                             ],
-                            'template' => '{view-layer} {update} {delete} {comment}',
+                            'template' => '{view-layer} {update} {delete} ',
                         ],
                     ]
                 ]); ?>
