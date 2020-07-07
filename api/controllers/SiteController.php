@@ -10,6 +10,7 @@ namespace api\controllers;
 
 use api\service\Output;
 use api\service\WechatApi;
+use app\models\CourseCate;
 use Yii;
 use api\models\form\SignupForm;
 use common\models\User;
@@ -48,7 +49,7 @@ class SiteController extends \yii\rest\ActiveController
      */
     public function actionIndex()
     {
-
+        $allCate = CourseCate::find()->all();
     }
 
     /**

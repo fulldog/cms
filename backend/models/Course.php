@@ -154,4 +154,8 @@ class Course extends \yii\db\ActiveRecord
     {
         return $this->hasOne(CourseCate::className(), ['id' => 'cid']);
     }
+
+    public function getChild(){
+        return $this->hasMany(CourseChild::className(), ['pid' => 'id']);
+    }
 }

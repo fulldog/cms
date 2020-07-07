@@ -8,6 +8,8 @@
 
 namespace common\models;
 
+use app\models\Course;
+use app\models\CoursePassword;
 use Yii;
 use Exception;
 use common\helpers\Util;
@@ -94,7 +96,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function beforeValidate()
     {
-        if($this->avatar !== "0") {//为0表示需要删除图片，Util::handleModelSingleFileUpload()会有判断删除图片
+        if ($this->avatar !== "0") {//为0表示需要删除图片，Util::handleModelSingleFileUpload()会有判断删除图片
             $this->avatar = UploadedFile::getInstance($this, "avatar");
         }
         return parent::beforeValidate();
@@ -106,15 +108,15 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function beforeSave($insert)
     {
         if (!$insert) {
-            if( !empty($this->password) && empty($this->repassword) ){
+            if (!empty($this->password) && empty($this->repassword)) {
                 $this->addError("repassword", Yii::t('yii', '{attribute} must be equal to "{compareValueOrAttribute}".', [
                     'attribute' => yii::t('app', 'Repeat Password'),
                     'compareValueOrAttribute' => yii::t('app', 'Password')
-                    ])
+                ])
                 );
                 return false;
             }
-            $this->setPassword( $this->password );
+            $this->setPassword($this->password);
         }
         Util::handleModelSingleFileUpload($this, 'avatar', $insert, '@frontend/web/uploads/avatar/');
         return parent::beforeSave($insert);
@@ -125,10 +127,10 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function beforeDelete()
     {
-        if( empty($this->avatar) ) return true;
+        if (empty($this->avatar)) return true;
         try {
             Util::deleteThumbnails(Yii::getAlias('@frontend/web') . $this->avatar, [], true);
-        }catch (Exception $exception){
+        } catch (Exception $exception) {
             $this->addError("avatar", $exception->getMessage());
             return false;
         }
@@ -178,7 +180,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function findByPasswordResetToken($token)
     {
-        if (! static::isPasswordResetTokenValid($token)) {
+        if (!static::isPasswordResetTokenValid($token)) {
             return null;
         }
 
@@ -295,4 +297,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
+    public function getCourse()
+    {
+        return $this->hasMany(CoursePassword::className(), ['user_id' => 'id']);
+    }
 }

@@ -36,6 +36,17 @@ use yii\widgets\DetailView;
                 }
             }
         ],
+        [
+            'label' => '已购课程',
+            'value' => function($model){
+                if( empty( $model->course ) ) return '-';
+                $string = '';
+                foreach ($model->course as $item){
+                    $string .= "【{$item->course->title}】";
+                }
+                return $string;
+            }
+        ],
         'created_at:datetime',
         'updated_at:datetime',
     ],
