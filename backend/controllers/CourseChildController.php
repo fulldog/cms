@@ -36,12 +36,12 @@ class CourseChildController extends \yii\web\Controller
             'index' => [
                 'class' => IndexAction::className(),
                 'data' => function ($query, $indexAction) use ($service) {
-                    $query['CourseChildSearch']['pid'] = Yii::$app->request->get('CourseChildSearch')['pid'];
+                    $query['CourseChildSearch']['course_id'] = Yii::$app->request->get('CourseChildSearch')['course_id'];
                     $result = $service->getList($query);
                     return [
                         'dataProvider' => $result['dataProvider'],
                         'searchModel' => $result['searchModel'],
-                        'parent' => Course::findOne(['id' => $query['CourseChildSearch']['pid']]),
+                        'parent' => Course::findOne(['id' => $query['CourseChildSearch']['course_id']]),
                     ];
                 }
             ],
@@ -54,7 +54,7 @@ class CourseChildController extends \yii\web\Controller
                     $model = $createResultModel === null ? $service->newModel() : $createResultModel;
                     return [
                         'model' => $model,
-                        'parent' => Course::findOne(['id' =>  Yii::$app->request->get('CourseChildSearch')['pid']]),
+                        'parent' => Course::findOne(['id' =>  Yii::$app->request->get('CourseChildSearch')['course_id']]),
                     ];
                 }
             ],
@@ -67,7 +67,7 @@ class CourseChildController extends \yii\web\Controller
                     $model = $updateResultModel === null ? $service->getDetail($id) : $updateResultModel;
                     return [
                         'model' => $model,
-                        'parent' => Course::findOne(['id' =>  Yii::$app->request->get('CourseChildSearch')['pid']]),
+                        'parent' => Course::findOne(['id' =>  Yii::$app->request->get('CourseChildSearch')['course_id']]),
                     ];
                 }
             ],

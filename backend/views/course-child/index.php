@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $parent->title;
                     [
                         'buttons' => [
                             'create' => function () use($parent) {
-                                return Html::a('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Create'), Url::to(['course-child/create', 'CourseChildSearch[pid]' => $parent->id]), [
+                                return Html::a('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Create'), Url::to(['course-child/create', 'CourseChildSearch[course_id]' => $parent->id]), [
                                     'title' => Yii::t('app', 'Create'),
                                     'data-pjax' => '0',
                                     'class' => 'btn btn-white btn-sm',
@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $parent->title;
                         ['class' => CheckboxColumn::className()],
 
 //                        'id',
-//                        'pid',
+//                        'course_id',
                         [
                             'filter'=>false,
                             'header'=>'所属课程',

@@ -17,7 +17,7 @@ use backend\widgets\ActiveForm;
                     ]
                 ]); ?>
                     <?php
-                      echo $form->field($model, 'pid')->hiddenInput(['value'=>$parent->id])->label(false);
+                      echo $form->field($model, 'course_id')->hiddenInput(['value'=>$parent->id])->label(false);
                     ?>
                         <div class="hr-line-dashed"></div>
 

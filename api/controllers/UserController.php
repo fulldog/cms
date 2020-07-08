@@ -5,8 +5,14 @@
  * Email: job@feehi.com
  * Created at: 2017-08-30 18:10
  */
+
 namespace api\controllers;
 
+use api\service\AuthService;
+use api\service\Output;
+use common\models\Course;
+use common\models\CourseChild;
+use common\models\CoursePassword;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
@@ -37,21 +43,36 @@ class UserController extends \yii\rest\ActiveController
                     HttpBasicAuth::className(),
                     HttpBearerAuth::className(),
                     [
-                        'class' => QueryParamAuth::className(),
-                        'tokenParam' => 'access-token',
+                        'class' => AuthService::className(),
+//                        'tokenParam' => 'access-token',
                     ]
                 ]
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'info'  => ['GET'],
+                    'info' => ['GET'],
                 ],
             ],
         ]);
     }
 
-    public function actionInfo(){
-        return ["我是user无需token可以访问的info"];
+    public function actionSubscribe()
+    {
+        $uid = \Yii::$app->user->identity->getId();
+        $data = CoursePassword::find()
+            ->where(['p.user_id' => $uid, 'p.status' => 1])
+            ->alias('p')
+            ->leftJoin(Course::tableName() . ' c', 'p.course_id=c.id')
+            ->select('c.id,c.title,c.desc,c.wechat_img,c.thumb,c.video,c.status,c.price,c.cid')
+            ->asArray()
+            ->all();
+        if ($data) {
+            foreach ($data as &$item) {
+                $item['childCount'] = CourseChild::find()->where(['course_id'=>$item['id']])->count();
+                $item['subscribeCount'] = CoursePassword::find()->where(['course_id'=>$item['id']])->count();
+            }
+        }
+        return Output::out($data);
     }
 }

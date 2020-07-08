@@ -18,7 +18,7 @@ class CourseChildSearch extends CourseChild implements \backend\models\search\Se
     public function rules()
     {
         return [
-            [['id', 'pid', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'course_id', 'created_at', 'updated_at'], 'integer'],
             [['title', 'desc', 'thumb', 'video'], 'safe'],
         ];
     }
@@ -60,8 +60,7 @@ class CourseChildSearch extends CourseChild implements \backend\models\search\Se
         // grid filtering conditions
         $query->andFilterWhere([
 //            'id' => $this->id,
-//            'pid' => $this->pid,
-            'pid' => $this->pid,
+            'course_id' => $this->course_id,
 //            'created_at' => $this->created_at,
 //            'updated_at' => $this->updated_at,
         ]);

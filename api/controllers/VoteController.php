@@ -2,16 +2,15 @@
 /**
  * Created by PhpStorm.
  * User: weilone
- * Date: 2020/7/6
- * Time: 23:50
+ * Date: 2020/7/8
+ * Time: 23:11
  */
 
 namespace api\controllers;
 
-
+use yii\rest\Controller;
 use api\service\AuthService;
 use api\service\Output;
-use common\models\Article;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
@@ -19,7 +18,7 @@ use yii\filters\auth\QueryParamAuth;
 use yii\helpers\ArrayHelper;
 use yii\filters\VerbFilter;
 
-class NewsController extends \yii\rest\Controller
+class VoteController extends Controller
 {
     public function behaviors()
     {
@@ -29,7 +28,7 @@ class NewsController extends \yii\rest\Controller
                 'class' => CompositeAuth::className(),
                 'optional' => [
                     'index',//无需access-token的action
-                    'detail'
+                    'list'
                 ],
                 'authMethods' => [
                     HttpBasicAuth::className(),
@@ -50,20 +49,10 @@ class NewsController extends \yii\rest\Controller
 
     public function actionIndex()
     {
-        $page = abs((int)\Yii::$app->request->get('page', 1));
-        $list = Article::find()->where(['status' => 1])
-            ->select(['id', 'title', 'thumb', 'sub_title', 'scan_count', 'created_at'])
-            ->limit(10)->offset(10 * ($page - 1))->all();
-        return Output::out($list);
+
     }
 
     public function actionDetail()
     {
-        $id = \Yii::$app->request->get('id');
-        $data = \api\models\Article::findOne(['id' => $id, 'status' => 1]);
-        if ($data) {
-            Article::updateAll(['scan_count' => $data->scan_count + 1], ['id' => $id]);
-        }
-        return Output::out($data);
     }
 }

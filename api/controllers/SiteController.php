@@ -8,9 +8,14 @@
 
 namespace api\controllers;
 
+use api\models\Vote;
 use api\service\Output;
 use api\service\WechatApi;
+use common\models\Article;
+use common\models\Course;
 use common\models\CourseCate;
+use common\models\CourseChild;
+use common\models\VoteChild;
 use Yii;
 use api\models\form\SignupForm;
 use common\models\User;
@@ -49,7 +54,31 @@ class SiteController extends \yii\rest\ActiveController
      */
     public function actionIndex()
     {
-        return $allCate = CourseCate::find()->select(['name', 'id', 'alias_name'])->all();
+//        $data['allCate'] = CourseCate::find()->select(['name', 'id', 'alias_name'])->all();
+        // 推荐课程
+        $data['recommend']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'price'])->where(['recommend' => 1, 'status' => 1])->limit(5)->all();
+        $data['recommend']['News'] = Article::find()->select(['title', 'id', 'thumb'])->where(['flag_recommend' => 1, 'status' => 1])->limit(5)->all();
+
+        # 新闻中心
+        $data['list']['News'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at'])->orderBy(['updated_at' => SORT_DESC])->limit(10)->all();
+        $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price'])
+            ->asArray()
+            ->orderBy(['updated_at' => SORT_DESC])
+            ->limit(10)->all();
+
+        foreach ($data['list']['Course'] as &$item) {
+            $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
+        }
+
+        $data['vote'] = Vote::find()->select(['id', 'title', 'end_time', 'img', 'pv'])->orderBy(['id' => SORT_DESC])->where(['>', 'end_time', time()])->asArray()->one();
+        if ($data['vote']) {
+            $data['vote']['userCount'] = VoteChild::find()->where(['vid' => $data['vote']['id']])->count();
+        }
+        if (Yii::$app->request->get('openid')) {
+            $data['userInfo']['myCourse'] = [];
+        }
+
+        return Output::out($data);
     }
 
     /**

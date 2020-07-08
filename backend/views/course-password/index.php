@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $parent->title;
               [
                   'buttons' => [
                       'create' => function () use ($parent) {
-                          return Html::a('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Create'), Url::to(['course-password/create', 'CoursePasswordSearch[pid]' => $parent->id]), [
+                          return Html::a('<i class="fa fa-plus"></i> ' . Yii::t('app', 'Create'), Url::to(['course-password/create', 'CoursePasswordSearch[course_id]' => $parent->id]), [
                               'title' => Yii::t('app', 'Create'),
                               'data-pjax' => '0',
                               'class' => 'btn btn-white btn-sm',

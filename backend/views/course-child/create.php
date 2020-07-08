@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $model common\models\CourseChild */
 
 $this->params['breadcrumbs'] = [
-    ['label' => yii::t('app', '课时列表'), 'url' => Url::to(['index','CourseChildSearch[pid]'=>$parent->id])],
+    ['label' => yii::t('app', '课时列表'), 'url' => Url::to(['index','CourseChildSearch[course_id]'=>$parent->id])],
     ['label' => $parent->title],
     ['label' => yii::t('app', '新增') . yii::t('app', '课时')],
 ];

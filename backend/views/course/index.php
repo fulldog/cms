@@ -144,7 +144,7 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                                 'entry' => function ($url, $model, $key) {
                                     return Html::a('课时', Url::to([
                                         'course-child/index',
-                                        'CourseChildSearch[pid]' => $model['id']
+                                        'CourseChildSearch[course_id]' => $model['id']
                                     ]), [
                                         'title' => $model['title'].'课时',
                                         'data-pjax' => '0',

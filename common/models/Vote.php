@@ -80,8 +80,8 @@ class Vote extends \yii\db\ActiveRecord
             $cdn = Yii::$app->get('cdn');
             $this->img = $cdn->getCdnUrl($this->img);
         }
-        $this->start_time = date('Y-m-d H:i:s',$this->start_time);
-        $this->end_time = date('Y-m-d H:i:s',$this->end_time);
+        $this->start_time = date('Y-m-d H:i:s', $this->start_time);
+        $this->end_time = date('Y-m-d H:i:s', $this->end_time);
         parent::afterFind();
     }
 
@@ -101,5 +101,10 @@ class Vote extends \yii\db\ActiveRecord
         $this->start_time = strtotime($this->start_time);
         $this->end_time = strtotime($this->end_time);
         return parent::beforeSave($insert);
+    }
+
+    public function getVoteChild()
+    {
+        return $this->hasMany(VoteChild::tableName(), ['vid' => 'id']);
     }
 }

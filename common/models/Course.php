@@ -140,7 +140,7 @@ class Course extends \yii\db\ActiveRecord
 
     public function beforeDelete()
     {
-        if (CourseChild::findOne(['pid' => $this->id]) != null) {
+        if (CourseChild::findOne(['course_id' => $this->id]) != null) {
             $this->addError('id', "请先删除课时");
             return false;
         }
@@ -156,6 +156,6 @@ class Course extends \yii\db\ActiveRecord
     }
 
     public function getChild(){
-        return $this->hasMany(CourseChild::className(), ['pid' => 'id']);
+        return $this->hasMany(CourseChild::className(), ['course_id' => 'id']);
     }
 }

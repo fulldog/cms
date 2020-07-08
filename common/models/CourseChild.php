@@ -11,7 +11,7 @@ use yii\web\UploadedFile;
  * This is the model class for table "course_child".
  *
  * @property int $id
- * @property int $pid 课程ID
+ * @property int $course_id 课程ID
  * @property string $title 标题
  * @property string $desc 描述
  * @property string $thumb 封面图
@@ -52,8 +52,8 @@ class CourseChild extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pid', 'title'], 'required'],
-            [['pid', 'created_at', 'updated_at'], 'integer'],
+            [['course_id', 'title'], 'required'],
+            [['course_id', 'created_at', 'updated_at'], 'integer'],
             [['title', 'desc', 'thumb', 'video'], 'string', 'max' => 255],
             [['thumb'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
             [['video'], 'file', 'skipOnEmpty' => true, 'extensions' => 'mp4'],
@@ -67,7 +67,7 @@ class CourseChild extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'pid' => '课程ID',
+            'course_id' => '课程ID',
             'title' => '标题',
             'desc' => '描述',
             'thumb' => '封面图',
@@ -118,6 +118,6 @@ class CourseChild extends \yii\db\ActiveRecord
     }
 
     public function getCourse(){
-        return $this->hasOne(Course::className(),['id'=>'pid']);
+        return $this->hasOne(Course::className(),['id'=>'course_id']);
     }
 }
