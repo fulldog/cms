@@ -32,14 +32,14 @@ return [
                 [
                     'class' => yii\log\FileTarget::className(),//当触发levels配置的错误级别时，保存到日志文件
                     'levels' => ['error', 'warning'],
-                    'logFile' => '@runtime/logs/'.date('Y/m/d') . '.log',
+                    'logFile' => '@runtime/logs/' . date('Y/m/d') . '.log',
                 ],
                 [
                     /**
-                    注：此配置可能造成：
-                        1.当打开的页面包含错误时，响应缓慢。若您配置的发件箱不存在或连不上一直等待超时。
-                        2.如果common/config/main.php mail useFileTransport为true时，并不会真发邮件，只把邮件写到runtime目录，很容易造成几十个G吃硬盘。
-                        如您不需要发送邮件提醒建议删除此配置
+                     * 注：此配置可能造成：
+                     * 1.当打开的页面包含错误时，响应缓慢。若您配置的发件箱不存在或连不上一直等待超时。
+                     * 2.如果common/config/main.php mail useFileTransport为true时，并不会真发邮件，只把邮件写到runtime目录，很容易造成几十个G吃硬盘。
+                     * 如您不需要发送邮件提醒建议删除此配置
                      */
                     'class' => yii\log\EmailTarget::className(),//当触发levels配置的错误级别时，发送到message to配置的邮箱中（请改成自己的邮箱）
                     'levels' => ['error', 'warning'],
@@ -53,8 +53,8 @@ return [
                         'yii\debug\Module::checkAccess',
                     ],
                     'message' => [
-                        'to' => ['admin@feehi.com', 'liufee@126.com'],//此处修改成自己接收错误的邮箱
-                        'subject' => '来自 Feehi CMS 后台的新日志消息',
+                        'to' => ['admin'],//此处修改成自己接收错误的邮箱
+                        'subject' => '来自后台的新日志消息',
                     ],
                 ],
             ],
@@ -63,7 +63,7 @@ return [
             'errorAction' => 'site/error',
         ],
         'request' => [
-            'csrfParam' =>'_csrf_backend',
+            'csrfParam' => '_csrf_backend',
         ],
         'urlManager' => [
             'enablePrettyUrl' => false,//true 美化路由(注:需要配合web服务器配置伪静态，详见http://doc.feehi.com/install.html), false 不美化路由

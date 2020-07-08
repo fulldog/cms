@@ -41,8 +41,8 @@ return [
                         'yii\debug\Module::checkAccess',
                     ],
                     'message' => [
-                        'to' => ['admin@feehi.com', 'liufee@126.com'],//当触发levels配置的错误级别时，发送到此些邮箱（请改成自己的邮箱）
-                        'subject' => '来自 Feehi CMS 前台的新日志消息',
+                        'to' => ['admin'],//此处修改成自己接收错误的邮箱
+                        'subject' => '来自后台的新日志消息',
                     ],
                 ],
             ],

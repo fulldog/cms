@@ -1,6 +1,6 @@
 <?php
 return [
-    'name' => 'Feehi CMS',
+    'name' => 'X CMS',
     'version' => '2.1.0.2',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'aliases' => [
@@ -10,9 +10,9 @@ return [
     'components' => array_merge([
         'db' => [//数据库配置，这里的配置可能会被conf/db.local main-local.php配置覆盖
             'class' => yii\db\Connection::className(),
-            'dsn' => 'mysql:host=localhost;dbname=feehi',
-            'username' => 'root',
-            'password' => '',
+            'dsn' => 'mysql:host=localhost;dbname=yiicms',
+            'username' => 'yiicms',
+            'password' => 'yiicms',
             'charset' => 'utf8mb4',
         ],
         'cdn' => [//支持使用 七牛 腾讯云 阿里云 网易云 具体配置请参见 http://doc.feehi.com/cdn.html
@@ -36,15 +36,15 @@ return [
             'useFileTransport' => true,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.feehi.com',  //每种邮箱的host配置不一样
-                'username' => 'admin@feehi.com',
+                'host' => 'smtp.com',  //每种邮箱的host配置不一样
+                'username' => 'admin@1.com',
                 'password' => 'password',
                 'port' => '586',
                 'encryption' => 'tls',
             ],
             'messageConfig' => [
                 'charset' => 'UTF-8',
-                'from' => ['admin@feehi.com' => 'Feehi CMS robot ']
+                'from' => ['admin@1.com' => 'CMS robot ']
             ],
         ],
         'feehi' => [
