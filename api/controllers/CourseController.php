@@ -32,8 +32,8 @@ class CourseController extends Controller
                 //使用ComopositeAuth混合认证
                 'class' => CompositeAuth::className(),
                 'optional' => [
-                    'index',//无需access-token的action
-                    'list'
+//                    'index',//无需access-token的action
+//                    'list'
                 ],
                 'authMethods' => [
                     HttpBasicAuth::className(),

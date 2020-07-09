@@ -28,8 +28,8 @@ class NewsController extends \yii\rest\Controller
                 //使用ComopositeAuth混合认证
                 'class' => CompositeAuth::className(),
                 'optional' => [
-                    'index',//无需access-token的action
-                    'detail'
+//                    'index',//无需access-token的action
+//                    'detail'
                 ],
                 'authMethods' => [
                     HttpBasicAuth::className(),
