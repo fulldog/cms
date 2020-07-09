@@ -82,7 +82,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('app', 'Username'),
+            'username' => 'openid',
             'email' => Yii::t('app', 'Email'),
             'old_password' => Yii::t('app', 'Old Password'),
             'password' => Yii::t('app', 'Password'),
