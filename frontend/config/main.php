@@ -41,8 +41,8 @@ return [
                         'yii\debug\Module::checkAccess',
                     ],
                     'message' => [
-                        'to' => ['admin'],//此处修改成自己接收错误的邮箱
-                        'subject' => '来自后台的新日志消息',
+                        'to' => ['admin@weilone.com'],//此处修改成自己接收错误的邮箱
+                        'subject' => 'weilone',
                     ],
                 ],
             ],

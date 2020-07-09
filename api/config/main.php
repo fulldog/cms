@@ -37,8 +37,8 @@ return [
                         'yii\debug\Module::checkAccess',
                     ],
                     'message' => [
-                        'to' => ['admin@feehi.com', 'liufee@126.com'],
-                        'subject' => '来自 Feehi CMS api的新日志消息',
+                        'to' => ['admin@weilone.com'],//此处修改成自己接收错误的邮箱
+                        'subject' => 'weilone',
                     ],
                 ],
             ],
