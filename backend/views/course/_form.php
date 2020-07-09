@@ -32,6 +32,8 @@ use common\helpers\Util;
                 <?= $form->field($model, 'price', ['size'=>10])->textInput(['maxlength' => true])?>
               <div class="hr-line-dashed"></div>
 
+                <?= $form->field($model, 'tags')->textInput(['maxlength' => true]) ?>
+              <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'desc')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 

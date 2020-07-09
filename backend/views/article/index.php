@@ -79,13 +79,13 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                                 return Html::a($model->title, $url, ['target' => '_blank', 'data-pjax' => 0]);
                             }
                         ],
-                        [
-                            'attribute' => 'sort',
-                            'class' => SortColumn::className(),
-                        ],
-                        [
-                            'attribute' => 'author_name',
-                        ],
+//                        [
+//                            'attribute' => 'sort',
+//                            'class' => SortColumn::className(),
+//                        ],
+//                        [
+//                            'attribute' => 'author_name',
+//                        ],
                         [
                             'attribute' => 'thumb',
                             'format' => 'raw',
@@ -109,11 +109,11 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
 //                            'attribute' => 'flag_headline',
 //                            'filter' => Constants::getYesNoItems(),
 //                        ],
-                        [
-                            'class' =>StatusColumn::className(),
-                            'attribute' => 'flag_recommend',
-                            'filter' => Constants::getYesNoItems(),
-                        ],
+//                        [
+//                            'class' =>StatusColumn::className(),
+//                            'attribute' => 'flag_recommend',
+//                            'filter' => Constants::getYesNoItems(),
+//                        ],
 //                        [
 //                            'class' =>StatusColumn::className(),
 //                            'attribute' => 'flag_slide_show',

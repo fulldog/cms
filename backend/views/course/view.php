@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'desc',
+            'tags',
             'price',
             [
                 'attribute' => 'wechat_img',

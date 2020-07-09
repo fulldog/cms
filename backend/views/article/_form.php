@@ -65,17 +65,17 @@ $this->title = "Articles";
 <!--                    </div>-->
 
                     <!--属性设置start-->
-                    <div class="col-md-5 droppable sortable ui-droppable ui-sortable" style="">
-                        <div class="ibox-title">
-                            <h5><?= Yii::t('app', 'Attributes') ?></h5>
-                        </div>
-                        <div class="ibox-content">
-                            <div class="row">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
+<!--                    <div class="col-md-5 droppable sortable ui-droppable ui-sortable" style="">-->
+<!--                        <div class="ibox-title">-->
+<!--                            <h5>--><?//= Yii::t('app', 'Attributes') ?><!--</h5>-->
+<!--                        </div>-->
+<!--                        <div class="ibox-content">-->
+<!--                            <div class="row">-->
+<!--                                <div class="form-group">-->
+<!--                                    <div class="col-sm-12">-->
 <!--                                        --><?//= $form->field($model, 'flag_headline', ['options'=>['tag'=>'span']])->checkbox() ?>
 <!--                                        &nbsp;-->
-                                        <?= $form->field($model, 'flag_recommend', ['options'=>['tag'=>'span']])->checkbox() ?>
+<!--                                        --><?//= $form->field($model, 'flag_recommend', ['options'=>['tag'=>'span']])->checkbox() ?>
 <!--                                        &nbsp;-->
 <!--                                        --><?//= $form->field($model, 'flag_slide_show', ['options'=>['tag'=>'span']])->checkbox() ?>
 <!--                                        &nbsp;-->
@@ -86,11 +86,11 @@ $this->title = "Articles";
 <!--                                        --><?//= $form->field($model, 'flag_bold', ['options'=>['tag'=>'span']])->checkbox() ?>
 <!--                                        &nbsp;-->
 <!--                                        --><?//= $form->field($model, 'flag_picture', ['options'=>['tag'=>'span']])->checkbox() ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <!--属性设置stop-->
 
                     <!--seo设置start-->
@@ -152,7 +152,7 @@ $this->title = "Articles";
                             <?php $hide=' hide ';if($model->visibility == Constants::ARTICLE_VISIBILITY_SECRET){$hide='';} ?>
 <!--                            --><?//= $form->field($model, 'password', ['options'=>['class'=>"form-group $hide"]])->textInput(); ?>
 <!--                            --><?//= $form->field($model, 'tag')->textInput(); ?>
-                            <?= $form->field($model, 'sort')->textInput(); ?>
+<!--                            --><?//= $form->field($model, 'sort')->textInput(); ?>
 <!--                            --><?//= $form->field($model, 'template')->chosenSelect(Util::getViewTemplate()); ?>
 
                             <?= $form->defaultButtons(['size' => 12]) ?>

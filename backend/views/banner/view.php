@@ -26,14 +26,14 @@ use yii\widgets\DetailView;
                 return "<img style='max-width:200px;max-height:200px' src='" . $model->img . "'>";
             }
         ],
-        [
-            'attribute' => 'target',
-            'value' => function($model){
-                return Constants::getTargetOpenMethod($model->target);
-            }
-        ],
-        'link',
-        'sort',
+//        [
+//            'attribute' => 'target',
+//            'value' => function($model){
+//                return Constants::getTargetOpenMethod($model->target);
+//            }
+//        ],
+//        'link',
+//        'sort',
         [
             'attribute' => 'status',
             'value' => function($model){

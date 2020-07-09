@@ -26,15 +26,15 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Banner Types');
         <div class="ibox">
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
-                <?= Bar::widget()?>
+<!--                --><?//= Bar::widget()?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
+//                    'filterModel' => $searchModel,
                     'layout' => '{items}',
                     'columns' => [
-                        [
-                            'class' => CheckboxColumn::className(),
-                        ],
+//                        [
+//                            'class' => CheckboxColumn::className(),
+//                        ],
                         [
                             'attribute' => 'name',
                             'label' => Yii::t("app", 'Name'),
@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Banner Types');
                                     ]);
                                 }
                             ],
-                            'template' => '{entry} {update} {delete}',
+                            'template' => '{entry}',//{update} {delete}
                         ]
                     ]
                 ]) ?>

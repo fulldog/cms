@@ -19,7 +19,7 @@ class CourseSearch extends Course implements \backend\models\search\SearchInterf
     {
         return [
             [['id', 'status', 'recommend','price','cid'], 'integer'],
-            [['title', 'desc', 'wechat_img', 'thumb', 'video'], 'safe'],
+            [['title', 'desc', 'wechat_img', 'thumb', 'video','tags'], 'safe'],
             [['created_at', 'updated_at'], 'string'],
             [['thumb'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
         ];
@@ -72,6 +72,7 @@ class CourseSearch extends Course implements \backend\models\search\SearchInterf
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'desc', $this->desc])
+            ->andFilterWhere(['like', 'tags', $this->tags])
             ->andFilterWhere(['like', 'wechat_img', $this->wechat_img])
             ->andFilterWhere(['like', 'thumb', $this->thumb])
             ->andFilterWhere(['like', 'video', $this->video]);

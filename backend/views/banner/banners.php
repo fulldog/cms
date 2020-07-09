@@ -77,22 +77,22 @@ $this->params['breadcrumbs'][] =  Yii::t('app', 'Banner') . ' (' . $bannerType->
                                 return "<img class='img-responsive' src='{$model->img}'>";
                             }
                         ],
-                        [
-                            'attribute' => 'link',
-                            'label' => Yii::t('app', 'Jump Link'),
-                        ],
-                        [
-                            'attribute' => 'desc',
-                            'label' => Yii::t('app', 'Description'),
-                        ],
-                        [
-                            'class' => SortColumn::className(),
-                            'label' => Yii::t('app', 'Sort'),
-                            'primaryKey' => function($model) use($bannerType){
-                                return ['id'=>$bannerType->id, "sign" => $model->sign];
-                            },
-                            'action' => Url::to(['banner-sort', 'id'=>Yii::$app->getRequest()->get('id')]),
-                        ],
+//                        [
+//                            'attribute' => 'link',
+//                            'label' => Yii::t('app', 'Jump Link'),
+//                        ],
+//                        [
+//                            'attribute' => 'desc',
+//                            'label' => Yii::t('app', 'Description'),
+//                        ],
+//                        [
+//                            'class' => SortColumn::className(),
+//                            'label' => Yii::t('app', 'Sort'),
+//                            'primaryKey' => function($model) use($bannerType){
+//                                return ['id'=>$bannerType->id, "sign" => $model->sign];
+//                            },
+//                            'action' => Url::to(['banner-sort', 'id'=>Yii::$app->getRequest()->get('id')]),
+//                        ],
                         [
                             'class' => StatusColumn::className(),
                             'label' => Yii::t('app', 'Status'),

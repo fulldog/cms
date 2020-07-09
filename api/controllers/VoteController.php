@@ -94,8 +94,8 @@ class VoteController extends Controller
                 $dao->vcid = $data['id'];
                 $dao->uid = $uid;
                 if ($dao->save()) {
-                    \Yii::$app->db->createCommand("update " . Vote::tableName() . " set vote_count=`vote_count`+1 where id=:id", [':id' => $data['vid']])->query();
-                    \Yii::$app->db->createCommand("update " . VoteChild::tableName() . " set vote_count=`vote_count`+1 where id=:id", [':id' => $data['id']])->query();
+                    \Yii::$app->db->createCommand("update " . Vote::tableName() . " set vote_count=`vote_count`+3 where id=:id", [':id' => $data['vid']])->query();
+                    \Yii::$app->db->createCommand("update " . VoteChild::tableName() . " set vote_count=`vote_count`+3 where id=:id", [':id' => $data['id']])->query();
                     return Output::out($data);
                 }
                 return Output::out([], 0, current($dao->getFirstErrors()));

@@ -60,6 +60,11 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                             },
                             'filter' => \common\models\CourseCate::getAllCates(),
                         ],
+                        'tags',
+                        [
+                            'attribute' => 'price',
+                            'filter' => false,
+                        ],
                         [
                             'attribute' => 'thumb',
                             'format' => 'raw',
@@ -96,6 +101,7 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                             },
                             'filter' => false,
                         ],
+
 //                        [
 //                            'attribute' => 'video',
 //                            'format' => 'raw',
@@ -120,10 +126,7 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                             },
                             'filter' => Constants::getArticleStatus(),
                         ],
-                        [
-                            'attribute' => 'price',
-                            'filter' => false,
-                        ],
+
                         [
                             'class' =>StatusColumn::className(),
                             'attribute' => 'recommend',
