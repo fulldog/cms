@@ -96,7 +96,7 @@ class CourseController extends Controller
     {
         $uid = \Yii::$app->user->identity->getId();
         $id = \Yii::$app->request->get('id');
-        $password = \Yii::$app->request->get('password');
+        $password = \Yii::$app->request->post('password');
         if (CoursePassword::findOne(['password' => $password, 'course_id' => $id, 'user_id' => $uid])) {
             return Output::out([], 0, '请勿重复订阅');
         }

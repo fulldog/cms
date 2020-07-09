@@ -75,7 +75,7 @@ class VoteController extends Controller
         return Output::out($data);
     }
 
-    public function actionAdd()
+    public function actionDone()
     {
         $date = date('Y-m-d');
         $id = \Yii::$app->request->get('id');

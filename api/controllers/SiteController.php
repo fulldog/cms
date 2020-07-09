@@ -87,12 +87,11 @@ class SiteController extends \yii\rest\ActiveController
      */
     public function actionLogin()
     {
-        $code = Yii::$app->request->get('code');
+        $code = Yii::$app->request->post('code');
         if (!$code) {
             return Output::out([], 0, 'code not found');
         } else {
             $info = (new WechatApi())->getOpenByCode($code);
-            $info['openid'] = 'xxxxxxxxxxx';
             if ($info['openid'] ?? '') {
                 $user = \api\models\User::findIdentityByAccessToken($info['openid']);
                 if (!$user) {
