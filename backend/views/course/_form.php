@@ -32,7 +32,7 @@ use common\helpers\Util;
                 <?= $form->field($model, 'price', ['size'=>10])->textInput(['maxlength' => true])?>
               <div class="hr-line-dashed"></div>
 
-                <?= $form->field($model, 'tags')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'tags')->dropDownList(\common\models\Course::$_tags) ?>
               <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'desc')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>

@@ -57,27 +57,28 @@ class SiteController extends \yii\rest\ActiveController
 //        $data['allCate'] = CourseCate::find()->select(['name', 'id', 'alias_name'])->all();
         // 推荐课程
         $data['banner'] = [];
-        $banner = Options::find()->asArray()->where(['name'=>'index'])->select('value')->one();
-        if ($banner){
-            $banner = json_decode($banner['value'],true);
-            foreach ($banner as $value){
-                if ($value['status']){
+        $banner = Options::find()->asArray()->where(['name' => 'index'])->select('value')->one();
+        if ($banner) {
+            $banner = json_decode($banner['value'], true);
+            foreach ($banner as $value) {
+                if ($value['status']) {
                     $data['banner'][] = $value['img'];
                 }
             }
         }
-        $data['recommend']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'price','tags'])->where(['recommend' => 1, 'status' => 1])->limit(5)->all();
+        $data['recommend']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags'])->where(['recommend' => 1, 'status' => 1])->limit(5)->all();
 //        $data['recommend']['News'] = Article::find()->select(['title', 'id', 'thumb'])->where(['flag_recommend' => 1, 'status' => 1])->limit(5)->all();
 
         # 新闻中心
-        $data['list']['News'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at'])->orderBy(['updated_at' => SORT_DESC])->limit(10)->all();
-        $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price','tags'])
+        $data['list']['News'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at'])->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
+        $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price', 'tags'])
             ->asArray()
             ->orderBy(['updated_at' => SORT_DESC])
-            ->limit(10)->all();
+            ->limit(5)->all();
 
         foreach ($data['list']['Course'] as &$item) {
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
+            $item['tags'] = Course::$_tags[$item['tags']] ?? "";
         }
 
         $data['vote'] = Vote::find()->select(['id', 'title', 'end_time', 'img', 'pv'])->orderBy(['id' => SORT_DESC])->where(['>', 'end_time', time()])->asArray()->one();

@@ -31,10 +31,16 @@ class Course extends \yii\db\ActiveRecord
      * 需要截取的文章缩略图尺寸
      */
     public static $thumbSizes = [
-        ["w" => 220, "h" => 150],//首页文章列表
-        ["w" => 168, "h" => 112],//精选导读
-        ["w" => 185, "h" => 110],//文章详情下边图片推荐
-        ["w" => 125, "h" => 86],//热门推荐
+//        ["w" => 220, "h" => 150],//首页文章列表
+//        ["w" => 168, "h" => 112],//精选导读
+//        ["w" => 185, "h" => 110],//文章详情下边图片推荐
+//        ["w" => 125, "h" => 86],//热门推荐
+    ];
+
+    public static $_tags = [
+        'good' => '精品课程',
+        'free' => '免费课程',
+        'hot' => '热门课程'
     ];
 
     public function behaviors()
@@ -58,10 +64,10 @@ class Course extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title','cid','price'], 'required'],
-            [['status', 'recommend', 'created_at', 'updated_at', 'price','cid'], 'integer'],
-            [['title', 'desc','tags'], 'string', 'max' => 255],
-            [['thumb','wechat_img'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
+            [['title', 'cid', 'price','tags'], 'required'],
+            [['status', 'recommend', 'created_at', 'updated_at', 'price', 'cid'], 'integer'],
+            [['title', 'desc', 'tags'], 'string', 'max' => 255],
+            [['thumb', 'wechat_img'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
             [['video'], 'file', 'skipOnEmpty' => true, 'extensions' => 'mp4'],
         ];
     }
@@ -157,7 +163,8 @@ class Course extends \yii\db\ActiveRecord
         return $this->hasOne(CourseCate::className(), ['id' => 'cid']);
     }
 
-    public function getChild(){
+    public function getChild()
+    {
         return $this->hasMany(CourseChild::className(), ['course_id' => 'id']);
     }
 }

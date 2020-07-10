@@ -9,6 +9,7 @@
 namespace api\controllers;
 
 use api\models\Vote;
+use common\models\CourseChild;
 use common\models\VoteChild;
 use common\models\VoteRecord;
 use yii\rest\Controller;
@@ -64,12 +65,44 @@ class VoteController extends Controller
         return Output::out($data);
     }
 
+
+    public function actionType()
+    {
+        $id = \Yii::$app->request->get('id');
+        $type = \Yii::$app->request->get('type');
+        $data = VoteChild::find()->where(['vid' => $id])->limit(10);
+        if ($type == 'new') {
+            $data->orderBy(['created_at' => SORT_DESC]);
+        } elseif ($type == 'hot') {
+            $data->orderBy(['pv' => SORT_DESC]);
+        } else {
+            $data->orderBy(['vote_count' => SORT_DESC]);
+        }
+        $data = $data->asArray()->all();
+        return Output::out($data);
+    }
+
+
     public function actionDetail()
     {
         $id = \Yii::$app->request->get('id');
         $data = VoteChild::findOne(['id' => $id]);
-        \Yii::$app->db->createCommand("update " . Vote::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data->vid])->query();
-        \Yii::$app->db->createCommand("update " . VoteChild::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data->id])->query();
+
+        if ($data) {
+            $data = $data->toArray();
+            $all = VoteChild::find()->select('id')->orderBy(['vote_count' => SORT_DESC])->where(['vid' => $data['vid']])->asArray()->all();
+            $data['rank'] = 0;
+            foreach ($all as $item) {
+                $data['rank']++;
+                if ($item['id'] == $id) {
+                    break;
+                }
+            }
+
+            \Yii::$app->db->createCommand("update " . Vote::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data['vid']])->query();
+            \Yii::$app->db->createCommand("update " . VoteChild::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data['id']])->query();
+        }
+
 //        Vote::updateAll(['pv' => '`pv`+1'], ['id' => $data->vid]);
 //        VoteChild::updateAll(['pv' => $data->pv + 1], ['id' => $data->id]);
         return Output::out($data);

@@ -60,7 +60,13 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                             },
                             'filter' => \common\models\CourseCate::getAllCates(),
                         ],
-                        'tags',
+                        [
+                            'attribute' => 'tags',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return \common\models\Course::$_tags[$model->tags] ?? '-';
+                            },
+                        ],
                         [
                             'attribute' => 'price',
                             'filter' => false,
@@ -137,10 +143,10 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                             'class' => DateColumn::className(),
                             'attribute' => 'created_at',
                         ],
-                        [
-                            'class' => DateColumn::className(),
-                            'attribute' => 'updated_at',
-                        ],
+//                        [
+//                            'class' => DateColumn::className(),
+//                            'attribute' => 'updated_at',
+//                        ],
                         [
                             'class' => ActionColumn::className(),
                             'buttons' => [

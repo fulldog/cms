@@ -21,6 +21,9 @@ use Yii;
  */
 class VoteChild extends \yii\db\ActiveRecord
 {
+
+    public $rank = 0;
+
     /**
      * {@inheritdoc}
      */
