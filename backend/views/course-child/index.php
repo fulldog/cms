@@ -88,10 +88,10 @@ $this->params['breadcrumbs'][] = $parent->title;
                             'class' => DateColumn::className(),
                             'attribute' => 'created_at',
                         ],
-                        [
-                            'class' => DateColumn::className(),
-                            'attribute' => 'updated_at',
-                        ],
+//                        [
+//                            'class' => DateColumn::className(),
+//                            'attribute' => 'updated_at',
+//                        ],
 
                         ['class' => ActionColumn::className(),],
                     ],
