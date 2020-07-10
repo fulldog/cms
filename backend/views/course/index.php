@@ -66,6 +66,7 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                             'value' => function ($model) {
                                 return \common\models\Course::$_tags[$model->tags] ?? '-';
                             },
+                            'filter' => \common\models\Course::$_tags,
                         ],
                         [
                             'attribute' => 'price',
