@@ -68,7 +68,7 @@ class SiteController extends \yii\rest\ActiveController
                 }
             }
         }
-        $data['recommend']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags'])->where(['recommend' => 1, 'status' => 1])->limit(5)->all();
+        $data['recommend']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags'])->where(['recommend' => 1, 'status' => 1])->asArray()->limit(5)->all();
         foreach ($data['recommend']['Course'] as &$item) {
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
             $item['tags'] = Course::$_tags[$item['tags']] ?? "";
