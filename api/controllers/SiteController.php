@@ -70,7 +70,7 @@ class SiteController extends \yii\rest\ActiveController
 //        $data['recommend']['News'] = Article::find()->select(['title', 'id', 'thumb'])->where(['flag_recommend' => 1, 'status' => 1])->limit(5)->all();
 
         # 新闻中心
-        $data['list']['News'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at'])->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
+        $data['list']['News'] = Article::find()->select(['title', 'id', 'thumb', 'updated_at'])->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
         $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price', 'tags'])
             ->asArray()
             ->orderBy(['updated_at' => SORT_DESC])
