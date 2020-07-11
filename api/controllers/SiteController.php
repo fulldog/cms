@@ -78,7 +78,7 @@ class SiteController extends \yii\rest\ActiveController
 //        $data['recommend']['News'] = Article::find()->select(['title', 'id', 'thumb'])->where(['flag_recommend' => 1, 'status' => 1])->limit(5)->all();
 
         # 新闻中心
-        $data['list']['News'] = Article::find()->select(['title', 'id', 'thumb', 'updated_at','desc'])->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
+        $data['list']['News'] = Article::find()->select(['title', 'id', 'thumb', 'updated_at', 'sub_title'])->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
         foreach ($data['list']['News'] as &$item) {
             if ($item['thumb']) {
                 $item['thumb'] = Yii::$app->request->getHostInfo() . $item['thumb'];
