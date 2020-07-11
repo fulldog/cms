@@ -44,8 +44,8 @@ $this->title = "Articles";
                         <?= $form->field($model, 'sub_title')->textInput(); ?>
                         <?= $form->field($model, 'summary')->textArea(); ?>
                         <?= $form->field($model, 'thumb')->imgInput(['style' => 'max-width:200px;max-height:200px']); ?>
-                        <?= $form->field($model, 'images')->widget(Webuploader::className()); ?>
-                        <?= $form->field($contentModel, 'content')->widget(Ueditor::className()) ?>
+<!--                        --><?//= $form->field($model, 'images')->widget(Webuploader::className()); ?>
+<!--                        --><?//= $form->field($contentModel, 'content')->widget(Ueditor::className()) ?>
                     </div>
                     <!--left stop -->
 

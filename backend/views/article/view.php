@@ -103,14 +103,14 @@ use yii\widgets\DetailView;
 //                return Constants::getYesNoItems($model->flag_picture);
 //            }
 //        ],
-        [
-            'format' => 'raw',
-            'attribute' => 'content',
-            'value' => function($model){
-                /** @var \common\models\Article $model */
-                return $model->articleContent->content;
-            }
-        ],
+//        [
+//            'format' => 'raw',
+//            'attribute' => 'content',
+//            'value' => function($model){
+//                /** @var \common\models\Article $model */
+//                return $model->articleContent->content;
+//            }
+//        ],
         'created_at:datetime',
         'updated_at:datetime',
     ],

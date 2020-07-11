@@ -58,9 +58,9 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                         [
                             'class' => CheckboxColumn::className(),
                         ],
-                        [
-                            'attribute' => 'id',
-                        ],
+//                        [
+//                            'attribute' => 'id',
+//                        ],
 //                        [
 //                            'attribute' => 'cid',
 //                            'label' => Yii::t('app', 'Category'),
