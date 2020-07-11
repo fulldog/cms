@@ -92,6 +92,27 @@ class SiteController extends \yii\rest\ActiveController
         return Output::out($data);
     }
 
+    public function actionSearch()
+    {
+        $type = Yii::$app->request->get('type');
+        $keyword = Yii::$app->request->get('keyword');
+        $data = [
+            'course' => [],
+            'vote' => [],
+        ];
+        if ($keyword) {
+            if (!$type) {
+                $data['course'] = Course::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'thumb', 'price', 'tags'])->limit(10)->asArray()->all();
+                $data['vote'] = Vote::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'img', 'pv', 'vote_count', 'desc'])->limit(10)->asArray()->all();
+            } elseif ($type == 'course') {
+                $data['course'] = Course::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'thumb', 'price', 'tags'])->limit(10)->asArray()->all();
+            } elseif ($type == 'vote') {
+                $data['vote'] = Vote::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'img', 'pv', 'vote_count', 'desc'])->limit(10)->asArray()->all();
+            }
+        }
+        return Output::out($data);
+    }
+
     /**
      * 登录授权
      * @return array
