@@ -67,6 +67,9 @@ class SiteController extends \yii\rest\ActiveController
             }
         }
         $data['recommend']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags'])->where(['recommend' => 1, 'status' => 1])->limit(5)->all();
+        foreach ($data['recommend']['Course'] as &$item) {
+            $item['tags'] = Course::$_tags[$item['tags']] ?? "";
+        }
 //        $data['recommend']['News'] = Article::find()->select(['title', 'id', 'thumb'])->where(['flag_recommend' => 1, 'status' => 1])->limit(5)->all();
 
         # 新闻中心
