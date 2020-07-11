@@ -38,6 +38,7 @@ class Course extends \yii\db\ActiveRecord
     ];
 
     public $userCount;
+    public $childCount;
 
     public static $_tags = [
         'good' => '精品课程',
