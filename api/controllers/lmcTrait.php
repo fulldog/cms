@@ -12,6 +12,6 @@ trait lmcTrait
 {
     function getHostUrl($string = '')
     {
-        return \Yii::$app->request->getHostInfo() . $string;
+        return \Yii::$app->request->getHostInfo() . '/' . trim($string, '/');
     }
 }
