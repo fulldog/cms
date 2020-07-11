@@ -15,6 +15,7 @@ use common\models\Article;
 use common\models\Course;
 use common\models\CourseCate;
 use common\models\CourseChild;
+use common\models\CoursePassword;
 use common\models\VoteChild;
 use Yii;
 use api\models\form\SignupForm;
@@ -62,18 +63,27 @@ class SiteController extends \yii\rest\ActiveController
             $banner = json_decode($banner['value'], true);
             foreach ($banner as $value) {
                 if ($value['status']) {
-                    $data['banner'][] = $value['img'];
+                    $data['banner'][] = Yii::$app->request->getHostInfo() . $value['img'];
                 }
             }
         }
         $data['recommend']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags'])->where(['recommend' => 1, 'status' => 1])->limit(5)->all();
         foreach ($data['recommend']['Course'] as &$item) {
             $item['tags'] = Course::$_tags[$item['tags']] ?? "";
+            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
+            if ($item['thumb']) {
+                $item['thumb'] = Yii::$app->request->getHostInfo() . $item['thumb'];
+            }
         }
 //        $data['recommend']['News'] = Article::find()->select(['title', 'id', 'thumb'])->where(['flag_recommend' => 1, 'status' => 1])->limit(5)->all();
 
         # 新闻中心
         $data['list']['News'] = Article::find()->select(['title', 'id', 'thumb', 'updated_at'])->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
+        foreach ($data['list']['News'] as &$item) {
+            if ($item['thumb']) {
+                $item['thumb'] = Yii::$app->request->getHostInfo() . $item['thumb'];
+            }
+        }
         $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price', 'tags'])
             ->asArray()
             ->orderBy(['updated_at' => SORT_DESC])
@@ -82,11 +92,18 @@ class SiteController extends \yii\rest\ActiveController
         foreach ($data['list']['Course'] as &$item) {
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
             $item['tags'] = Course::$_tags[$item['tags']] ?? "";
+            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
+            if ($item['thumb']) {
+                $item['thumb'] = Yii::$app->request->getHostInfo() . $item['thumb'];
+            }
         }
 
         $data['vote'] = Vote::find()->select(['id', 'title', 'end_time', 'img', 'pv'])->orderBy(['id' => SORT_DESC])->where(['>', 'end_time', time()])->asArray()->one();
         if ($data['vote']) {
             $data['vote']['userCount'] = VoteChild::find()->where(['vid' => $data['vote']['id']])->count();
+            if ($data['vote']['img']) {
+                $data['vote']['img'] = Yii::$app->request->getHostInfo() . $data['vote']['img'];
+            }
         }
         if (Yii::$app->request->get('openid')) {
             $data['userInfo']['myCourse'] = [];
@@ -111,6 +128,20 @@ class SiteController extends \yii\rest\ActiveController
                 $data['course'] = Course::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'thumb', 'price', 'tags'])->limit(10)->asArray()->all();
             } elseif ($type == 'vote') {
                 $data['vote'] = Vote::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'img', 'pv', 'vote_count', 'desc'])->limit(10)->asArray()->all();
+            }
+            if (isset($data['course'])) {
+                foreach ($data['course'] as &$item) {
+                    if ($item['thumb']) {
+                        $item['thumb'] = Yii::$app->request->getHostInfo() . $item['thumb'];
+                    }
+                }
+            }
+            if (isset($data['vote'])) {
+                foreach ($data['vote'] as &$item) {
+                    if ($item['img']) {
+                        $item['img'] = Yii::$app->request->getHostInfo() . $item['img'];
+                    }
+                }
             }
         }
         return Output::out($data);

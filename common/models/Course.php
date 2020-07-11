@@ -37,6 +37,8 @@ class Course extends \yii\db\ActiveRecord
 //        ["w" => 125, "h" => 86],//热门推荐
     ];
 
+    public $userCount;
+
     public static $_tags = [
         'good' => '精品课程',
         'free' => '免费课程',

@@ -59,6 +59,8 @@ class CourseController extends Controller
         foreach ($data['recommend'] as &$item) {
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
             $item['tags'] = Course::$_tags[$item['tags']] ?? '';
+            $item['thumb'] = \Yii::$app->request->getHostInfo() . $item['thumb'];
+            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
         }
         $data['category'] = CourseCate::find()->select(['id', 'name', 'alias_name'])->asArray()->all();
         return Output::out($data);
@@ -73,6 +75,8 @@ class CourseController extends Controller
             ->offset(($page - 1) * $pageSize)->limit($pageSize)->asArray()->all();
         foreach ($data as &$item) {
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
+            $item['thumb'] = \Yii::$app->request->getHostInfo() . $item['thumb'];
+            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
         }
         return Output::out($data);
     }
@@ -87,10 +91,15 @@ class CourseController extends Controller
                 $uid = \Yii::$app->user->identity->getId();
                 $have = CoursePassword::findOne(['user_id' => $uid, 'course_id' => $id]);
             }
-            $data['chlidList'] = CourseChild::find()->select(['id', 'title', 'video', 'thumb', 'video'])->where(['course_id' => $id])->asArray()->all();
+            !empty($data['wechat_img']) && $data['wechat_img'] = \Yii::$app->request->getHostInfo() . $data['wechat_img'];
+            !empty($data['thumb']) && $data['thumb'] = \Yii::$app->request->getHostInfo() . $data['thumb'];
+            !empty($data['video']) && $data['video'] = \Yii::$app->request->getHostInfo() . $data['video'];
+            $data['chlidList'] = CourseChild::find()->select(['id', 'title', 'video', 'thumb'])->where(['course_id' => $id])->asArray()->all();
             if ($data['price'] && !$have) {
                 foreach ($data['chlidList'] as &$item) {
                     $item['video'] = '';
+                    $item['thumb'] = \Yii::$app->request->getHostInfo() . $item['thumb'];
+                    $item['video'] = \Yii::$app->request->getHostInfo() . $item['video'];
                 }
             }
         }

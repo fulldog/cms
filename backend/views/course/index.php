@@ -94,13 +94,13 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                             'attribute' => 'wechat_img',
                             'format' => 'raw',
                             'value' => function ($model, $key, $index, $column) {
-                                if ($model->thumb == '') {
+                                if ($model->wechat_img == '') {
                                     $num = Constants::YesNo_No;
                                 } else {
                                     $num = Constants::YesNo_Yes;
                                 }
-                                return Html::a(Constants::getYesNoItems($num), $model->thumb ? $model->thumb : 'javascript:void(0)', [
-                                    'img' => $model->thumb ? $model->thumb : '',
+                                return Html::a(Constants::getYesNoItems($num), $model->wechat_img ? $model->wechat_img : 'javascript:void(0)', [
+                                    'img' => $model->wechat_img ? $model->wechat_img : '',
                                     'class' => 'thumbImg',
                                     'target' => '_blank',
                                     'data-pjax' => 0
