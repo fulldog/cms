@@ -40,10 +40,10 @@ $this->title = 'User';
             <div class="hr-line-dashed"></div>
             <?= $form->field($model, 'status')->radioList( User::getStatuses() ) ?>
             <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'password')->textInput(['maxlength' => 512]) ?>
-            <div class="hr-line-dashed"></div>
-            <?= $form->field($model, 'repassword')->textInput(['maxlength' => 512]) ?>
-            <div class="hr-line-dashed"></div>
+<!--            --><?//= $form->field($model, 'password')->textInput(['maxlength' => 512]) ?>
+<!--            <div class="hr-line-dashed"></div>-->
+<!--            --><?//= $form->field($model, 'repassword')->textInput(['maxlength' => 512]) ?>
+<!--            <div class="hr-line-dashed"></div>-->
             <?= $form->defaultButtons() ?>
             <?php ActiveForm::end(); ?>
         </div>

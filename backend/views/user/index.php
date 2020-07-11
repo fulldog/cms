@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Users');
             <?= $this->render('/widgets/_ibox-title') ?>
             <div class="ibox-content">
                 <?= Bar::widget([
-                    'template' => '{refresh} {create} {delete}',
+                    'template' => '{refresh} {delete}',//{create}
                 ]) ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
@@ -62,10 +62,10 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Users');
                             'class' => DateColumn::className(),
                             'attribute' => 'created_at',
                         ],
-                        [
-                            'class' => DateColumn::className(),
-                            'attribute' => 'updated_at',
-                        ],
+//                        [
+//                            'class' => DateColumn::className(),
+//                            'attribute' => 'updated_at',
+//                        ],
                         [
                             'class' => ActionColumn::className(),
                             'width' => '190px',
