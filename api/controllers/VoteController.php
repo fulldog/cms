@@ -24,6 +24,7 @@ use yii\filters\VerbFilter;
 
 class VoteController extends Controller
 {
+    use lmcTrait;
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [
@@ -59,7 +60,7 @@ class VoteController extends Controller
             $data['uv'] = VoteRecord::find()->where(['vid' => $data['id']])->distinct('uid')->count();
             $data['childList'] = VoteChild::find()->where(['vid' => $data['id']])->asArray()->all();
             $data['userCount'] = count($data['childList']);
-            !empty($data['img']) && $data['img'] = \Yii::$app->request->getHostInfo() . $data['img'];
+            !empty($data['img']) && $data['img'] = $this->getHostUrl($data['img']);
 //            Vote::updateAll(['pv' => $data['pv'] + 1], ['id' => $data['id']]);
             \Yii::$app->db->createCommand("update " . Vote::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data['id']])->query();
         }
@@ -81,7 +82,7 @@ class VoteController extends Controller
         }
         $data = $data->asArray()->all();
         foreach ($data as &$item){
-            !empty($item['img']) && $item['img'] = \Yii::$app->request->getHostInfo() . $item['img'];
+            !empty($item['img']) && $item['img'] = $this->getHostUrl($item['img']);
         }
         return Output::out($data);
     }
@@ -96,7 +97,7 @@ class VoteController extends Controller
             $data = $data->toArray();
             $all = VoteChild::find()->select('id')->orderBy(['vote_count' => SORT_DESC])->where(['vid' => $data['vid']])->asArray()->all();
             $data['rank'] = 0;
-            !empty($data['img']) && $data['img'] = \Yii::$app->request->getHostInfo() . $data['img'];
+            !empty($data['img']) && $data['img'] = $this->getHostUrl($data['img']);
             foreach ($all as $item) {
                 $data['rank']++;
                 if ($item['id'] == $id) {

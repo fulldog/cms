@@ -27,6 +27,7 @@ use common\models\Options;
 
 class SiteController extends \yii\rest\ActiveController
 {
+    use lmcTrait;
     public $modelClass = "common\models\Article";
 
     public function behaviors()
@@ -63,7 +64,7 @@ class SiteController extends \yii\rest\ActiveController
             $banner = json_decode($banner['value'], true);
             foreach ($banner as $value) {
                 if ($value['status']) {
-                    $data['banner'][] = Yii::$app->request->getHostInfo() . $value['img'];
+                    $data['banner'][] = $this->getHostUrl($value['img']);
                 }
             }
         }
@@ -72,7 +73,7 @@ class SiteController extends \yii\rest\ActiveController
             $item['tags'] = Course::$_tags[$item['tags']] ?? "";
             $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
             if ($item['thumb']) {
-                $item['thumb'] = Yii::$app->request->getHostInfo() . $item['thumb'];
+                $item['thumb'] = $this->getHostUrl($item['thumb']);
             }
         }
 //        $data['recommend']['News'] = Article::find()->select(['title', 'id', 'thumb'])->where(['flag_recommend' => 1, 'status' => 1])->limit(5)->all();
@@ -81,7 +82,7 @@ class SiteController extends \yii\rest\ActiveController
         $data['list']['News'] = Article::find()->select(['title', 'id', 'thumb', 'updated_at', 'sub_title'])->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
         foreach ($data['list']['News'] as &$item) {
             if ($item['thumb']) {
-                $item['thumb'] = Yii::$app->request->getHostInfo() . $item['thumb'];
+                $item['thumb'] = $this->getHostUrl($item['thumb']);
             }
         }
         $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price', 'tags'])
@@ -94,7 +95,7 @@ class SiteController extends \yii\rest\ActiveController
             $item['tags'] = Course::$_tags[$item['tags']] ?? "";
             $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
             if ($item['thumb']) {
-                $item['thumb'] = Yii::$app->request->getHostInfo() . $item['thumb'];
+                $item['thumb'] = $this->getHostUrl($item['thumb']);
             }
         }
 
@@ -102,7 +103,7 @@ class SiteController extends \yii\rest\ActiveController
         if ($data['vote']) {
             $data['vote']['userCount'] = VoteChild::find()->where(['vid' => $data['vote']['id']])->count();
             if ($data['vote']['img']) {
-                $data['vote']['img'] = Yii::$app->request->getHostInfo() . $data['vote']['img'];
+                $data['vote']['img'] = $this->getHostUrl($data['vote']['img']);
             }
         }
         if (Yii::$app->request->get('openid')) {
@@ -132,14 +133,14 @@ class SiteController extends \yii\rest\ActiveController
             if (isset($data['course'])) {
                 foreach ($data['course'] as &$item) {
                     if ($item['thumb']) {
-                        $item['thumb'] = Yii::$app->request->getHostInfo() . $item['thumb'];
+                        $item['thumb'] = $this->getHostUrl($item['thumb']);
                     }
                 }
             }
             if (isset($data['vote'])) {
                 foreach ($data['vote'] as &$item) {
                     if ($item['img']) {
-                        $item['img'] = Yii::$app->request->getHostInfo() . $item['img'];
+                        $item['img'] = $this->getHostUrl($item['img']);
                     }
                 }
             }
