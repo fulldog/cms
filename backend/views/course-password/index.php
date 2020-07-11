@@ -18,9 +18,9 @@ use backend\grid\StatusColumn;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '课程密码';
-$this->params['breadcrumbs'][] = '课程密码';
+$this->params['breadcrumbs'][] = ['label'=>yii::t('app',  '课程列表'),'url' => Url::to(['course/index'])];
 $this->params['breadcrumbs'][] = $parent->title;
+$this->params['breadcrumbs'][] = '密码列表';
 ?>
 <div class="row">
   <div class="col-sm-12">

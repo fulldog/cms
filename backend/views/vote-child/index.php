@@ -5,14 +5,15 @@ use backend\grid\CheckboxColumn;
 use backend\grid\ActionColumn;
 use backend\grid\GridView;
 use backend\grid\DateColumn;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\VoteChildSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '投票详情';
-$this->params['breadcrumbs'][] = yii::t('app', '投票详情');
-$this->params['breadcrumbs'][] =$parent->title;
+$this->params['breadcrumbs'][] = ['label'=>yii::t('app',  '投票活动'),'url' => Url::to(['vote/index'])];
+$this->params['breadcrumbs'][] = $parent->title;
+$this->params['breadcrumbs'][] = '参与列表';
 ?>
 <div class="row">
     <div class="col-sm-12">

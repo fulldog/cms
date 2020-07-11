@@ -18,8 +18,8 @@ use backend\grid\StatusColumn;
 /* @var $searchModel common\models\VoteSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '投票活动';
-$this->params['breadcrumbs'][] = yii::t('app', '投票活动');
+$this->params['breadcrumbs'][] = ['label'=>yii::t('app',  '投票活动')];
+
 ?>
 <div class="row">
     <div class="col-sm-12">
@@ -87,8 +87,8 @@ $this->params['breadcrumbs'][] = yii::t('app', '投票活动');
                                     ]), [
                                         'title' => $model['title'].'详情',
                                         'data-pjax' => '0',
-                                        'class' => 'btn-sm J_menuItem openContab',
-                                        'target' => '_blank',
+                                        'class' => 'btn-sm J_menuItem ',//openContab
+//                                        'target' => '_blank',
                                     ]);
                                 },
                             ],

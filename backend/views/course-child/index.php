@@ -19,9 +19,9 @@ use backend\grid\StatusColumn;
 /* @var $searchModel common\models\CourseChildSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '课时列表';
-$this->params['breadcrumbs'][] = yii::t('app',  '课时列表');
+$this->params['breadcrumbs'][] = ['label'=>yii::t('app',  '课程列表'),'url' => Url::to(['course/index'])];
 $this->params['breadcrumbs'][] = $parent->title;
+$this->params['breadcrumbs'][] = '课时列表';
 ?>
 <div class="row">
     <div class="col-sm-12">

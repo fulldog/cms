@@ -158,8 +158,8 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                                     ]), [
                                         'title' => $model['title'].'课时',
                                         'data-pjax' => '0',
-                                        'class' => 'btn-sm J_menuItem openContab',
-                                        'target' => '_blank',
+                                        'class' => 'btn-sm J_menuItem ',
+//                                        'target' => '_blank',
                                     ]);
                                 },
                                 'password' => function ($url, $model, $key) {
@@ -170,8 +170,8 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                                         ]), [
                                             'title' => $model['title'].'密码',
                                             'data-pjax' => '0',
-                                            'class' => 'btn-sm J_menuItem openContab',
-                                            'target' => '_blank',
+                                            'class' => 'btn-sm J_menuItem ',
+//                                            'target' => '_blank',
                                         ]);
                                     }
                                     return "";
