@@ -64,6 +64,11 @@ $this->params['breadcrumbs'][] = ['label'=>yii::t('app',  '投票活动')];
                         ],
 //                        'desc',
                         [
+                            'class' =>StatusColumn::className(),
+                            'attribute' => 'recommend',
+                            'filter' => Constants::getYesNoItems(),
+                        ],
+                        [
                             'filter'=>false,
                             'attribute'=>'start_time',
                         ],

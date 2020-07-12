@@ -90,24 +90,24 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                             },
                             'filter' => false,
                         ],
-                        [
-                            'attribute' => 'wechat_img',
-                            'format' => 'raw',
-                            'value' => function ($model, $key, $index, $column) {
-                                if ($model->wechat_img == '') {
-                                    $num = Constants::YesNo_No;
-                                } else {
-                                    $num = Constants::YesNo_Yes;
-                                }
-                                return Html::a(Constants::getYesNoItems($num), $model->wechat_img ? $model->wechat_img : 'javascript:void(0)', [
-                                    'img' => $model->wechat_img ? $model->wechat_img : '',
-                                    'class' => 'thumbImg',
-                                    'target' => '_blank',
-                                    'data-pjax' => 0
-                                ]);
-                            },
-                            'filter' => false,
-                        ],
+//                        [
+//                            'attribute' => 'wechat_img',
+//                            'format' => 'raw',
+//                            'value' => function ($model, $key, $index, $column) {
+//                                if ($model->wechat_img == '') {
+//                                    $num = Constants::YesNo_No;
+//                                } else {
+//                                    $num = Constants::YesNo_Yes;
+//                                }
+//                                return Html::a(Constants::getYesNoItems($num), $model->wechat_img ? $model->wechat_img : 'javascript:void(0)', [
+//                                    'img' => $model->wechat_img ? $model->wechat_img : '',
+//                                    'class' => 'thumbImg',
+//                                    'target' => '_blank',
+//                                    'data-pjax' => 0
+//                                ]);
+//                            },
+//                            'filter' => false,
+//                        ],
 
 //                        [
 //                            'attribute' => 'video',

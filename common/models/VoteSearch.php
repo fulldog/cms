@@ -63,6 +63,7 @@ class VoteSearch extends Vote implements \backend\models\search\SearchInterface
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'vote_count' => $this->vote_count,
+            'recommend' => $this->recommend,
             'pv' => $this->pv,
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,

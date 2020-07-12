@@ -29,6 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'price',
             [
+                'attribute' => 'banner',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return "<img style='max-width:200px;max-height:200px' src='" . $model->banner . "' >";
+                }
+            ],
+            [
                 'attribute' => 'wechat_img',
                 'format' => 'raw',
                 'value' => function ($model) {

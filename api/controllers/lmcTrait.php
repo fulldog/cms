@@ -12,6 +12,9 @@ trait lmcTrait
 {
     function getHostUrl($string = '')
     {
+        if (!$string) {
+            return '';
+        }
         return \Yii::$app->request->getHostInfo() . '/' . trim($string, '/');
     }
 }

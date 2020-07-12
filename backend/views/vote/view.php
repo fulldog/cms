@@ -22,6 +22,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'desc',
             'start_time:datetime',
             'end_time:datetime',
+            [
+                'attribute' => 'recommend',
+                'value' => function ($model) {
+                    return \common\libs\Constants::getYesNoItems($model->recommend);
+                }
+            ],
             'vote_count',
             'pv',
             [
@@ -29,6 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function($model){
                     return "<img style='max-width:200px;max-height:200px' src='" . $model->img . "' >";
+                }
+            ],
+            [
+                'attribute' => 'banner',
+                'format' => 'raw',
+                'value' => function($model){
+                    return "<img style='max-width:200px;max-height:200px' src='" . $model->banner . "' >";
                 }
             ],
             'updated_at:datetime',

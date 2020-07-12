@@ -37,6 +37,9 @@ use backend\widgets\ActiveForm;
 
                         <?= $form->field($model, 'pv')->textInput() ?>
                         <div class="hr-line-dashed"></div>
+                <?= $form->field($model, 'recommend', [])->radioList([
+                    1=>'推荐',0=>'不推荐'
+                ]); ?>
 
 <!--                        --><?//= $form->field($model, 'updated_at')->textInput() ?>
 <!--                        <div class="hr-line-dashed"></div>-->

@@ -19,9 +19,9 @@ class CourseSearch extends Course implements \backend\models\search\SearchInterf
     {
         return [
             [['id', 'status', 'recommend','price','cid'], 'integer'],
-            [['title', 'desc', 'wechat_img', 'thumb', 'video','tags'], 'safe'],
+            [['title', 'desc', 'wechat_img', 'thumb', 'video','tags','banner'], 'safe'],
             [['created_at', 'updated_at'], 'string'],
-            [['thumb'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
+            [['thumb','banner'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
         ];
     }
 

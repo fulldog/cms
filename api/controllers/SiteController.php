@@ -68,25 +68,21 @@ class SiteController extends \yii\rest\ActiveController
                 }
             }
         }
-        $data['recommend']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags'])->where(['recommend' => 1, 'status' => 1])->asArray()->limit(5)->all();
+        $data['recommend']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags', 'banner'])->where(['recommend' => 1, 'status' => 1])->asArray()->limit(5)->all();
         foreach ($data['recommend']['Course'] as &$item) {
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
             $item['tags'] = Course::$_tags[$item['tags']] ?? "";
             $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
-            if ($item['thumb']) {
-                $item['thumb'] = $this->getHostUrl($item['thumb']);
-            }
+            $item['thumb'] = $this->getHostUrl($item['banner'] ?: $item['thumb']);
         }
 //        $data['recommend']['News'] = Article::find()->select(['title', 'id', 'thumb'])->where(['flag_recommend' => 1, 'status' => 1])->limit(5)->all();
 
         # 新闻中心
         $data['list']['News'] = Article::find()->select(['title', 'id', 'thumb', 'updated_at', 'sub_title'])->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
         foreach ($data['list']['News'] as &$item) {
-            if ($item['thumb']) {
-                $item['thumb'] = $this->getHostUrl($item['thumb']);
-            }
+            $item['thumb'] = $this->getHostUrl($item['thumb']);
         }
-        $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price', 'tags'])
+        $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price', 'tags', 'banner'])
             ->asArray()
             ->orderBy(['updated_at' => SORT_DESC])
             ->limit(5)->all();
@@ -95,20 +91,18 @@ class SiteController extends \yii\rest\ActiveController
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
             $item['tags'] = Course::$_tags[$item['tags']] ?? "";
             $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
-            if ($item['thumb']) {
-                $item['thumb'] = $this->getHostUrl($item['thumb']);
-            }
+            $item['thumb'] = $this->getHostUrl($item['thumb']);
         }
 
-        $data['vote'] = Vote::find()->select(['id', 'title', 'end_time', 'img', 'pv'])->orderBy(['id' => SORT_DESC])->where(['>', 'end_time', time()])->asArray()->one();
+        $data['vote'] = Vote::find()->select(['id', 'title', 'end_time', 'img', 'pv', 'banner'])->orderBy(['end_time' => SORT_DESC])
+            ->where(['>', 'end_time', time()])->andWhere(['recommend' => 1])->asArray()->one();
         if ($data['vote']) {
             $data['vote']['userCount'] = VoteChild::find()->where(['vid' => $data['vote']['id']])->count();
-            if ($data['vote']['img']) {
-                $data['vote']['img'] = $this->getHostUrl($data['vote']['img']);
-            }
+            $data['vote']['img'] = $this->getHostUrl($data['vote']['banner'] ?: $data['vote']['img']);
         }
         if (Yii::$app->request->get('openid')) {
-            $data['userInfo']['myCourse'] = [];
+            $uid = Yii::$app->user->getId();
+            $data['userInfo']['myCourse'] = CoursePassword::find()->where(['user_id' => $uid])->count();
         }
 
         return Output::out($data);
