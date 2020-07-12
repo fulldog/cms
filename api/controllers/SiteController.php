@@ -153,7 +153,20 @@ class SiteController extends \yii\rest\ActiveController
         if (!$code) {
             return Output::out([], 0, 'code not found');
         } else {
-            $info = (new WechatApi())->getOpenByCode($code);
+            $appInfo = Options::find()->select(['name', 'value'])->where(['name' => 'wechat_appid'])->orWhere(['name' => 'wechat_appsecret'])->asArray()->all();
+            $wechat_appid = '';
+            $wechat_appsecret = '';
+            foreach ($appInfo as $item) {
+                if ($item['name'] == 'wechat_appid') {
+                    $wechat_appid = $item['value'];
+                } elseif ($item['name'] == 'wechat_appsecret') {
+                    $wechat_appsecret = $item['value'];
+                }
+            }
+            if (!$wechat_appid || !$wechat_appsecret) {
+                return Output::out([], 0, 'wechat_appid/wechat_appsecret not found');
+            }
+            $info = (new WechatApi($wechat_appid, $wechat_appsecret))->getOpenByCode($code);
             if ($info['openid'] ?? '') {
                 $user = \api\models\User::findIdentityByAccessToken($info['openid']);
                 if (!$user) {

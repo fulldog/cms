@@ -31,7 +31,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Custom Setting');
                 foreach ($settings as $index => $setting) {
                     $deleteUrl = Url::to(['custom-delete', 'id' => $setting->id]);
                     $editUrl = Url::to(['custom-update', 'id' => $setting->id]);
-                    $template = "{label}\n<div class=\"col-sm-8\">{input}\n{error}</div>\n{hint}<div class='col-sm-2'><span class='tips'><i class='fa fa-info-circle'></i> {$setting->tips}  <a class='btn-delete' href='{$deleteUrl}' data-confirm='" . Yii::t('app', 'Are you sure you want to delete this item?') . "' title='' data-method='' data-pjax='1'><i style='float: right' class='fa fa-trash-o'></i></a><a href='{$editUrl}' class='btn_edit' title='编辑' data-pjax=''><i style='float: right;margin-right: 10px;' class='fa fa-edit'></i></a> </span></div>";
+                    $template = "{label}\n<div class=\"col-sm-8\">{input}\n{error}</div>\n{hint}<div class='col-sm-2'></div>";
+                    //<span class='tips'><i class='fa fa-info-circle'></i> {$setting->tips}  <a class='btn-delete' href='{$deleteUrl}' data-confirm='" . Yii::t('app', 'Are you sure you want to delete this item?') . "' title='' data-method='' data-pjax='1'><i style='float: right' class='fa fa-trash-o'></i></a><a href='{$editUrl}' class='btn_edit' title='编辑' data-pjax=''><i style='float: right;margin-right: 10px;' class='fa fa-edit'></i></a> </span>
                     if ($setting->input_type == Constants::INPUT_UEDITOR) {
                         echo $form->field($setting, "[$index]value", ['template' => $template])
                             ->label($setting->name)
@@ -58,13 +59,13 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Custom Setting');
                     <?php
                 }
                 ?>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label"></label>
-                    <div class="col-sm-8">
-                        <a style="float:right;" type="button" class="btn btn-outline btn-default"
-                           id="add"><?= Yii::t('app', 'Add') ?></a>
-                    </div>
-                </div>
+<!--                <div class="form-group">-->
+<!--                    <label class="col-sm-2 control-label"></label>-->
+<!--                    <div class="col-sm-8">-->
+<!--                        <a style="float:right;" type="button" class="btn btn-outline btn-default"-->
+<!--                           id="add">--><?//= Yii::t('app', 'Add') ?><!--</a>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <?= $form->defaultButtons() ?>
                 <?php ActiveForm::end(); ?>
             </div>

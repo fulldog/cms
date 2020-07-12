@@ -11,8 +11,8 @@ namespace api\service;
 class WechatApi
 {
     private $loginApi = 'https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code';
-    private $appid = 'wx5116334d09656bc8';
-    private $appsecret = '2b852f1b7915a04704a2382712026f7c';
+    private $appid = '';
+    private $appsecret = '';
     private $sessionKey;
 
     /**
