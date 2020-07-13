@@ -78,10 +78,10 @@ $this->params['breadcrumbs'][] = '课时列表';
                         ],
                         [
                             'attribute' => 'video',
-                            'format' => 'raw',
-                            'value' => function($model){
-                                return "<video style='max-width:200px;max-height:200px' src='" . $model->video . "'  controls=\"controls\"></video>";
-                            },
+//                            'format' => 'raw',
+//                            'value' => function($model){
+//                                return "<video style='max-width:200px;max-height:200px' src='" . $model->video . "'  controls=\"controls\"></video>";
+//                            },
                             'filter' => false,
                         ],
                         [
