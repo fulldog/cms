@@ -32,7 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'video',
                 'format' => 'raw',
                 'value' => function($model){
-                    return "<video style='max-width:200px;max-height:200px' src='" . $model->video . "'  controls=\"controls\"></video>";
+                    if ($model->video){
+                        return "<video style='max-width:200px;max-height:200px' src='" . $model->video . "'  controls=\"controls\"></video>";
+                    }
+                    return '';
                 }
             ],
             'created_at:datetime',
