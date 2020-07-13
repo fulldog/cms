@@ -28,13 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "<img style='max-width:200px;max-height:200px' src='" . $model->thumb . "' >";
                 }
             ],
-            [
-                'attribute' => 'video',
+            'video',
+//            [
+//                'attribute' => 'video',
 //                'format' => 'raw',
 //                'value' => function($model){
 //                    return "<video style='max-width:200px;max-height:200px' src='" . $model->video . "'  controls=\"controls\"></video>";
 //                }
-            ],
+//            ],
             'created_at:datetime',
             'updated_at:datetime',
         ],

@@ -76,14 +76,15 @@ $this->params['breadcrumbs'][] = '课时列表';
                             },
                             'filter' => false,
                         ],
-                        [
-                            'attribute' => 'video',
+                        'video',
+//                        [
+//                            'attribute' => 'video',
 //                            'format' => 'raw',
 //                            'value' => function($model){
 //                                return "<video style='max-width:200px;max-height:200px' src='" . $model->video . "'  controls=\"controls\"></video>";
 //                            },
-                            'filter' => false,
-                        ],
+//                            'filter' => false,
+//                        ],
                         [
                             'class' => DateColumn::className(),
                             'attribute' => 'created_at',
