@@ -45,9 +45,7 @@ $this->title = "Articles";
                         <?= $form->field($model, 'summary')->textArea(); ?>
                         <?= $form->field($model, 'thumb')->imgInput(['style' => 'max-width:200px;max-height:200px']); ?>
 <!--                        --><?//= $form->field($model, 'images')->widget(Webuploader::className()); ?>
-                      <div style="display: none">
                           <?= $form->field($contentModel, 'content')->widget(Ueditor::className()) ?>
-                      </div>
                     </div>
                     <!--left stop -->
 

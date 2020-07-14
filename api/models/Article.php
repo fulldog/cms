@@ -18,6 +18,7 @@ class Article extends \common\models\Article
             'thumb',
             'sub_title',
             'scan_count',
+            'updated_at',
             "description" => "summary",
             "content" => function ($model) {
                 return $model->articleContent->content;
