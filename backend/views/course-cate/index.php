@@ -25,11 +25,22 @@ $this->params['breadcrumbs'][] = yii::t('app', '课程分类');
 
                         'name',
                         [
-                            'attribute' => 'alias_name',
+                            'attribute' => 'img',
                             'format' => 'raw',
                             'value' => function ($model) {
-                                if ($model->alias_name){
-                                    return "<img src='{$model->alias_name}' style='width: auto;height: 100px;'/>";
+                                if ($model->img){
+                                    return "<img src='{$model->img}' style='width: auto;height: 100px;'/>";
+                                }
+                                return '';
+                            },
+                            'filter' => false
+                        ],
+                        [
+                            'attribute' => 'img_chose',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->img_chose){
+                                    return "<img src='{$model->img_chose}' style='width: auto;height: 100px;'/>";
                                 }
                                 return '';
                             },

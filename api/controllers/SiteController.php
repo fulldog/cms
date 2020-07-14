@@ -56,7 +56,7 @@ class SiteController extends \yii\rest\ActiveController
      */
     public function actionIndex()
     {
-        $data['allCate'] = CourseCate::find()->select(['name', 'id', 'alias_name'])->asArray()->all();
+        $data['allCate'] = CourseCate::find()->select(['name', 'id', 'alias_name','img','img_chose'])->asArray()->all();
         // 推荐课程
         $data['banner'] = [];
         $banner = Options::find()->asArray()->where(['name' => 'index'])->select('value')->one();

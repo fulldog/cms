@@ -11,6 +11,8 @@ use yii\behaviors\TimestampBehavior;
  * @property int $id
  * @property string $name 分类名称
  * @property string $alias_name 别名
+ * @property string $img img
+ * @property string $img_chose 选择
  * @property int $created_at 创建时间
  * @property int $updated_at 更新时间
  */
@@ -37,7 +39,7 @@ class CourseCate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name','img','img_chose'], 'required'],
             [['created_at', 'updated_at'], 'integer'],
             [['name', 'alias_name'], 'string', 'max' => 255],
             [['name'], 'unique'],
@@ -52,7 +54,9 @@ class CourseCate extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => '分类名称',
-            'alias_name' => '图片',
+            'alias_name' => '别名',
+            'img' => '分类图片',
+            'img_chose' => '分类选中图片',
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
         ];
