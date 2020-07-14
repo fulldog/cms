@@ -77,7 +77,8 @@ class SiteController extends \yii\rest\ActiveController
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
             $item['tags'] = Course::$_tags[$item['tags']] ?? "";
             $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
-            $item['thumb'] = $this->getHostUrl($item['banner'] ?: $item['thumb']);
+            $item['thumb'] = $this->getHostUrl($item['thumb']);
+            $item['banner'] = $this->getHostUrl($item['banner']);
         }
 //        $data['recommend']['News'] = Article::find()->select(['title', 'id', 'thumb'])->where(['flag_recommend' => 1, 'status' => 1])->limit(5)->all();
 
@@ -96,6 +97,7 @@ class SiteController extends \yii\rest\ActiveController
             $item['tags'] = Course::$_tags[$item['tags']] ?? "";
             $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
             $item['thumb'] = $this->getHostUrl($item['thumb']);
+            $item['banner'] = $this->getHostUrl($item['banner']);
         }
 
         $data['vote'] = Vote::find()->select(['id', 'title', 'end_time', 'img', 'pv', 'banner'])->orderBy(['end_time' => SORT_DESC])

@@ -57,15 +57,20 @@ class CourseController extends Controller
 
     public function actionIndex()
     {
-        $data['recommend'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags'])->where(['recommend' => 1, 'status' => 1])
+        $data['recommend'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags','banner'])->where(['recommend' => 1, 'status' => 1])
             ->limit(5)->asArray()->all();
         foreach ($data['recommend'] as &$item) {
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
             $item['tags'] = Course::$_tags[$item['tags']] ?? '';
             $item['thumb'] = $this->getHostUrl($item['thumb']);
+            $item['banner'] = $this->getHostUrl($item['banner']);
             $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
         }
-        $data['category'] = CourseCate::find()->select(['id', 'name', 'alias_name'])->asArray()->all();
+        $data['category'] = CourseCate::find()->select(['id', 'name', 'alias_name', 'img', 'img_chose'])->asArray()->all();
+        foreach ($data['category'] as &$item) {
+            $item['img'] = $this->getHostUrl($item['img']);
+            $item['img_chose'] = $this->getHostUrl($item['img_chose']);
+        }
         return Output::out($data);
     }
 
@@ -87,7 +92,7 @@ class CourseController extends Controller
     public function actionDetail()
     {
         $id = \Yii::$app->request->get('id');
-        $data = Course::find()->select(['id', 'title', 'desc', 'wechat_img', 'tags', 'thumb', 'video', 'price'])->where(['id' => $id, 'status' => 1])->asArray()->one();
+        $data = Course::find()->select(['id', 'title', 'desc', 'wechat_img', 'tags', 'thumb', 'video', 'price','banner'])->where(['id' => $id, 'status' => 1])->asArray()->one();
         if ($data) {
             $have = false;
             if (!\Yii::$app->user->isGuest) {
@@ -96,6 +101,7 @@ class CourseController extends Controller
             }
             !empty($data['wechat_img']) && $data['wechat_img'] = $this->getHostUrl($data['wechat_img']);
             !empty($data['thumb']) && $data['thumb'] = $this->getHostUrl($data['thumb']);
+            !empty($data['banner']) && $data['banner'] = $this->getHostUrl($data['banner']);
             !empty($data['video']) && $data['video'] = $this->getHostUrl($data['video']);
             $data['chlidList'] = CourseChild::find()->select(['id', 'title', 'video', 'thumb'])->where(['course_id' => $id])->asArray()->all();
             foreach ($data['chlidList'] as $k => &$item) {
