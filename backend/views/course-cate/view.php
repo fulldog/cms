@@ -19,7 +19,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'alias_name',
+            [
+                'attribute' => 'alias_name',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return "<img style='max-width:200px;max-height:200px' src='" . $model->alias_name . "' >";
+                }
+            ],
             'created_at:datetime',
             'updated_at:datetime',
         ],

@@ -24,7 +24,17 @@ $this->params['breadcrumbs'][] = yii::t('app', '课程分类');
                         ['class' => CheckboxColumn::className()],
 
                         'name',
-                        'alias_name',
+                        [
+                            'attribute' => 'alias_name',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                if ($model->alias_name){
+                                    return "<img src='{$model->alias_name}' style='width: auto;height: 100px;'/>";
+                                }
+                                return '';
+                            },
+                            'filter' => false
+                        ],
                         [
                             'class' => DateColumn::className(),
                             'attribute' => 'created_at',

@@ -20,7 +20,7 @@ use backend\widgets\ActiveForm;
                     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'alias_name')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'alias_name')->imgInput(['style' => 'max-width:200px;max-height:200px']); ?>
                         <div class="hr-line-dashed"></div>
 
                         <?= $form->defaultButtons() ?>

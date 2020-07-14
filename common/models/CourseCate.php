@@ -52,7 +52,7 @@ class CourseCate extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => '分类名称',
-            'alias_name' => '别名',
+            'alias_name' => '图片',
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
         ];
