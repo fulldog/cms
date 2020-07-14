@@ -57,7 +57,7 @@ class CourseController extends Controller
 
     public function actionIndex()
     {
-        $data['recommend'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags','banner'])->where(['recommend' => 1, 'status' => 1])
+        $data['recommend'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags', 'banner'])->where(['recommend' => 1, 'status' => 1])
             ->limit(5)->asArray()->all();
         foreach ($data['recommend'] as &$item) {
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
@@ -79,7 +79,7 @@ class CourseController extends Controller
         $page = \Yii::$app->request->get('page', 1);
         $pageSize = \Yii::$app->request->get('pageSize', 4);
         $cid = \Yii::$app->request->get('cid');
-        $data = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags'])->where(['cid' => $cid, 'status' => 1])
+        $data = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags'])->where(['status' => 1])->andFilterWhere(['cid' => $cid])
             ->offset(($page - 1) * $pageSize)->limit($pageSize)->asArray()->all();
         foreach ($data as &$item) {
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
@@ -92,7 +92,7 @@ class CourseController extends Controller
     public function actionDetail()
     {
         $id = \Yii::$app->request->get('id');
-        $data = Course::find()->select(['id', 'title', 'desc', 'wechat_img', 'tags', 'thumb', 'video', 'price','banner'])->where(['id' => $id, 'status' => 1])->asArray()->one();
+        $data = Course::find()->select(['id', 'title', 'desc', 'wechat_img', 'tags', 'thumb', 'video', 'price', 'banner'])->where(['id' => $id, 'status' => 1])->asArray()->one();
         if ($data) {
             $have = false;
             if (!\Yii::$app->user->isGuest) {
