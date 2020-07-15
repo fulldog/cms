@@ -13,6 +13,7 @@ use backend\widgets\ActiveForm;
             <div class="ibox-content">
                 <?php $form = ActiveForm::begin([
                     'options' => [
+                        'enctype' => 'multipart/form-data',
                         'class' => 'form-horizontal'
                     ]
                 ]); ?>
