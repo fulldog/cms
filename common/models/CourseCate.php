@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use common\helpers\Util;
 
 /**
  * This is the model class for table "course_cate".
@@ -70,5 +71,45 @@ class CourseCate extends \yii\db\ActiveRecord
             $data[$item['id']] = $item['name'];
         }
         return $data;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterFind()
+    {
+        if ($this->img) {
+            /** @var TargetAbstract $cdn */
+            $cdn = Yii::$app->get('cdn');
+            $this->img = $cdn->getCdnUrl($this->img);
+        }
+        if ($this->img_chose) {
+            /** @var TargetAbstract $cdn */
+            $cdn = Yii::$app->get('cdn');
+            $this->img_chose = $cdn->getCdnUrl($this->img_chose);
+        }
+        parent::afterFind();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        $insert = $this->getIsNewRecord();
+        Util::handleModelSingleFileUpload($this, 'img', $insert, '@uploads');
+        Util::handleModelSingleFileUpload($this, 'img_chose', $insert, '@uploads');
+
+        if ($this->img_chose) {
+            /** @var TargetAbstract $cdn */
+            $cdn = Yii::$app->get('cdn');
+            $this->img_chose = str_replace($cdn->host, '', $this->img_chose);
+        }
+        if ($this->img) {
+            /** @var TargetAbstract $cdn */
+            $cdn = Yii::$app->get('cdn');
+            $this->img = str_replace($cdn->host, '', $this->img);
+        }
+        return parent::beforeSave($insert);
     }
 }
