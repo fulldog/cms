@@ -83,7 +83,7 @@ class SiteController extends \yii\rest\ActiveController
 //        $data['recommend']['News'] = Article::find()->select(['title', 'id', 'thumb'])->where(['flag_recommend' => 1, 'status' => 1])->limit(5)->all();
 
         # 新闻中心
-        $data['list']['News'] = \api\models\Article::find()->select(['title', 'id', 'thumb', 'updated_at', 'created_at', 'sub_title'])->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
+        $data['list']['News'] = \api\models\Article::find()->select(['title', 'id', 'thumb', 'updated_at', 'created_at', 'sub_title'])->orderBy(['updated_at' => SORT_DESC])->limit(5)->asArray()->all();
         foreach ($data['list']['News'] as &$item) {
             $item['thumb'] = $this->getHostUrl($item['thumb']);
             unset($item['content']);
