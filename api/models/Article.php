@@ -21,6 +21,9 @@ class Article extends \common\models\Article
             'created_at'  => function ($model) {
                 return date('Y-m-d H:i:s', $model->created_at);
             },
+            'updated_at'  => function ($model) {
+                return date('Y-m-d H:i:s', $model->updated_at);
+            },
             "description" => "summary",
             "content"     => function ($model) {
                 return $model->articleContent->content;
