@@ -18,11 +18,13 @@ class Article extends \common\models\Article
             'thumb',
             'sub_title',
             'scan_count',
-            'updated_at',
+            'created_at'  => function ($model) {
+                return date('Y-m-d H:i:s', $model->created_at);
+            },
             "description" => "summary",
-            "content" => function ($model) {
+            "content"     => function ($model) {
                 return $model->articleContent->content;
-            }
+            },
         ];
     }
 }
