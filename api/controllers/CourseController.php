@@ -33,8 +33,8 @@ class CourseController extends Controller
         return ArrayHelper::merge(parent::behaviors(), [
             'authenticator' => [
                 //使用ComopositeAuth混合认证
-                'class' => CompositeAuth::className(),
-                'optional' => [
+                'class'       => CompositeAuth::className(),
+                'optional'    => [
 //                    'index',//无需access-token的action
 //                    'list'
                 ],
@@ -43,14 +43,14 @@ class CourseController extends Controller
                     HttpBearerAuth::className(),
                     [
                         'class' => AuthService::className(),
-                    ]
-                ]
+                    ],
+                ],
             ],
-            'verbs' => [
+            'verbs'         => [
                 'class' => VerbFilter::className(),
-//                'actions' => [
-//                    'info' => ['GET'],
-//                ],
+                //                'actions' => [
+                //                    'info' => ['GET'],
+                //                ],
             ],
         ]);
     }
@@ -92,7 +92,7 @@ class CourseController extends Controller
     public function actionDetail()
     {
         $id = \Yii::$app->request->get('id');
-        $data = Course::find()->select(['id', 'title', 'desc', 'wechat_img', 'tags', 'thumb', 'video', 'price', 'banner'])->where(['id' => $id, 'status' => 1])->asArray()->one();
+        $data = Course::find()->select(['id', 'title', 'desc', 'cid', 'wechat_img', 'tags', 'thumb', 'video', 'price', 'banner'])->where(['id' => $id, 'status' => 1])->asArray()->one();
         if ($data) {
             $have = false;
             if (!\Yii::$app->user->isGuest) {
@@ -114,6 +114,16 @@ class CourseController extends Controller
                 }
 
             }
+            $data['others'] = call_user_func(function () use ($data) {
+                $list = Course::find()->asArray()->select(['id', 'title', 'desc', 'wechat_img', 'tags', 'thumb', 'video', 'price', 'banner'])
+                    ->where(['status' => 1, 'cid' => $data['cid']])->andWhere(['<>', 'id', $data['id']])->limit(4)->all();
+                foreach ($list as &$li) {
+                    $li['wechat_img'] = $this->getHostUrl($li['wechat_img']);
+                    $li['video'] = $this->getHostUrl($li['video']);
+                    $li['thumb'] = $this->getHostUrl($li['thumb']);
+                    $li['banner'] = $this->getHostUrl($li['banner']);
+                }
+            });
         }
         return Output::out($data);
     }
