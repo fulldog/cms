@@ -96,6 +96,7 @@ class VoteController extends Controller
 
         if ($data) {
             $data = $data->toArray();
+            $data['others'] = [];
             $all = VoteChild::find()->select(['id', 'title', 'img', 'vote_count'])->orderBy(['vote_count' => SORT_DESC])->where(['vid' => $data['vid']])->asArray()->all();
             $data['rank'] = 1;
             !empty($data['img']) && $data['img'] = $this->getHostUrl($data['img']);
@@ -103,7 +104,7 @@ class VoteController extends Controller
                 if ($item['id'] == $id) {
                     $data['rank'] = $k + 1;
                 } else {
-                    if (!isset($data['others']) || count($data['others']) < 4) {
+                    if (count($data['others']) < 4) {
                         $data['others'][] = [
                             'id' => $item['id'],
                             'title' => $item['title'],

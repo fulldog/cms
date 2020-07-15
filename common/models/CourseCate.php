@@ -40,10 +40,11 @@ class CourseCate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','img','img_chose'], 'required'],
+            [['name'], 'required'],
             [['created_at', 'updated_at'], 'integer'],
             [['name', 'alias_name'], 'string', 'max' => 255],
             [['name'], 'unique'],
+            [['img', 'img_chose'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
         ];
     }
 
