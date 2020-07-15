@@ -70,7 +70,7 @@ class SiteController extends \yii\rest\ActiveController
                 if ($value['status']) {
                     $data['banner'][] = [
                         'img'    => $this->getHostUrl($value['img']),
-                        'newsId' => $value['newsId'] ?? '',
+                        'newId' => $value['newId'] ?? '',
                     ];
                 }
             }
