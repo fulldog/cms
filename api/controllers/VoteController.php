@@ -25,6 +25,7 @@ use yii\filters\VerbFilter;
 class VoteController extends Controller
 {
     use lmcTrait;
+
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [
@@ -81,7 +82,7 @@ class VoteController extends Controller
             $data->orderBy(['vote_count' => SORT_DESC]);
         }
         $data = $data->asArray()->all();
-        foreach ($data as &$item){
+        foreach ($data as &$item) {
             !empty($item['img']) && $item['img'] = $this->getHostUrl($item['img']);
         }
         return Output::out($data);
@@ -95,16 +96,23 @@ class VoteController extends Controller
 
         if ($data) {
             $data = $data->toArray();
-            $all = VoteChild::find()->select('id')->orderBy(['vote_count' => SORT_DESC])->where(['vid' => $data['vid']])->asArray()->all();
-            $data['rank'] = 0;
+            $all = VoteChild::find()->select(['id', 'title', 'img', 'vote_count'])->orderBy(['vote_count' => SORT_DESC])->where(['vid' => $data['vid']])->asArray()->all();
+            $data['rank'] = 1;
             !empty($data['img']) && $data['img'] = $this->getHostUrl($data['img']);
-            foreach ($all as $item) {
-                $data['rank']++;
+            foreach ($all as $k => $item) {
                 if ($item['id'] == $id) {
-                    break;
+                    $data['rank'] = $k + 1;
+                } else {
+                    if (!isset($data['others']) || count($data['others']) < 4) {
+                        $data['others'][] = [
+                            'id' => $item['id'],
+                            'title' => $item['title'],
+                            'img' => $this->getHostUrl($item['img']),
+                            'vote_count' => $item['vote_count'],
+                        ];
+                    }
                 }
             }
-
             \Yii::$app->db->createCommand("update " . Vote::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data['vid']])->query();
             \Yii::$app->db->createCommand("update " . VoteChild::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data['id']])->query();
         }

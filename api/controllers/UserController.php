@@ -28,6 +28,7 @@ use yii\filters\VerbFilter;
  */
 class UserController extends \yii\rest\ActiveController
 {
+    use lmcTrait;
     public $modelClass = "api\models\User";
 
     public function behaviors()
@@ -71,6 +72,9 @@ class UserController extends \yii\rest\ActiveController
             foreach ($data as &$item) {
                 $item['childCount'] = CourseChild::find()->where(['course_id'=>$item['id']])->count();
                 $item['subscribeCount'] = CoursePassword::find()->where(['course_id'=>$item['id']])->count();
+                $item['wechat_img'] = $this->getHostUrl($item['wechat_img']);
+                $item['thumb'] = $this->getHostUrl($item['thumb']);
+                $item['video'] = $this->getHostUrl($item['video']);
             }
         }
         return Output::out($data);
