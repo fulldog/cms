@@ -68,7 +68,10 @@ class SiteController extends \yii\rest\ActiveController
             $banner = json_decode($banner['value'], true);
             foreach ($banner as $value) {
                 if ($value['status']) {
-                    $data['banner'][] = $this->getHostUrl($value['img']);
+                    $data['banner'][] = [
+                        'img'    => $this->getHostUrl($value['img']),
+                        'newsId' => $value['newsId'] ?? '',
+                    ];
                 }
             }
         }

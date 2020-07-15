@@ -398,9 +398,7 @@ class Article extends \yii\db\ActiveRecord
 
     public static function getDropList()
     {
-        $data = [
-            '' => '请选择',
-        ];
+        $data = [];
         $list = static::find()->asArray()->select(['id', 'title'])->where(['status' => 1])->all();
         foreach ($list as $item) {
             $data[$item['id']] = $item['title'];
