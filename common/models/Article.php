@@ -20,39 +20,37 @@ use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "{{%article}}".
- *
- * @property integer $id
- * @property integer $cid
- * @property integer $type
- * @property string $title
- * @property string $sub_title
- * @property string $summary
- * @property string $thumb
- * @property string $seo_title
- * @property string $seo_keywords
- * @property string $seo_description
- * @property integer $status
- * @property integer $sort
- * @property integer $author_id
- * @property string $author_name
- * @property integer $scan_count
- * @property integer $comment_count
- * @property integer $can_comment
- * @property integer $visibility
- * @property string $password
- * @property integer $flag_headline
- * @property integer $flag_recommend
- * @property integer $flag_slide_show
- * @property integer $flag_special_recommend
- * @property integer $flag_roll
- * @property integer $flag_bold
- * @property integer $flag_picture
- * @property string  $template
- * @property integer $created_at
- * @property integer $updated_at
- *
+ * @property integer        $id
+ * @property integer        $cid
+ * @property integer        $type
+ * @property string         $title
+ * @property string         $sub_title
+ * @property string         $summary
+ * @property string         $thumb
+ * @property string         $seo_title
+ * @property string         $seo_keywords
+ * @property string         $seo_description
+ * @property integer        $status
+ * @property integer        $sort
+ * @property integer        $author_id
+ * @property string         $author_name
+ * @property integer        $scan_count
+ * @property integer        $comment_count
+ * @property integer        $can_comment
+ * @property integer        $visibility
+ * @property string         $password
+ * @property integer        $flag_headline
+ * @property integer        $flag_recommend
+ * @property integer        $flag_slide_show
+ * @property integer        $flag_special_recommend
+ * @property integer        $flag_roll
+ * @property integer        $flag_bold
+ * @property integer        $flag_picture
+ * @property string         $template
+ * @property integer        $created_at
+ * @property integer        $updated_at
  * @property ArticleContent $articleContent
- * @property Category $category
+ * @property Category       $category
  */
 class Article extends \yii\db\ActiveRecord
 {
@@ -120,10 +118,10 @@ class Article extends \yii\db\ActiveRecord
                     'seo_description',
                     'author_name',
                     'tag',
-                    'template'
+                    'template',
                 ],
                 'string',
-                'max' => 255
+                'max' => 255,
             ],
             [
                 [
@@ -135,16 +133,16 @@ class Article extends \yii\db\ActiveRecord
                     'flag_bold',
                     'flag_picture',
                     'status',
-                    'can_comment'
+                    'can_comment',
                 ],
                 'in',
-                'range' => [0, 1]
+                'range' => [0, 1],
             ],
             [['visibility'], 'in', 'range' => array_keys(Constants::getArticleVisibility())],
-            [['type'], 'default', 'value'=>self::ARTICLE, 'on'=>'article'],
-            [['type'], 'default', 'value'=>self::SINGLE_PAGE, 'on'=>'page'],
-            [['password'], 'string', 'max'=>20],
-            ['cid', 'default', 'value'=>0]
+            [['type'], 'default', 'value' => self::ARTICLE, 'on' => 'article'],
+            [['type'], 'default', 'value' => self::SINGLE_PAGE, 'on' => 'page'],
+            [['password'], 'string', 'max' => 20],
+            ['cid', 'default', 'value' => 0],
         ];
     }
 
@@ -184,9 +182,9 @@ class Article extends \yii\db\ActiveRecord
                 'flag_picture',
                 'password',
                 'images',
-                'template'
+                'template',
             ],
-            'page' => [
+            'page'    => [
                 'type',
                 'title',
                 'sub_title',
@@ -200,7 +198,7 @@ class Article extends \yii\db\ActiveRecord
                 'tag',
                 'sort',
                 'images',
-                'template'
+                'template',
             ],
         ];
     }
@@ -211,38 +209,38 @@ class Article extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'cid' => Yii::t('app', 'Category Id'),
-            'type' => Yii::t('app', 'Type'),
-            'title' => Yii::t('app', 'Title'),
-            'sub_title' => Yii::t('app', 'Sub Title'),
-            'summary' => Yii::t('app', 'Summary'),
-            'thumb' => Yii::t('app', 'Thumb'),
-            'seo_title' => Yii::t('app', 'Seo Title'),
-            'seo_keywords' => Yii::t('app', 'Seo Keyword'),
-            'seo_description' => Yii::t('app', 'Seo Description'),
-            'status' => Yii::t('app', 'Status'),
-            'can_comment' => Yii::t('app', 'Can Comment'),
-            'visibility' => Yii::t('app', 'Visibility'),
-            'sort' => Yii::t('app', 'Sort'),
-            'tag' => Yii::t('app', 'Tag'),
-            'author_id' => Yii::t('app', 'Author Id'),
-            'author_name' => Yii::t('app', 'Author'),
-            'created_at' => Yii::t('app', 'Created At'),
-            'updated_at' => Yii::t('app', 'Updated At'),
-            'flag_headline' => Yii::t('app', 'Is Headline'),
-            'flag_recommend' => Yii::t('app', 'Is Recommend'),
+            'id'                     => Yii::t('app', 'ID'),
+            'cid'                    => Yii::t('app', 'Category Id'),
+            'type'                   => Yii::t('app', 'Type'),
+            'title'                  => Yii::t('app', 'Title'),
+            'sub_title'              => Yii::t('app', 'Sub Title'),
+            'summary'                => Yii::t('app', 'Summary'),
+            'thumb'                  => Yii::t('app', 'Thumb'),
+            'seo_title'              => Yii::t('app', 'Seo Title'),
+            'seo_keywords'           => Yii::t('app', 'Seo Keyword'),
+            'seo_description'        => Yii::t('app', 'Seo Description'),
+            'status'                 => Yii::t('app', 'Status'),
+            'can_comment'            => Yii::t('app', 'Can Comment'),
+            'visibility'             => Yii::t('app', 'Visibility'),
+            'sort'                   => Yii::t('app', 'Sort'),
+            'tag'                    => Yii::t('app', 'Tag'),
+            'author_id'              => Yii::t('app', 'Author Id'),
+            'author_name'            => Yii::t('app', 'Author'),
+            'created_at'             => Yii::t('app', 'Created At'),
+            'updated_at'             => Yii::t('app', 'Updated At'),
+            'flag_headline'          => Yii::t('app', 'Is Headline'),
+            'flag_recommend'         => Yii::t('app', 'Is Recommend'),
             'flag_special_recommend' => Yii::t('app', 'Is Special Recommend'),
-            'flag_slide_show' => Yii::t('app', 'Is Slide Show'),
-            'flag_roll' => Yii::t('app', 'Is Roll'),
-            'flag_bold' => Yii::t('app', 'Is Bold'),
-            'flag_picture' => Yii::t('app', 'Is Picture'),
-            'template' => Yii::t('app', 'Article Template'),
-            'password' => Yii::t('app', 'Password'),
-            'scan_count' => Yii::t('app', 'Scan Count'),
-            'comment_count' => Yii::t('app', 'Comment Count'),
-            'category' => Yii::t('app', 'Category'),
-            'images' => Yii::t('app', 'Article Images'),
+            'flag_slide_show'        => Yii::t('app', 'Is Slide Show'),
+            'flag_roll'              => Yii::t('app', 'Is Roll'),
+            'flag_bold'              => Yii::t('app', 'Is Bold'),
+            'flag_picture'           => Yii::t('app', 'Is Picture'),
+            'template'               => Yii::t('app', 'Article Template'),
+            'password'               => Yii::t('app', 'Password'),
+            'scan_count'             => Yii::t('app', 'Scan Count'),
+            'comment_count'          => Yii::t('app', 'Comment Count'),
+            'category'               => Yii::t('app', 'Category'),
+            'images'                 => Yii::t('app', 'Article Images'),
         ];
     }
 
@@ -268,13 +266,13 @@ class Article extends \yii\db\ActiveRecord
     public function getArticleLikes()
     {
         $tempModel = new ArticleMetaLike();
-        return $this->hasMany(ArticleMetaLike::className(), ['aid' => 'id'])->where(['key'=>$tempModel->keyName]);
+        return $this->hasMany(ArticleMetaLike::className(), ['aid' => 'id'])->where(['key' => $tempModel->keyName]);
     }
 
     public function getArticleTags()
     {
         $tempModel = new ArticleMetaTag();
-        return $this->hasMany(ArticleMetaLike::className(), ['aid' => 'id'])->where(['key'=>$tempModel->keyName]);
+        return $this->hasMany(ArticleMetaLike::className(), ['aid' => 'id'])->where(['key' => $tempModel->keyName]);
     }
 
     /**
@@ -282,8 +280,8 @@ class Article extends \yii\db\ActiveRecord
      */
     public function afterValidate()
     {
-        if($this->visibility == Constants::ARTICLE_VISIBILITY_SECRET){//加密文章需要设置密码
-            if( empty( $this->password ) ){
+        if ($this->visibility == Constants::ARTICLE_VISIBILITY_SECRET) {//加密文章需要设置密码
+            if (empty($this->password)) {
                 $this->addError('password', Yii::t('app', "Secret article must set a password"));
             }
         }
@@ -296,7 +294,7 @@ class Article extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         $insert = $this->getIsNewRecord();
-        Util::handleModelSingleFileUpload($this, 'thumb', $insert, '@thumb', ['thumbSizes'=>self::$thumbSizes]);
+        Util::handleModelSingleFileUpload($this, 'thumb', $insert, '@thumb', ['thumbSizes' => self::$thumbSizes]);
         $this->seo_keywords = str_replace('，', ',', $this->seo_keywords);
         if ($insert) {
             $this->author_id = Yii::$app->getUser()->getIdentity()->getId();
@@ -304,7 +302,7 @@ class Article extends \yii\db\ActiveRecord
         }
 
         $this->type = self::ARTICLE;
-        if( $this->getScenario() === 'page' ){
+        if ($this->getScenario() === 'page') {
             $this->type = self::SINGLE_PAGE;
         }
 
@@ -333,7 +331,7 @@ class Article extends \yii\db\ActiveRecord
      */
     public function beforeDelete()
     {
-        if( !empty( $this->thumb ) ){
+        if (!empty($this->thumb)) {
             Util::deleteThumbnails(Yii::getAlias('@frontend/web') . $this->thumb, self::$thumbSizes, true);
         }
         Comment::deleteAll(['aid' => $this->id]);
@@ -371,31 +369,42 @@ class Article extends \yii\db\ActiveRecord
         return parent::beforeValidate();
     }
 
-    public function getThumbUrlBySize($width='', $height='')
+    public function getThumbUrlBySize($width = '', $height = '')
     {
-        if( empty($width) || empty($height) ){
+        if (empty($width) || empty($height)) {
             return $this->thumb;
         }
-        if( empty($this->thumb) ){//未配图
+        if (empty($this->thumb)) {//未配图
             return $this->thumb = '/static/images/' . rand(1, 10) . '.jpg';
         }
         static $str = null;
-        if( $str === null ) {
+        if ($str === null) {
             $str = "";
-            foreach (self::$thumbSizes as $temp){
+            foreach (self::$thumbSizes as $temp) {
                 $str .= $temp['w'] . 'x' . $temp['h'] . '---';
             }
         }
-        if( strpos($str, $width . 'x' . $height) !== false ){
+        if (strpos($str, $width . 'x' . $height) !== false) {
             $dotPosition = strrpos($this->thumb, '.');
             $thumbExt = "@" . $width . 'x' . $height;
-            if( $dotPosition === false ){
+            if ($dotPosition === false) {
                 return $this->thumb . $thumbExt;
-            }else{
-                return substr_replace($this->thumb,$thumbExt, $dotPosition, 0);
+            } else {
+                return substr_replace($this->thumb, $thumbExt, $dotPosition, 0);
             }
         }
-        return Yii::$app->getRequest()->getBaseUrl() . '/timthumb.php?' . http_build_query(['src'=>$this->thumb, 'h'=>$height, 'w'=>$width, 'zc'=>0]);
+        return Yii::$app->getRequest()->getBaseUrl() . '/timthumb.php?' . http_build_query(['src' => $this->thumb, 'h' => $height, 'w' => $width, 'zc' => 0]);
     }
-    
+
+    public static function getDropList()
+    {
+        $data = [
+            '' => '请选择',
+        ];
+        $list = static::find()->asArray()->select(['id', 'title'])->where(['status' => 1])->all();
+        foreach ($list as $item) {
+            $data[$item['id']] = $item['title'];
+        }
+        return $data;
+    }
 }

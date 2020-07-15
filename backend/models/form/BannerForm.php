@@ -32,6 +32,8 @@ class BannerForm extends \common\models\Options
 
     public $desc;
 
+    public $newId;
+
     /**
      * @inheritdoc
      */
@@ -46,6 +48,7 @@ class BannerForm extends \common\models\Options
             'sort' => Yii::t('app', 'Sort'),
             'status' => Yii::t('app', 'Status'),
             'desc' => Yii::t('app', 'Description'),
+            'newId' => "关联新闻",
         ];
     }
 
@@ -55,7 +58,7 @@ class BannerForm extends \common\models\Options
     public function rules()
     {
         return [
-            [['sort', 'status'], 'integer'],
+            [['sort', 'status','newId'], 'integer'],
             [['sign', 'target', 'link', 'desc'], 'string'],
             [['img'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
         ];
@@ -80,6 +83,7 @@ class BannerForm extends \common\models\Options
             $this->link = $banner['link'];
             $this->sort = $banner['sort'];
             $this->status = $banner['status'];
+            $this->newId = $banner['newId'];
         }else{
             parent::setAttributes($values, $safeOnly);
         }
@@ -95,6 +99,7 @@ class BannerForm extends \common\models\Options
             'link' => $this->link,
             'sort' => $this->sort,
             'status' => $this->status,
+            'newId' => $this->newId,
         ];
     }
 }
