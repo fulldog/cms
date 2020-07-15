@@ -86,6 +86,7 @@ class SiteController extends \yii\rest\ActiveController
         $data['list']['News'] = \api\models\Article::find()->select(['title', 'id', 'thumb', 'updated_at', 'created_at', 'sub_title'])->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
         foreach ($data['list']['News'] as &$item) {
             $item['thumb'] = $this->getHostUrl($item['thumb']);
+            unset($item['content']);
         }
         $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price', 'tags', 'banner'])
             ->asArray()
