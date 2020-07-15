@@ -19,10 +19,10 @@ class Article extends \common\models\Article
             'sub_title',
             'scan_count',
             'created_at'  => function ($model) {
-                return date('Y-m-d', $model->created_at);
+                return date('Y年m月d日', $model->created_at);
             },
             'updated_at'  => function ($model) {
-                return date('Y-m-d', $model->updated_at);
+                return date('Y年m月d日', $model->updated_at);
             },
             "description" => "summary",
             "content"     => function ($model) {
