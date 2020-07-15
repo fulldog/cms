@@ -60,6 +60,9 @@ class VoteController extends Controller
         if ($data) {
             $data['uv'] = VoteRecord::find()->where(['vid' => $data['id']])->distinct('uid')->count();
             $data['childList'] = VoteChild::find()->where(['vid' => $data['id']])->asArray()->all();
+            foreach ($data['childList'] as &$item) {
+                $item['img'] = $this->getHostUrl($item['img']);
+            }
             $data['userCount'] = count($data['childList']);
             !empty($data['img']) && $data['img'] = $this->getHostUrl($data['img']);
 //            Vote::updateAll(['pv' => $data['pv'] + 1], ['id' => $data['id']]);
