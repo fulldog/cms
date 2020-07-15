@@ -21,13 +21,15 @@ use yii\filters\VerbFilter;
 
 class NewsController extends \yii\rest\Controller
 {
+    use lmcTrait;
+
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [
             'authenticator' => [
                 //使用ComopositeAuth混合认证
-                'class' => CompositeAuth::className(),
-                'optional' => [
+                'class'       => CompositeAuth::className(),
+                'optional'    => [
 //                    'index',//无需access-token的action
 //                    'detail'
                 ],
@@ -36,14 +38,14 @@ class NewsController extends \yii\rest\Controller
                     HttpBearerAuth::className(),
                     [
                         'class' => AuthService::className(),
-                    ]
-                ]
+                    ],
+                ],
             ],
-            'verbs' => [
+            'verbs'         => [
                 'class' => VerbFilter::className(),
-//                'actions' => [
-//                    'info' => ['GET'],
-//                ],
+                //                'actions' => [
+                //                    'info' => ['GET'],
+                //                ],
             ],
         ]);
     }
@@ -52,8 +54,11 @@ class NewsController extends \yii\rest\Controller
     {
         $page = abs((int)\Yii::$app->request->get('page', 1));
         $list = Article::find()->where(['status' => 1])
-            ->select(['id', 'title', 'thumb', 'sub_title', 'scan_count', 'created_at'])
+            ->select(['id', 'title', 'thumb', 'sub_title', 'scan_count', 'created_at'])->asArray()
             ->limit(10)->offset(10 * ($page - 1))->all();
+        foreach ($list as &$item) {
+            $item['thumb'] = $this->getHostUrl($item['thumb']);
+        }
         return Output::out($list);
     }
 
@@ -62,6 +67,7 @@ class NewsController extends \yii\rest\Controller
         $id = \Yii::$app->request->get('id');
         $data = \api\models\Article::findOne(['id' => $id, 'status' => 1]);
         if ($data) {
+            $data->thumb = $this->getHostUrl($data->thumb);
             Article::updateAll(['scan_count' => $data->scan_count + 1], ['id' => $id]);
         }
         return Output::out($data);
