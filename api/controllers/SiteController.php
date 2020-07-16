@@ -91,6 +91,8 @@ class SiteController extends \yii\rest\ActiveController
             ->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
         foreach ($data['list']['News'] as &$item) {
             $item['thumb'] = $this->getHostUrl($item['thumb']);
+            $item['updated_at'] = date('Y年m月d日', $item['updated_at']);
+            $item['created_at'] = date('Y年m月d日', $item['created_at']);
         }
         $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price', 'tags', 'banner'])
             ->asArray()
