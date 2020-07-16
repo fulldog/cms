@@ -58,8 +58,8 @@ class VoteController extends Controller
         $id = \Yii::$app->request->get('id');
         $data = Vote::find()->where(['id' => $id])->andWhere(['>', 'end_time', time()])->asArray()->one();
         if ($data) {
-//            $data['uv'] = VoteRecord::find()->where(['vid' => $data['id']])->distinct('uid')->count();
-            $data['uv'] = VoteChild::find()->where(['vid' => $data['id']])->count();
+            $data['uv'] = VoteRecord::find()->where(['vid' => $data['id']])->distinct('uid')->count();
+//            $data['uv'] = VoteChild::find()->where(['vid' => $data['id']])->count();
             $data['childList'] = VoteChild::find()->where(['vid' => $data['id']])->orderBy(['number' => SORT_ASC])->asArray()->all();
             foreach ($data['childList'] as &$item) {
                 $item['img'] = $this->getHostUrl($item['img']);
