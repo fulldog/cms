@@ -24,7 +24,8 @@ use backend\widgets\ActiveForm;
 
                         <?= $form->field($model, 'desc')->textInput(['maxlength' => true]) ?>
                         <div class="hr-line-dashed"></div>
-
+                <?= $form->field($model, 'number')->textInput() ?>
+              <div class="hr-line-dashed"></div>
                         <?= $form->field($model, 'pv')->textInput() ?>
                         <div class="hr-line-dashed"></div>
 

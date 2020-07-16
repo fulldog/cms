@@ -11,6 +11,7 @@ use Yii;
  *
  * @property int $id
  * @property int $vid 投票ID
+ * @property int $number 编号
  * @property string $title 标题
  * @property string $desc 描述
  * @property int $pv 访问量
@@ -45,8 +46,8 @@ class VoteChild extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['vid', 'title'], 'required'],
-            [['vid', 'pv', 'vote_count', 'created_at', 'updated_at'], 'integer'],
+            [['vid', 'title','number'], 'required'],
+            [['vid', 'pv', 'vote_count', 'created_at', 'updated_at','number'], 'integer'],
             [['title', 'desc', 'img'], 'string', 'max' => 255],
             [['img'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
         ];
@@ -61,6 +62,7 @@ class VoteChild extends \yii\db\ActiveRecord
             'id' => 'ID',
             'vid' => '投票ID',
             'title' => '标题',
+            'number' => '显示编号',
             'desc' => '描述',
             'pv' => '访问量',
             'vote_count' => '票数',

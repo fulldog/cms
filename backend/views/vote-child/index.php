@@ -64,6 +64,10 @@ $this->params['breadcrumbs'][] = '参与列表';
                         ],
                         [
                             'filter' => false,
+                            'attribute' => 'number',
+                        ],
+                        [
+                            'filter' => false,
                             'attribute' => 'pv',
                         ],
                         [
