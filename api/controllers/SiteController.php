@@ -45,8 +45,8 @@ class SiteController extends \yii\rest\ActiveController
     public function verbs()
     {
         return [
-            'index'    => ['GET', 'HEAD'],
-            'login'    => ['POST'],
+            'index' => ['GET', 'HEAD'],
+            'login' => ['POST'],
             'register' => ['POST'],
         ];
     }
@@ -69,7 +69,7 @@ class SiteController extends \yii\rest\ActiveController
             foreach ($banner as $value) {
                 if ($value['status']) {
                     $data['banner'][] = [
-                        'img'    => $this->getHostUrl($value['img']),
+                        'img' => $this->getHostUrl($value['img']),
                         'newsId' => $value['newsId'] ?? '',
                     ];
                 }
@@ -86,9 +86,11 @@ class SiteController extends \yii\rest\ActiveController
 //        $data['recommend']['News'] = Article::find()->select(['title', 'id', 'thumb'])->where(['flag_recommend' => 1, 'status' => 1])->limit(5)->all();
 
         # 新闻中心
-        $data['list']['News'] = \api\models\Article::find()->select(['title', 'id', 'thumb','content', 'updated_at', 'created_at', 'sub_title'])->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
+        $data['list']['News'] = \api\models\Article::find()->select(['title', 'id', 'thumb', 'updated_at', 'created_at', 'sub_title'])->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
         foreach ($data['list']['News'] as &$item) {
-            $item['content'] = '';
+            if (isset($item['content'])) {
+                $item['content'] = '';
+            }
             $item['thumb'] = $this->getHostUrl($item['thumb']);
         }
         $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price', 'tags', 'banner'])
@@ -125,7 +127,7 @@ class SiteController extends \yii\rest\ActiveController
         $keyword = Yii::$app->request->get('keyword');
         $data = [
             'course' => [],
-            'vote'   => [],
+            'vote' => [],
         ];
         if ($keyword) {
             if (!$type) {
@@ -183,8 +185,8 @@ class SiteController extends \yii\rest\ActiveController
                 if (!$user) {
                     $signupForm = new SignupForm();
                     $signupForm->setAttributes([
-                        'username'     => $info['openid'],
-                        'password'     => $info['openid'],
+                        'username' => $info['openid'],
+                        'password' => $info['openid'],
                         'access_token' => $info['openid'],
                     ]);
                     $signupForm->signup();
@@ -209,7 +211,7 @@ class SiteController extends \yii\rest\ActiveController
             if ($user instanceof IdentityInterface) {
                 return [
                     'accessToken' => $user->access_token,
-                    'expiredAt'   => Yii::$app->params['user.apiTokenExpire'] + time(),
+                    'expiredAt' => Yii::$app->params['user.apiTokenExpire'] + time(),
                 ];
             } else {
                 return $user->errors;
@@ -232,14 +234,14 @@ class SiteController extends \yii\rest\ActiveController
         $signupForm->setAttributes(Yii::$app->getRequest()->post());
         if (($user = $signupForm->signup()) instanceof User) {
             return [
-                "success"  => true,
+                "success" => true,
                 "username" => $user->username,
-                "email"    => $user->email,
+                "email" => $user->email,
             ];
         } else {
             return [
                 "success" => false,
-                "error"   => $signupForm->getErrors(),
+                "error" => $signupForm->getErrors(),
             ];
         }
     }
