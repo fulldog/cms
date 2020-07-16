@@ -110,7 +110,7 @@ class VoteController extends Controller
                 if ($item['id'] == $id) {
                     $data['rank'] = $k + 1;
                 } else {
-                    if (count($data['others']) < 4) {
+                    if (count($data['others']) < 3) {
                         $data['others'][] = [
                             'id' => $item['id'],
                             'title' => $item['title'],
