@@ -34,8 +34,8 @@ class CourseController extends Controller
         return ArrayHelper::merge(parent::behaviors(), [
             'authenticator' => [
                 //使用ComopositeAuth混合认证
-                'class'       => CompositeAuth::className(),
-                'optional'    => [
+                'class' => CompositeAuth::className(),
+                'optional' => [
 //                    'index',//无需access-token的action
                     //                    'list'
                 ],
@@ -47,7 +47,7 @@ class CourseController extends Controller
                     ],
                 ],
             ],
-            'verbs'         => [
+            'verbs' => [
                 'class' => VerbFilter::className(),
                 //                'actions' => [
                 //                    'info' => ['GET'],
@@ -66,7 +66,7 @@ class CourseController extends Controller
                 if ($value['status']) {
                     $data['recommend'][] = [
                         'thumb' => $this->getHostUrl($value['img']),
-                        'id'    => $value['newsId'] ?? '',
+                        'id' => $value['newsId'] ?? '',
                     ];
                 }
             }
@@ -96,6 +96,7 @@ class CourseController extends Controller
         $pageSize = \Yii::$app->request->get('pageSize', 4);
         $cid = \Yii::$app->request->get('cid');
         $data = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags'])->where(['status' => 1])->andFilterWhere(['cid' => $cid])
+            ->orderBy(['cid' => SORT_ASC])
             ->offset(($page - 1) * $pageSize)->limit($pageSize)->asArray()->all();
         foreach ($data as &$item) {
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
