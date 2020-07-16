@@ -134,7 +134,7 @@ class VoteController extends Controller
         if ($data) {
             $uid = \Yii::$app->user->identity->getId();
             $todayCnt = VoteRecord::find()
-                ->where(['uid' => $uid, 'vid' => $data['vid'], 'vcid' => $data['vid'], 'date' => $date])
+                ->where(['uid' => $uid, 'vid' => $data['vid'], 'vcid' => $data['id'], 'date' => $date])
                 ->count();
             if ($todayCnt >= 1) {
                 return Output::out([], 0, '今日已投票');
