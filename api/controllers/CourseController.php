@@ -123,17 +123,10 @@ class CourseController extends Controller
             $data['chlidList'] = CourseChild::find()->select(['id', 'title', 'video', 'thumb'])->where(['course_id' => $id])->asArray()->all();
             foreach ($data['chlidList'] as $k => &$item) {
                 $item['thumb'] = $this->getHostUrl($item['thumb']);
-                if ($k == 0) {
-                    $item['video'] = $this->getHostUrl($item['video']);
-                } else {
-                    if ($data['price'] && $have) {
-                        $item['video'] = $this->getHostUrl($item['video']);
-                    } else {
-                        $item['video'] = '';
-                    }
+                $item['video'] = $this->getHostUrl($item['video']);
+                if ($data['price'] && !$have) {
+                    $item['video'] = '';
                 }
-
-
             }
             $data['others'] = call_user_func(function () use ($data) {
                 $list = Course::find()->asArray()->select(['id', 'title', 'desc', 'wechat_img', 'tags', 'thumb', 'video', 'price', 'banner'])
