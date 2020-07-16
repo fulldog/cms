@@ -107,6 +107,7 @@ class SiteController extends \yii\rest\ActiveController
             ->where(['>', 'end_time', time()])->andWhere(['recommend' => 1])->asArray()->one();
         if ($data['vote']) {
             $data['vote']['userCount'] = VoteChild::find()->where(['vid' => $data['vote']['id']])->count();
+            $data['vote']['pv'] = VoteChild::find()->where(['vid' => $data['vote']['id']])->sum('pv');
             $data['vote']['img'] = $this->getHostUrl($data['vote']['banner'] ?: $data['vote']['img']);
         }
         if (Yii::$app->request->get('openid')) {
