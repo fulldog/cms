@@ -56,11 +56,17 @@ $this->params['breadcrumbs'][] = ['label'=>yii::t('app',  '投票活动')];
                         ],
                         [
                             'filter'=>false,
-                            'attribute'=>'vote_count'
+                            'attribute'=>'vote_count',
+                            'value'=>function($model){
+                              return \common\models\VoteChild::find()->where(['vid' => $model->id])->sum('vote_count');
+                            }
                         ],
                         [
                             'filter'=>false,
-                            'attribute'=>'pv'
+                            'attribute'=>'pv',
+                            'value'=>function($model){
+                                return \common\models\VoteChild::find()->where(['vid' => $model->id])->sum('pv');
+                            }
                         ],
 //                        'desc',
                         [

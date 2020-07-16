@@ -28,8 +28,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     return \common\libs\Constants::getYesNoItems($model->recommend);
                 }
             ],
-            'vote_count',
-            'pv',
+            [
+                'attribute'=>'vote_count',
+                'value'=>function($model){
+                    return \common\models\VoteChild::find()->where(['vid' => $model->id])->sum('vote_count');
+                }
+            ],
+            [
+                'attribute'=>'pv',
+                'value'=>function($model){
+                    return \common\models\VoteChild::find()->where(['vid' => $model->id])->sum('pv');
+                }
+            ],
             [
                 'attribute' => 'img',
                 'format' => 'raw',

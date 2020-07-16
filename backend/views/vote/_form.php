@@ -32,11 +32,11 @@ use backend\widgets\ActiveForm;
                         <?= $form->field($model, 'img')->imgInput(['style' => 'max-width:200px;max-height:200px']); ?>
                         <div class="hr-line-dashed"></div>
 
-                        <?= $form->field($model, 'vote_count')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
-
-                        <?= $form->field($model, 'pv')->textInput() ?>
-                        <div class="hr-line-dashed"></div>
+<!--                        --><?//= $form->field($model, 'vote_count')->textInput() ?>
+<!--                        <div class="hr-line-dashed"></div>-->
+<!---->
+<!--                        --><?//= $form->field($model, 'pv')->textInput() ?>
+<!--                        <div class="hr-line-dashed"></div>-->
                 <?= $form->field($model, 'recommend', [])->radioList([
                     1=>'推荐',0=>'不推荐'
                 ]); ?>
