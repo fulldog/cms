@@ -152,4 +152,22 @@ class Options extends ActiveRecord
         }
         return parent::beforeSave($insert);
     }
+
+    public static function getDropList($id = 0)
+    {
+        $data = [];
+        $info = static::findOne($id);
+        if ($info->name == 'index'){
+            $list = Article::find()->asArray()->select(['id', 'title'])->where(['status' => 1])->all();
+            foreach ($list as $item) {
+                $data[$item['id']] = $item['title'];
+            }
+        }elseif($info->name == 'course'){
+            $list = Course::find()->asArray()->select(['id', 'title'])->where(['status' => 1])->all();
+            foreach ($list as $item) {
+                $data[$item['id']] = $item['title'];
+            }
+        }
+        return $data;
+    }
 }

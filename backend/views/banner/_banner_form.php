@@ -24,7 +24,7 @@ use common\libs\Constants;
                 <div class="hr-line-dashed"></div>
                 <?= $form->field($model, 'img')->imgInput() ?>
                 <div class="hr-line-dashed"></div>
-                <?= $form->field($model, 'newsId')->dropDownList(\common\models\Article::getDropList()) ?>
+                <?= $form->field($model, 'newsId')->dropDownList(\common\models\Options::getDropList($model->id)) ?>
 <!--                <div class="hr-line-dashed"></div>-->
 <!--                --><?//= $form->field($model, 'desc')->textInput() ?>
 <!--                <div class="hr-line-dashed"></div>-->

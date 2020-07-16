@@ -92,7 +92,7 @@ class Course extends \yii\db\ActiveRecord
             'thumb' => '介绍图片',
             'video' => '介绍视频',
             'status' => '状态',
-            'recommend' => '是否推荐',
+            'recommend' => '显示至首页',
             'price' => '价格(元)',
             'created_at' => '创建时间',
             'updated_at' => '更新时间',

@@ -22,6 +22,7 @@ use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 use yii\helpers\ArrayHelper;
 use yii\filters\VerbFilter;
+use common\models\Options;
 
 
 class CourseController extends Controller
@@ -35,8 +36,8 @@ class CourseController extends Controller
                 //使用ComopositeAuth混合认证
                 'class'       => CompositeAuth::className(),
                 'optional'    => [
-//                    'index',//无需access-token的action
-//                    'list'
+                    'index',//无需access-token的action
+                    //                    'list'
                 ],
                 'authMethods' => [
                     HttpBasicAuth::className(),
@@ -57,15 +58,30 @@ class CourseController extends Controller
 
     public function actionIndex()
     {
-        $data['recommend'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags', 'banner'])->where(['recommend' => 1, 'status' => 1])
-            ->limit(5)->asArray()->all();
-        foreach ($data['recommend'] as &$item) {
-            $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
-            $item['tags'] = Course::$_tags[$item['tags']] ?? '';
-            $item['thumb'] = $this->getHostUrl($item['thumb']);
-            $item['banner'] = $this->getHostUrl($item['banner']);
-            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
+        $data['recommend'] = [];
+        $banner = Options::find()->asArray()->where(['name' => 'course'])->select('value')->one();
+        if ($banner) {
+            $banner = json_decode($banner['value'], true);
+            foreach ($banner as $value) {
+                if ($value['status']) {
+                    $data['recommend'][] = [
+                        'thumb' => $this->getHostUrl($value['img']),
+                        'id'    => $value['newsId'] ?? '',
+                    ];
+                }
+            }
         }
+
+//        $data['recommend'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags', 'banner'])->where(['recommend' => 1, 'status' => 1])
+//            ->limit(5)->asArray()->all();
+//
+//        foreach ($data['recommend'] as &$item) {
+//            $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
+//            $item['tags'] = Course::$_tags[$item['tags']] ?? '';
+//            $item['thumb'] = $this->getHostUrl($item['thumb']);
+//            $item['banner'] = $this->getHostUrl($item['banner']);
+//            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
+//        }
         $data['category'] = CourseCate::find()->select(['id', 'name', 'alias_name', 'img', 'img_chose'])->asArray()->all();
         foreach ($data['category'] as &$item) {
             $item['img'] = $this->getHostUrl($item['img']);

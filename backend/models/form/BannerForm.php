@@ -48,7 +48,7 @@ class BannerForm extends \common\models\Options
             'sort' => Yii::t('app', 'Sort'),
             'status' => Yii::t('app', 'Status'),
             'desc' => Yii::t('app', 'Description'),
-            'newsId' => "关联新闻",
+            'newsId' => "关联",
         ];
     }
 

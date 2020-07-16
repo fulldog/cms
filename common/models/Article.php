@@ -395,14 +395,4 @@ class Article extends \yii\db\ActiveRecord
         }
         return Yii::$app->getRequest()->getBaseUrl() . '/timthumb.php?' . http_build_query(['src' => $this->thumb, 'h' => $height, 'w' => $width, 'zc' => 0]);
     }
-
-    public static function getDropList()
-    {
-        $data = [];
-        $list = static::find()->asArray()->select(['id', 'title'])->where(['status' => 1])->all();
-        foreach ($list as $item) {
-            $data[$item['id']] = $item['title'];
-        }
-        return $data;
-    }
 }
