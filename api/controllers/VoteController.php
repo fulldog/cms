@@ -66,7 +66,7 @@ class VoteController extends Controller
             $data['userCount'] = count($data['childList']);
             $data['vote_count'] = VoteChild::find()->where(['vid' => $data['id']])->sum('vote_count');
 //            $data['pv'] = VoteChild::find()->where(['vid' => $data['id']])->sum('pv');
-            $data['pv'] = VoteChild::find()->where(['vid' => $data['vote']['id']])->count();
+            $data['pv'] = VoteChild::find()->where(['vid' => $data['id']])->count();
             !empty($data['img']) && $data['img'] = $this->getHostUrl($data['img']);
 //            Vote::updateAll(['pv' => $data['pv'] + 1], ['id' => $data['id']]);
 //            \Yii::$app->db->createCommand("update " . Vote::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data['id']])->query();
