@@ -68,7 +68,7 @@ class VoteController extends Controller
             $data['pv'] = VoteChild::find()->where(['vid' => $data['id']])->sum('pv');
             !empty($data['img']) && $data['img'] = $this->getHostUrl($data['img']);
 //            Vote::updateAll(['pv' => $data['pv'] + 1], ['id' => $data['id']]);
-            \Yii::$app->db->createCommand("update " . Vote::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data['id']])->query();
+//            \Yii::$app->db->createCommand("update " . Vote::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data['id']])->query();
         }
         return Output::out($data);
     }
@@ -119,7 +119,7 @@ class VoteController extends Controller
                     }
                 }
             }
-            \Yii::$app->db->createCommand("update " . Vote::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data['vid']])->query();
+//            \Yii::$app->db->createCommand("update " . Vote::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data['vid']])->query();
             \Yii::$app->db->createCommand("update " . VoteChild::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data['id']])->query();
         }
 
@@ -147,7 +147,7 @@ class VoteController extends Controller
                 $dao->vcid = $data['id'];
                 $dao->uid = $uid;
                 if ($dao->save()) {
-                    \Yii::$app->db->createCommand("update " . Vote::tableName() . " set vote_count=`vote_count`+3 where id=:id", [':id' => $data['vid']])->query();
+//                    \Yii::$app->db->createCommand("update " . Vote::tableName() . " set vote_count=`vote_count`+3 where id=:id", [':id' => $data['vid']])->query();
                     \Yii::$app->db->createCommand("update " . VoteChild::tableName() . " set vote_count=`vote_count`+3 where id=:id", [':id' => $data['id']])->query();
                     return Output::out($data);
                 }
