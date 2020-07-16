@@ -59,7 +59,7 @@ class VoteController extends Controller
         $data = Vote::find()->where(['id' => $id])->andWhere(['>', 'end_time', time()])->asArray()->one();
         if ($data) {
             $data['uv'] = VoteRecord::find()->where(['vid' => $data['id']])->distinct('uid')->count();
-            $data['childList'] = VoteChild::find()->where(['vid' => $data['id']])->orderBy(['vote_count' => SORT_DESC])->asArray()->all();
+            $data['childList'] = VoteChild::find()->where(['vid' => $data['id']])->orderBy(['number' => SORT_ASC])->asArray()->all();
             foreach ($data['childList'] as &$item) {
                 $item['img'] = $this->getHostUrl($item['img']);
             }
