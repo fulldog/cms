@@ -34,10 +34,10 @@ class CourseController extends Controller
         return ArrayHelper::merge(parent::behaviors(), [
             'authenticator' => [
                 //使用ComopositeAuth混合认证
-                'class' => CompositeAuth::className(),
-                'optional' => [
+                'class'       => CompositeAuth::className(),
+                'optional'    => [
 //                    'index',//无需access-token的action
-                    //                    'list'
+//                    'list'
                 ],
                 'authMethods' => [
                     HttpBasicAuth::className(),
@@ -47,7 +47,7 @@ class CourseController extends Controller
                     ],
                 ],
             ],
-            'verbs' => [
+            'verbs'         => [
                 'class' => VerbFilter::className(),
                 //                'actions' => [
                 //                    'info' => ['GET'],
@@ -66,7 +66,7 @@ class CourseController extends Controller
                 if ($value['status']) {
                     $data['recommend'][] = [
                         'thumb' => $this->getHostUrl($value['img']),
-                        'id' => $value['newsId'] ?? '',
+                        'id'    => $value['newsId'] ?? '',
                     ];
                 }
             }
@@ -120,6 +120,7 @@ class CourseController extends Controller
             !empty($data['thumb']) && $data['thumb'] = $this->getHostUrl($data['thumb']);
             !empty($data['banner']) && $data['banner'] = $this->getHostUrl($data['banner']);
             !empty($data['video']) && $data['video'] = $this->getHostUrl($data['video']);
+            $data['subscript'] = CoursePassword::find()->where(['course_id' => $id])->count();
             $data['chlidList'] = CourseChild::find()->select(['id', 'title', 'video', 'thumb'])->where(['course_id' => $id])->asArray()->all();
             foreach ($data['chlidList'] as $k => &$item) {
                 $item['thumb'] = $this->getHostUrl($item['thumb']);
