@@ -36,57 +36,57 @@ class CoursePasswordController extends \yii\web\Controller
         /** @var CoursePasswordServiceInterface $service */
         $service = Yii::$app->get(CoursePasswordServiceInterface::ServiceName);
         return [
-            'index' => [
+            'index'      => [
                 'class' => IndexAction::className(),
-                'data' => function ($query, $indexAction) use ($service) {
+                'data'  => function ($query, $indexAction) use ($service) {
                     $query['CoursePasswordSearch']['course_id'] = Yii::$app->request->get('CoursePasswordSearch')['course_id'];
                     $result = $service->getList($query);
                     return [
                         'dataProvider' => $result['dataProvider'],
-                        'parent' => Course::findOne(['id' => $query['CoursePasswordSearch']['course_id']]),
+                        'parent'       => Course::findOne(['id' => $query['CoursePasswordSearch']['course_id']]),
                     ];
-                }
+                },
             ],
-//            'create' => [
-//                'class' => CreateAction::className(),
-//                'doCreate' => function ($postData, $createAction) use ($service) {
-//                    return $service->create($postData);
-//                },
-//                'data' => function ($createResultModel, $createAction) use ($service) {
-//                    $model = $createResultModel === null ? $service->newModel() : $createResultModel;
-//                    return [
-//                        'model' => $model,
-//                        'parent' => Course::findOne(['id' => Yii::$app->request->get('course_id')]),
-//                    ];
-//                }
-//            ],
-            'update' => [
-                'class' => UpdateAction::className(),
+            //            'create' => [
+            //                'class' => CreateAction::className(),
+            //                'doCreate' => function ($postData, $createAction) use ($service) {
+            //                    return $service->create($postData);
+            //                },
+            //                'data' => function ($createResultModel, $createAction) use ($service) {
+            //                    $model = $createResultModel === null ? $service->newModel() : $createResultModel;
+            //                    return [
+            //                        'model' => $model,
+            //                        'parent' => Course::findOne(['id' => Yii::$app->request->get('course_id')]),
+            //                    ];
+            //                }
+            //            ],
+            'update'     => [
+                'class'    => UpdateAction::className(),
                 'doUpdate' => function ($id, $postData, $updateAction) use ($service) {
                     return $service->update($id, $postData);
                 },
-                'data' => function ($id, $updateResultModel, $updateAction) use ($service) {
+                'data'     => function ($id, $updateResultModel, $updateAction) use ($service) {
                     $model = $updateResultModel === null ? $service->getDetail($id) : $updateResultModel;
                     return [
                         'model' => $model,
                     ];
-                }
+                },
             ],
-            'delete' => [
-                'class' => DeleteAction::className(),
+            'delete'     => [
+                'class'    => DeleteAction::className(),
                 'doDelete' => function ($id, $deleteAction) use ($service) {
                     return $service->delete($id);
                 },
             ],
-            'sort' => [
-                'class' => SortAction::className(),
+            'sort'       => [
+                'class'  => SortAction::className(),
                 'doSort' => function ($id, $sort, $sortAction) use ($service) {
                     return $service->sort($id, $sort);
                 },
             ],
             'view-layer' => [
                 'class' => ViewAction::className(),
-                'data' => function ($id, $viewAction) use ($service) {
+                'data'  => function ($id, $viewAction) use ($service) {
                     return [
                         'model' => $service->getDetail($id),
                     ];
@@ -99,9 +99,9 @@ class CoursePasswordController extends \yii\web\Controller
     {
         $course_id = Yii::$app->request->get('CoursePasswordSearch')['course_id'];
         if ($course_id) {
-            $pwd = uniqid() . $this->makePassword();
-            while (CoursePassword::findOne(['password' => $pwd])) {
-                $pwd = uniqid() . $this->makePassword();
+            $pwd = $this->makePassword();
+            while (CoursePassword::findOne(['password' => $pwd, 'course_id' => $course_id])) {
+                $pwd = $this->makePassword();
             }
             $model = new CoursePassword();
             $model->password = $pwd;
@@ -117,7 +117,7 @@ class CoursePasswordController extends \yii\web\Controller
         return $this->redirect(['course-password/index', 'CoursePasswordSearch[course_id]' => $course_id]);
     }
 
-    public static function makePassword($length = 8)
+    public static function makePassword($length = 4)
     {
         // 密码字符集，可任意添加你需要的字符
         $chars = array_merge(range(0, 9), range('a', 'z'), range('A', 'Z'));
