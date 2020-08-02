@@ -13,6 +13,7 @@ use common\models\Course;
 use common\models\CourseCate;
 use common\models\CourseChild;
 use common\models\CoursePassword;
+use common\models\UserCollect;
 use yii\rest\Controller;
 use api\service\AuthService;
 use api\service\Output;
@@ -34,8 +35,8 @@ class CourseController extends Controller
         return ArrayHelper::merge(parent::behaviors(), [
             'authenticator' => [
                 //使用ComopositeAuth混合认证
-                'class'       => CompositeAuth::className(),
-                'optional'    => [
+                'class' => CompositeAuth::className(),
+                'optional' => [
 //                    'index',//无需access-token的action
 //                    'list'
                 ],
@@ -47,7 +48,7 @@ class CourseController extends Controller
                     ],
                 ],
             ],
-            'verbs'         => [
+            'verbs' => [
                 'class' => VerbFilter::className(),
                 //                'actions' => [
                 //                    'info' => ['GET'],
@@ -66,7 +67,7 @@ class CourseController extends Controller
                 if ($value['status']) {
                     $data['recommend'][] = [
                         'thumb' => $this->getHostUrl($value['img']),
-                        'id'    => $value['newsId'] ?? '',
+                        'id' => $value['newsId'] ?? '',
                     ];
                 }
             }
@@ -155,6 +156,28 @@ class CourseController extends Controller
             return Output::out([], 1, '订阅成功');
         } else {
             return Output::out([], 0, '密码不正确');
+        }
+    }
+
+    public function actionCollect()
+    {
+        $uid = \Yii::$app->user->identity->getId();
+        $course_id = \Yii::$app->request->get('course_id');
+        if (!$course_id) {
+            return Output::out([], 0, '课程ID必填');
+        }
+        if (UserCollect::find()->where(['user_id' => $uid, 'course_id' => $course_id])->exists()) {
+            return Output::out([], 0, '该课程已收藏');
+        }
+
+        $model = new UserCollect();
+        $model->user_id = $uid;
+        $model->course_id = $course_id;
+        $model->updated_at = $model->created_at = time();
+        if ($model->save()) {
+            return Output::out($model->toArray(), 1, '收藏成功');
+        } else {
+            return Output::out($model->toArray(), 0, current($model->getErrors()));
         }
     }
 }

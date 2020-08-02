@@ -13,6 +13,7 @@ use api\service\Output;
 use common\models\Course;
 use common\models\CourseChild;
 use common\models\CoursePassword;
+use common\models\UserCollect;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
@@ -70,8 +71,30 @@ class UserController extends \yii\rest\ActiveController
             ->all();
         if ($data) {
             foreach ($data as &$item) {
-                $item['childCount'] = CourseChild::find()->where(['course_id'=>$item['id']])->count();
-                $item['subscribeCount'] = CoursePassword::find()->where(['course_id'=>$item['id']])->count();
+                $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
+                $item['subscribeCount'] = CoursePassword::find()->where(['course_id' => $item['id']])->count();
+                $item['wechat_img'] = $this->getHostUrl($item['wechat_img']);
+                $item['thumb'] = $this->getHostUrl($item['thumb']);
+                $item['video'] = $this->getHostUrl($item['video']);
+            }
+        }
+        return Output::out($data);
+    }
+
+    public function actionCollect()
+    {
+        $uid = \Yii::$app->user->identity->getId();
+        $data = UserCollect::find()
+            ->where(['p.user_id' => $uid])
+            ->alias('p')
+            ->leftJoin(Course::tableName() . ' c', 'p.course_id=c.id')
+            ->select('c.id,c.title,c.desc,c.wechat_img,c.thumb,c.video,c.status,c.price,c.cid')
+            ->asArray()
+            ->all();
+        if ($data) {
+            foreach ($data as &$item) {
+                $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
+                $item['subscribeCount'] = CoursePassword::find()->where(['course_id' => $item['id']])->count();
                 $item['wechat_img'] = $this->getHostUrl($item['wechat_img']);
                 $item['thumb'] = $this->getHostUrl($item['thumb']);
                 $item['video'] = $this->getHostUrl($item['video']);
