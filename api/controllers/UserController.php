@@ -85,7 +85,7 @@ class UserController extends \yii\rest\ActiveController
     {
         $uid = \Yii::$app->user->identity->getId();
         $data = UserCollect::find()
-            ->where(['p.user_id' => $uid])
+            ->where(['p.user_id' => $uid, 'p.status' => 1])
             ->alias('p')
             ->leftJoin(Course::tableName() . ' c', 'p.course_id=c.id')
             ->select('c.id,c.title,c.desc,c.wechat_img,c.thumb,c.video,c.status,c.price,c.cid')
