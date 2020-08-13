@@ -40,7 +40,7 @@ class UserCollect extends \yii\db\ActiveRecord
         return [
             [['course_id', 'user_id'], 'required'],
             [['course_id', 'created_at', 'updated_at', 'user_id'], 'integer'],
-            [['course_id'], 'unique', 'targetAttribute' => ['course_id']],
+//            [['course_id'], 'unique', 'targetAttribute' => ['course_id']],
         ];
     }
 
