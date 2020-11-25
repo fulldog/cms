@@ -23,6 +23,7 @@ use yii\web\UploadedFile;
  * @property int $price 价格
  * @property int $recommend 是否推荐
  * @property int $tags 标签
+ * @property int $subscribe  订阅量
  * @property int $created_at
  * @property int $updated_at
  */
@@ -69,7 +70,7 @@ class Course extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'cid', 'price','tags'], 'required'],
-            [['status', 'recommend', 'created_at', 'updated_at', 'price', 'cid'], 'integer'],
+            [['status', 'recommend', 'created_at', 'updated_at', 'price', 'cid','subscribe'], 'integer'],
             [['title', 'desc', 'tags'], 'string', 'max' => 255],
             [['thumb', 'wechat_img','banner'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif, webp'],
             [['video'], 'file', 'skipOnEmpty' => true, 'extensions' => 'mp4'],
@@ -94,6 +95,7 @@ class Course extends \yii\db\ActiveRecord
             'status' => '状态',
             'recommend' => '显示至首页',
             'price' => '价格(元)',
+            'subscribe' => '订阅量',
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
         ];

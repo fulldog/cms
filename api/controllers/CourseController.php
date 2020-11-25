@@ -96,13 +96,13 @@ class CourseController extends Controller
         $page = \Yii::$app->request->get('page', 1);
         $pageSize = \Yii::$app->request->get('pageSize', 4);
         $cid = \Yii::$app->request->get('cid');
-        $data = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags'])->where(['status' => 1])->andFilterWhere(['cid' => $cid])
+        $data = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags','subscribe'])->where(['status' => 1])->andFilterWhere(['cid' => $cid])
             ->orderBy(['cid' => SORT_ASC])
             ->offset(($page - 1) * $pageSize)->limit($pageSize)->asArray()->all();
         foreach ($data as &$item) {
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
             $item['thumb'] = $this->getHostUrl($item['thumb']);
-            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
+            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count() + $item['subscribe'];
         }
         return Output::out($data);
     }
@@ -110,7 +110,7 @@ class CourseController extends Controller
     public function actionDetail()
     {
         $id = \Yii::$app->request->get('id');
-        $data = Course::find()->select(['id', 'title', 'desc', 'cid', 'wechat_img', 'tags', 'thumb', 'video', 'price', 'banner'])->where(['id' => $id, 'status' => 1])->asArray()->one();
+        $data = Course::find()->select(['id', 'title', 'desc', 'cid', 'wechat_img', 'tags', 'thumb', 'video', 'price', 'banner','subscribe'])->where(['id' => $id, 'status' => 1])->asArray()->one();
         if ($data) {
             $have = false;
             if (!\Yii::$app->user->isGuest) {
@@ -121,7 +121,7 @@ class CourseController extends Controller
             !empty($data['thumb']) && $data['thumb'] = $this->getHostUrl($data['thumb']);
             !empty($data['banner']) && $data['banner'] = $this->getHostUrl($data['banner']);
             !empty($data['video']) && $data['video'] = $this->getHostUrl($data['video']);
-            $data['subscript'] = CoursePassword::find()->where(['course_id' => $id])->count();
+            $data['subscript'] = CoursePassword::find()->select('id')->where(['course_id' => $id, 'status' => 1])->count() + $data['subscribe'];
             $data['chlidList'] = CourseChild::find()->select(['id', 'title', 'video', 'thumb'])->where(['course_id' => $id])->asArray()->all();
             foreach ($data['chlidList'] as $k => &$item) {
                 $item['thumb'] = $this->getHostUrl($item['thumb']);

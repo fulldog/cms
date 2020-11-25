@@ -72,6 +72,10 @@ if( isset( $config['components']['urlManager']['suffix'] ) ){
                             'attribute' => 'price',
                             'filter' => false,
                         ],
+//                        [
+//                            'attribute' => 'subscribe',
+//                            'filter' => false,
+//                        ],
                         [
                             'attribute' => 'thumb',
                             'format' => 'raw',
