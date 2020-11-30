@@ -56,14 +56,14 @@ class SiteController extends \yii\rest\ActiveController
      */
     public function actionIndex()
     {
-        $data['allCate'] = CourseCate::find()->select(['name', 'id', 'alias_name', 'img', 'img_chose'])->asArray()->all();
+        $data['allCate'] = CourseCate::find()->select(['name', 'id', 'alias_name', 'img', 'img_chose'])->cache(60)->asArray()->all();
         foreach ($data['allCate'] as &$item) {
             $item['img'] = $this->getHostUrl($item['img']);
             $item['img_chose'] = $this->getHostUrl($item['img_chose']);
         }
         // 推荐课程
         $data['banner'] = [];
-        $banner = Options::find()->asArray()->where(['name' => 'index'])->select('value')->one();
+        $banner = Options::find()->asArray()->where(['name' => 'index'])->select('value')->cache(60)->one();
         if ($banner) {
             $banner = json_decode($banner['value'], true);
             foreach ($banner as $value) {
@@ -75,18 +75,18 @@ class SiteController extends \yii\rest\ActiveController
                 }
             }
         }
-        $data['recommend']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags', 'banner'])->where(['recommend' => 1, 'status' => 1])->asArray()->limit(5)->all();
+        $data['recommend']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags', 'banner'])->where(['recommend' => 1, 'status' => 1])->cache(60)->asArray()->limit(5)->all();
         foreach ($data['recommend']['Course'] as &$item) {
-            $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
+            $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->cache(60)->count();
             $item['tags'] = Course::$_tags[$item['tags']] ?? "";
-            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
+            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->cache(60)->count();
             $item['thumb'] = $this->getHostUrl($item['thumb']);
             $item['banner'] = $this->getHostUrl($item['banner']);
         }
 //        $data['recommend']['News'] = Article::find()->select(['title', 'id', 'thumb'])->where(['flag_recommend' => 1, 'status' => 1])->limit(5)->all();
 
         # 新闻中心
-        $data['list']['News'] = \api\models\Article::find()->select(['title', 'id', 'thumb', 'updated_at', 'created_at', 'sub_title'])
+        $data['list']['News'] = \api\models\Article::find()->select(['title', 'id', 'thumb', 'updated_at', 'created_at', 'sub_title'])->cache(60)
             ->asArray()
             ->orderBy(['updated_at' => SORT_DESC])->limit(5)->all();
         foreach ($data['list']['News'] as &$item) {
@@ -94,7 +94,7 @@ class SiteController extends \yii\rest\ActiveController
             $item['updated_at'] = date('Y年m月d日', $item['updated_at']);
             $item['created_at'] = date('Y年m月d日', $item['created_at']);
         }
-        $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price', 'tags', 'banner'])
+        $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price', 'tags', 'banner'])->cache(60)
             ->asArray()
             ->orderBy(['updated_at' => SORT_DESC])
             ->limit(5)->all();
@@ -102,21 +102,21 @@ class SiteController extends \yii\rest\ActiveController
         foreach ($data['list']['Course'] as &$item) {
             $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
             $item['tags'] = Course::$_tags[$item['tags']] ?? "";
-            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
+            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->cache(60)->count();
             $item['thumb'] = $this->getHostUrl($item['thumb']);
             $item['banner'] = $this->getHostUrl($item['banner']);
         }
 
-        $data['vote'] = Vote::find()->select(['id', 'title', 'end_time', 'img', 'pv', 'banner'])->orderBy(['end_time' => SORT_DESC])
+        $data['vote'] = Vote::find()->select(['id', 'title', 'end_time', 'img', 'pv', 'banner'])->orderBy(['end_time' => SORT_DESC])->cache(60)
             ->where(['>', 'end_time', time()])->andWhere(['recommend' => 1])->asArray()->one();
         if ($data['vote']) {
-            $data['vote']['userCount'] = VoteChild::find()->where(['vid' => $data['vote']['id']])->count();
-            $data['vote']['pv'] = VoteChild::find()->where(['vid' => $data['vote']['id']])->sum('pv');
+            $data['vote']['userCount'] = VoteChild::find()->where(['vid' => $data['vote']['id']])->cache(60)->count();
+            $data['vote']['pv'] = VoteChild::find()->where(['vid' => $data['vote']['id']])->cache(60)->sum('pv');
             $data['vote']['img'] = $this->getHostUrl($data['vote']['banner'] ?: $data['vote']['img']);
         }
         if (Yii::$app->request->get('openid')) {
             $uid = Yii::$app->user->getId();
-            $data['userInfo']['myCourse'] = CoursePassword::find()->where(['user_id' => $uid])->count();
+            $data['userInfo']['myCourse'] = CoursePassword::find()->where(['user_id' => $uid])->cache(60)->count();
         }
 
         return Output::out($data);
@@ -132,12 +132,12 @@ class SiteController extends \yii\rest\ActiveController
         ];
         if ($keyword) {
             if (!$type) {
-                $data['course'] = Course::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'thumb', 'price', 'tags'])->limit(10)->asArray()->all();
-                $data['vote'] = Vote::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'img', 'pv', 'vote_count', 'desc'])->limit(10)->asArray()->all();
+                $data['course'] = Course::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'thumb', 'price', 'tags'])->limit(10)->cache(60)->asArray()->all();
+                $data['vote'] = Vote::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'img', 'pv', 'vote_count', 'desc'])->limit(10)->cache(60)->asArray()->all();
             } elseif ($type == 'course') {
-                $data['course'] = Course::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'thumb', 'price', 'tags'])->limit(10)->asArray()->all();
+                $data['course'] = Course::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'thumb', 'price', 'tags'])->limit(10)->cache(60)->asArray()->all();
             } elseif ($type == 'vote') {
-                $data['vote'] = Vote::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'img', 'pv', 'vote_count', 'desc'])->limit(10)->asArray()->all();
+                $data['vote'] = Vote::find()->where(['like', 'title', $keyword])->select(['title', 'id', 'img', 'pv', 'vote_count', 'desc'])->limit(10)->cache(60)->asArray()->all();
             }
             if (isset($data['course'])) {
                 foreach ($data['course'] as &$item) {
@@ -167,7 +167,7 @@ class SiteController extends \yii\rest\ActiveController
         if (!$code) {
             return Output::out([], 0, 'code not found');
         } else {
-            $appInfo = Options::find()->select(['name', 'value'])->where(['name' => 'wechat_appid'])->orWhere(['name' => 'wechat_appsecret'])->asArray()->all();
+            $appInfo = Options::find()->select(['name', 'value'])->where(['name' => 'wechat_appid'])->orWhere(['name' => 'wechat_appsecret'])->cache(600)->asArray()->all();
             $wechat_appid = '';
             $wechat_appsecret = '';
             foreach ($appInfo as $item) {

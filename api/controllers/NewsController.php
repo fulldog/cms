@@ -53,7 +53,7 @@ class NewsController extends \yii\rest\Controller
     public function actionIndex()
     {
         $page = abs((int)\Yii::$app->request->get('page', 1));
-        $list = Article::find()->where(['status' => 1])
+        $list = Article::find()->where(['status' => 1])->cache(60)
             ->select(['id', 'title', 'thumb', 'sub_title', 'scan_count', 'created_at'])->asArray()
             ->limit(10)->offset(10 * ($page - 1))->all();
         foreach ($list as &$item) {

@@ -56,7 +56,7 @@ class VoteController extends Controller
     public function actionIndex()
     {
         $id = \Yii::$app->request->get('id');
-        $data = Vote::find()->where(['id' => $id])->andWhere(['>', 'end_time', time()])->asArray()->one();
+        $data = Vote::find()->where(['id' => $id])->andWhere(['>', 'end_time', time()])->cache(60)->asArray()->one();
         if ($data) {
             $data['uv'] = VoteRecord::find()->where(['vid' => $data['id']])->distinct('uid')->count();
 //            $data['uv'] = VoteChild::find()->where(['vid' => $data['id']])->count();

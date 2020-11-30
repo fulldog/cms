@@ -60,7 +60,7 @@ class CourseController extends Controller
     public function actionIndex()
     {
         $data['recommend'] = [];
-        $banner = Options::find()->asArray()->where(['name' => 'course'])->select('value')->one();
+        $banner = Options::find()->asArray()->where(['name' => 'course'])->select('value')->cache(60)->one();
         if ($banner) {
             $banner = json_decode($banner['value'], true);
             foreach ($banner as $value) {
@@ -83,7 +83,7 @@ class CourseController extends Controller
 //            $item['banner'] = $this->getHostUrl($item['banner']);
 //            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count();
 //        }
-        $data['category'] = CourseCate::find()->select(['id', 'name', 'alias_name', 'img', 'img_chose'])->asArray()->all();
+        $data['category'] = CourseCate::find()->select(['id', 'name', 'alias_name', 'img', 'img_chose'])->cache(60)->asArray()->all();
         foreach ($data['category'] as &$item) {
             $item['img'] = $this->getHostUrl($item['img']);
             $item['img_chose'] = $this->getHostUrl($item['img_chose']);
@@ -98,11 +98,12 @@ class CourseController extends Controller
         $cid = \Yii::$app->request->get('cid');
         $data = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags','subscribe'])->where(['status' => 1])->andFilterWhere(['cid' => $cid])
             ->orderBy(['cid' => SORT_ASC])
+            ->cache(60)
             ->offset(($page - 1) * $pageSize)->limit($pageSize)->asArray()->all();
         foreach ($data as &$item) {
-            $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
+            $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->cache(60)->count();
             $item['thumb'] = $this->getHostUrl($item['thumb']);
-            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->count() + $item['subscribe'];
+            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->cache(60)->count() + $item['subscribe'];
         }
         return Output::out($data);
     }
@@ -110,7 +111,7 @@ class CourseController extends Controller
     public function actionDetail()
     {
         $id = \Yii::$app->request->get('id');
-        $data = Course::find()->select(['id', 'title', 'desc', 'cid', 'wechat_img', 'tags', 'thumb', 'video', 'price', 'banner','subscribe'])->where(['id' => $id, 'status' => 1])->asArray()->one();
+        $data = Course::find()->select(['id', 'title', 'desc', 'cid', 'wechat_img', 'tags', 'thumb', 'video', 'price', 'banner','subscribe'])->where(['id' => $id, 'status' => 1])->cache(60)->asArray()->one();
         if ($data) {
             $have = false;
             if (!\Yii::$app->user->isGuest) {
@@ -121,8 +122,8 @@ class CourseController extends Controller
             !empty($data['thumb']) && $data['thumb'] = $this->getHostUrl($data['thumb']);
             !empty($data['banner']) && $data['banner'] = $this->getHostUrl($data['banner']);
             !empty($data['video']) && $data['video'] = $this->getHostUrl($data['video']);
-            $data['subscript'] = CoursePassword::find()->select('id')->where(['course_id' => $id, 'status' => 1])->count() + $data['subscribe'];
-            $data['chlidList'] = CourseChild::find()->select(['id', 'title', 'video', 'thumb'])->where(['course_id' => $id])->asArray()->all();
+            $data['subscript'] = CoursePassword::find()->select('id')->where(['course_id' => $id, 'status' => 1])->cache(60)->count() + $data['subscribe'];
+            $data['chlidList'] = CourseChild::find()->select(['id', 'title', 'video', 'thumb'])->where(['course_id' => $id])->cache(60)->asArray()->all();
             foreach ($data['chlidList'] as $k => &$item) {
                 $item['thumb'] = $this->getHostUrl($item['thumb']);
                 $item['video'] = $this->getHostUrl($item['video']);
@@ -131,7 +132,7 @@ class CourseController extends Controller
                 }
             }
             $data['others'] = call_user_func(function () use ($data) {
-                $list = Course::find()->asArray()->select(['id', 'title', 'desc', 'wechat_img', 'tags', 'thumb', 'video', 'price', 'banner'])
+                $list = Course::find()->asArray()->select(['id', 'title', 'desc', 'wechat_img', 'tags', 'thumb', 'video', 'price', 'banner'])->cache(60)
                     ->where(['status' => 1, 'cid' => $data['cid']])->andWhere(['<>', 'id', $data['id']])->limit(4)->all();
                 foreach ($list as &$li) {
                     $li['wechat_img'] = $this->getHostUrl($li['wechat_img']);
@@ -166,7 +167,7 @@ class CourseController extends Controller
         if (!$course_id) {
             return Output::out([], 0, '课程ID必填');
         }
-        if (UserCollect::find()->where(['user_id' => $uid, 'course_id' => $course_id])->exists()) {
+        if (UserCollect::find()->where(['user_id' => $uid, 'course_id' => $course_id])->cache(60)->exists()) {
             return Output::out([], 0, '该课程已收藏');
         }
 
