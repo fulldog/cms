@@ -25,8 +25,12 @@ class AuthService extends QueryParamAuth
     {
         $accessToken = $request->get($this->tokenParam);
         if (is_string($accessToken)) {
-            $identity = $user->loginByAccessToken($accessToken, get_class($this));
+            $identity = \Yii::$app->cache->get("auth:" . $accessToken);
+            if (!$identity) {
+                $identity = $user->loginByAccessToken($accessToken, get_class($this));
+            }
             if ($identity !== null) {
+                \Yii::$app->cache->set("auth:" . $accessToken, 1);
                 return $identity;
             }
         }
