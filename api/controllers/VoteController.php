@@ -58,15 +58,15 @@ class VoteController extends Controller
         $id = \Yii::$app->request->get('id');
         $data = Vote::find()->where(['id' => $id])->andWhere(['>', 'end_time', time()])->cache(60)->asArray()->one();
         if ($data) {
-            $data['uv'] = VoteRecord::find()->where(['vid' => $data['id']])->distinct('uid')->count();
+            $data['uv'] = VoteRecord::find()->where(['vid' => $data['id']])->distinct('uid')->cache(60)->count();
 //            $data['uv'] = VoteChild::find()->where(['vid' => $data['id']])->count();
-            $data['childList'] = VoteChild::find()->where(['vid' => $data['id']])->orderBy(['number' => SORT_ASC])->asArray()->all();
+            $data['childList'] = VoteChild::find()->where(['vid' => $data['id']])->orderBy(['number' => SORT_ASC])->cache(60)->asArray()->all();
             foreach ($data['childList'] as &$item) {
                 $item['img'] = $this->getHostUrl($item['img']);
             }
             $data['userCount'] = count($data['childList']);
-            $data['vote_count'] = VoteChild::find()->where(['vid' => $data['id']])->sum('vote_count');
-            $data['pv'] = VoteChild::find()->where(['vid' => $data['id']])->sum('pv');
+            $data['vote_count'] = VoteChild::find()->where(['vid' => $data['id']])->cache(60)->sum('vote_count');
+            $data['pv'] = VoteChild::find()->where(['vid' => $data['id']])->cache(60)->sum('pv');
             !empty($data['img']) && $data['img'] = $this->getHostUrl($data['img']);
 //            Vote::updateAll(['pv' => $data['pv'] + 1], ['id' => $data['id']]);
 //            \Yii::$app->db->createCommand("update " . Vote::tableName() . " set pv=`pv`+1 where id=:id", [':id' => $data['id']])->query();
@@ -79,7 +79,7 @@ class VoteController extends Controller
     {
         $id = \Yii::$app->request->get('id');
         $type = \Yii::$app->request->get('type');
-        $data = VoteChild::find()->where(['vid' => $id])->limit(10);
+        $data = VoteChild::find()->where(['vid' => $id])->limit(10)->cache(60);
         if ($type == 'new') {
             $data->orderBy(['created_at' => SORT_DESC]);
         } elseif ($type == 'hot') {
@@ -103,7 +103,7 @@ class VoteController extends Controller
         if ($data) {
             $data = $data->toArray();
             $data['others'] = [];
-            $all = VoteChild::find()->select(['id', 'title', 'img', 'vote_count'])->orderBy(['vote_count' => SORT_DESC])->where(['vid' => $data['vid']])->asArray()->all();
+            $all = VoteChild::find()->select(['id', 'title', 'img', 'vote_count'])->orderBy(['vote_count' => SORT_DESC])->where(['vid' => $data['vid']])->cache(60)->asArray()->all();
             $data['rank'] = 1;
             !empty($data['img']) && $data['img'] = $this->getHostUrl($data['img']);
             foreach ($all as $k => $item) {
@@ -133,7 +133,7 @@ class VoteController extends Controller
     {
         $date = date('Y-m-d');
         $id = \Yii::$app->request->get('id');
-        $data = VoteChild::find()->where(['id' => $id])->asArray()->one();
+        $data = VoteChild::find()->where(['id' => $id])->cache(60)->asArray()->one();
         if ($data) {
             $uid = \Yii::$app->user->identity->getId();
             $todayCnt = VoteRecord::find()
