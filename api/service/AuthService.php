@@ -30,14 +30,14 @@ class AuthService extends QueryParamAuth
             if ($identity) {
                 $identity = unserialize($identity);
                 if ($identity instanceof IdentityInterface) {
-                    \Yii::$app->redis->expire($accessToken, 86400 + mt_rand(1 + 10000));
+                    \Yii::$app->redis->expire($accessToken, 86400 + mt_rand(1, 10000));
                     return $identity;
                 }
             }
             $identity = $user->loginByAccessToken($accessToken, get_class($this));
             if ($identity !== null) {
                 \Yii::$app->redis->set($accessToken, serialize($identity));
-                \Yii::$app->redis->expire($accessToken, 86400 + mt_rand(1 + 10000));
+                \Yii::$app->redis->expire($accessToken, 86400 + mt_rand(1, 10000));
                 return $identity;
             }
         }
