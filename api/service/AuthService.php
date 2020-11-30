@@ -33,6 +33,8 @@ class AuthService extends QueryParamAuth
                     \Yii::$app->redis->hset(static::OPEN_ID_TABLE, $accessToken, 1);
                     return $identity;
                 }
+            }else{
+                return $identity;
             }
         }
         if ($accessToken !== null) {
