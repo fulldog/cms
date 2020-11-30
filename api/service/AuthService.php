@@ -31,6 +31,7 @@ class AuthService extends QueryParamAuth
                 $identity = unserialize($identity);
                 if ($identity instanceof IdentityInterface) {
                     \Yii::$app->redis->expire($accessToken, 86400 + mt_rand(1, 10000));
+                    $user->login($identity);
                     return $identity;
                 }
             }
