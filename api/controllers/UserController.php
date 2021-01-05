@@ -61,6 +61,7 @@ class UserController extends \yii\rest\ActiveController
 
     public function actionSubscribe()
     {
+        return $this->actionCollect();
         $uid = \Yii::$app->user->identity->getId();
         $data = CoursePassword::find()
             ->where(['p.user_id' => $uid, 'p.status' => 1, 'c.status' => 1])
