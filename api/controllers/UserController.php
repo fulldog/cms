@@ -95,7 +95,7 @@ class UserController extends \yii\rest\ActiveController
         if ($data) {
             foreach ($data as &$item) {
                 $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->cache(60)->count();
-                $item['collectCount'] = $item['subscribe'] + UserCollect::find()->where(['course_id' => $item['id']])->cache(60)->count() * 3;
+                $item['userCount'] = $item['subscribe'] + UserCollect::find()->where(['course_id' => $item['id']])->cache(60)->count() * 3;
                 $item['wechat_img'] = $this->getHostUrl($item['wechat_img']);
                 $item['thumb'] = $this->getHostUrl($item['thumb']);
                 $item['video'] = $this->getHostUrl($item['video']);

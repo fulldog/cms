@@ -96,7 +96,7 @@ class Course extends \yii\db\ActiveRecord
             'status' => '状态',
             'recommend' => '显示至首页',
             'price' => '价格(元)',
-            'subscribe' => '订阅量',
+            'subscribe' => '虚拟收藏',
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
             'userCollect' => '用户收藏',
