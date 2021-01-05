@@ -75,13 +75,15 @@ class SiteController extends \yii\rest\ActiveController
                 }
             }
         }
-        $data['recommend']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags', 'banner'])->where(['recommend' => 1, 'status' => 1])->cache(60)->asArray()->limit(5)->all();
-        foreach ($data['recommend']['Course'] as &$item) {
-            $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->cache(60)->count();
-            $item['tags'] = Course::$_tags[$item['tags']] ?? "";
-            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->cache(60)->count();
-            $item['thumb'] = $this->getHostUrl($item['thumb']);
-            $item['banner'] = $this->getHostUrl($item['banner']);
+        $courseList = Course::find()->select(['title', 'id', 'thumb', 'price', 'tags', 'banner', 'subscribe'])->where(['recommend' => 1, 'status' => 1])->cache(60)->limit(5)->all();
+        foreach ($courseList as $item) {
+            $tmp = $item->toArray();
+            $tmp['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->cache(60)->count();
+            $tmp['tags'] = Course::$_tags[$tmp['tags']] ?? "";
+            $tmp['userCount'] = $item->subscribe + $item->userCollect;
+            $tmp['thumb'] = $this->getHostUrl($tmp['thumb']);
+            $tmp['banner'] = $this->getHostUrl($tmp['banner']);
+            $data['recommend']['Course'][] = $tmp;
         }
 //        $data['recommend']['News'] = Article::find()->select(['title', 'id', 'thumb'])->where(['flag_recommend' => 1, 'status' => 1])->limit(5)->all();
 
@@ -94,17 +96,18 @@ class SiteController extends \yii\rest\ActiveController
             $item['updated_at'] = date('Y年m月d日', $item['updated_at']);
             $item['created_at'] = date('Y年m月d日', $item['created_at']);
         }
-        $data['list']['Course'] = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price', 'tags', 'banner'])->cache(60)
-            ->asArray()
+
+        $Course = Course::find()->select(['title', 'id', 'thumb', 'updated_at', 'price', 'tags', 'banner','subscribe'])->cache(60)
             ->orderBy(['updated_at' => SORT_DESC])
             ->limit(5)->all();
-
-        foreach ($data['list']['Course'] as &$item) {
-            $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->count();
+        foreach ($Course as $it) {
+            $item = $it->toArray();
+            $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->cache(60)->count();
             $item['tags'] = Course::$_tags[$item['tags']] ?? "";
-            $item['userCount'] = CoursePassword::find()->select('id')->where(['course_id' => $item['id'], 'status' => 1])->cache(60)->count();
+            $item['userCount'] = $it->subscribe + $it->userCollect;
             $item['thumb'] = $this->getHostUrl($item['thumb']);
             $item['banner'] = $this->getHostUrl($item['banner']);
+            $data['list']['Course'][] = $item;
         }
 
         $data['vote'] = Vote::find()->select(['id', 'title', 'end_time', 'img', 'pv', 'banner'])->orderBy(['end_time' => SORT_DESC])->cache(60)

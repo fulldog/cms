@@ -63,7 +63,7 @@ class UserController extends \yii\rest\ActiveController
     {
         $uid = \Yii::$app->user->identity->getId();
         $data = CoursePassword::find()
-            ->where(['p.user_id' => $uid, 'p.status' => 1,'c.status' => 1])
+            ->where(['p.user_id' => $uid, 'p.status' => 1, 'c.status' => 1])
             ->alias('p')
             ->leftJoin(Course::tableName() . ' c', 'p.course_id=c.id')
             ->select('c.id,c.title,c.desc,c.wechat_img,c.thumb,c.video,c.status,c.price,c.cid')
@@ -89,13 +89,13 @@ class UserController extends \yii\rest\ActiveController
             ->where(['p.user_id' => $uid, 'c.status' => 1])
             ->alias('p')
             ->leftJoin(Course::tableName() . ' c', 'p.course_id=c.id')
-            ->select('c.id,c.title,c.desc,c.wechat_img,c.thumb,c.video,c.status,c.price,c.cid')->cache(60)
+            ->select('c.id,c.title,c.desc,c.wechat_img,c.thumb,c.video,c.status,c.price,c.cid,c.subscribe')->cache(60)
             ->asArray()
             ->all();
         if ($data) {
             foreach ($data as &$item) {
                 $item['childCount'] = CourseChild::find()->where(['course_id' => $item['id']])->cache(60)->count();
-                $item['collectCount'] = UserCollect::find()->where(['course_id' => $item['id']])->cache(60)->count();
+                $item['collectCount'] = $item['subscribe'] + UserCollect::find()->where(['course_id' => $item['id']])->cache(60)->count() * 3;
                 $item['wechat_img'] = $this->getHostUrl($item['wechat_img']);
                 $item['thumb'] = $this->getHostUrl($item['thumb']);
                 $item['video'] = $this->getHostUrl($item['video']);
