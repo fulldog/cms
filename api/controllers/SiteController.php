@@ -57,9 +57,10 @@ class SiteController extends \yii\rest\ActiveController
     public function actionIndex()
     {
         $data['allCate'] = CourseCate::find()->select(['name', 'id', 'alias_name', 'img', 'img_chose'])->cache(60)->asArray()->all();
-        foreach ($data['allCate'] as &$item) {
+        foreach ($data['allCate'] as $k => $item) {
             $item['img'] = $this->getHostUrl($item['img']);
             $item['img_chose'] = $this->getHostUrl($item['img_chose']);
+            $data['allCate'][$k] = $item;
         }
         // 推荐课程
         $data['banner'] = [];
