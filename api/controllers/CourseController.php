@@ -126,7 +126,8 @@ class CourseController extends Controller
             !empty($data['thumb']) && $data['thumb'] = $this->getHostUrl($data['thumb']);
             !empty($data['banner']) && $data['banner'] = $this->getHostUrl($data['banner']);
             !empty($data['video']) && $data['video'] = $this->getHostUrl($data['video']);
-            $data['subscript'] = $dataObj->userCollect + $data['subscribe'];
+            $data['subscript'] = $data['subscribe'];
+            $data['subscribe'] = $dataObj->userCollect + $data['subscribe'];
             $data['chlidList'] = CourseChild::find()->select(['id', 'title', 'video', 'thumb'])->where(['course_id' => $id])->cache(60)->asArray()->all();
             foreach ($data['chlidList'] as $k => &$item) {
                 $item['thumb'] = $this->getHostUrl($item['thumb']);
